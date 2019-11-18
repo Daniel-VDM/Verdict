@@ -20,30 +20,42 @@ import java.util.Objects;
 
 public class Backend {
 
-    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final String TAG = "Backend";
-
-    private HashMap<String, Object> cacheMap;
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final HashMap<String, Object> databaseCache = new HashMap<>();
 
     public Backend() {
-        cacheMap = new HashMap<>();
         // TODO constructors as needed, possibly from places API
     }
 
+    /**
+     * @return the firebase instance for more specific database control.
+     */
     static FirebaseDatabase getFirebaseInstance() {
         return Backend.database;
     }
 
+    /**
+     * Firebase has to handle request asynchronously, so a listener if required
+     * when quarrying firebase.
+     *
+     * Note that the return from the firebase is a java Object that needs to be typecast.
+     *
+     * @param key The key of the data to get from firebase
+     * @param listener The return listener for the firebase response
+     */
     public void getDatabase(final String key, final DatabaseListener listener) {
         listener.onStart(key);
-        if (cacheMap.containsKey(key)) {
-            listener.onSuccess(key, cacheMap.get(key));
+        if (databaseCache.containsKey(key)) {
+            listener.onSuccess(key, databaseCache.get(key));
             return;
         }
         database.getReference(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listener.onSuccess(key, dataSnapshot.getValue());
+                Object value = dataSnapshot.getValue();
+                databaseCache.put(key, value);
+                listener.onSuccess(key, value);
             }
 
             @Override
@@ -53,13 +65,23 @@ public class Backend {
         });
     }
 
+    /**
+     * @param key The key of the data to set in the firebase.
+     * @param object The data to store in the firebase.
+     */
     public void putDatabase(String key, Object object) {
         DatabaseReference dbRef = database.getReference(key);
         dbRef.setValue(object);
-        cacheMap.put(key, object);
+        databaseCache.put(key, object);
     }
 
-    private String readHttp(String httpUrl) {
+    /**
+     * Method for requesting web APIs
+     *
+     * @param httpUrl the request url.
+     * @return the response as a string.
+     */
+    public String readHttp(String httpUrl) {
         String httpData = "";
         InputStream stream = null;
         HttpURLConnection urlConnection = null;
@@ -70,21 +92,21 @@ public class Backend {
             stream = urlConnection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             StringBuffer buf = new StringBuffer();
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null) {
                 buf.append(line);
             }
             httpData = buf.toString();
             reader.close();
         } catch (Exception e) {
-            Log.e("HttpRequestHandler", Objects.requireNonNull(e.getMessage()));
+            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
         } finally {
             try {
                 assert stream != null;
                 stream.close();
                 urlConnection.disconnect();
             } catch (Exception e) {
-                Log.e("HttpRequestHandler", Objects.requireNonNull(e.getMessage()));
+                Log.e(TAG, Objects.requireNonNull(e.getMessage()));
             }
         }
         return httpData;
