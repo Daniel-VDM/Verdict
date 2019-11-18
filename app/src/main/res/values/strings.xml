@@ -1,3 +1,4 @@
 <resources>
+    <string name="google_places_api" templateMergeStrategy="preserve" translatable="false">AIzaSyBofzJmsX2Lue1J3xALbOuy8j91y9EVO78</string>
     <string name="app_name">Verdict</string>
 </resources>

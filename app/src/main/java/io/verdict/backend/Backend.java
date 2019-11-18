@@ -1,5 +1,7 @@
 package io.verdict.backend;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,7 +10,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Backend {
 
@@ -49,6 +57,37 @@ public class Backend {
         DatabaseReference dbRef = database.getReference(key);
         dbRef.setValue(object);
         cacheMap.put(key, object);
+    }
+
+    private String readHttp(String httpUrl) {
+        String httpData = "";
+        InputStream stream = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(httpUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+            stream = urlConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            StringBuffer buf = new StringBuffer();
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                buf.append(line);
+            }
+            httpData = buf.toString();
+            reader.close();
+        } catch (Exception e) {
+            Log.e("HttpRequestHandler", Objects.requireNonNull(e.getMessage()));
+        } finally {
+            try {
+                assert stream != null;
+                stream.close();
+                urlConnection.disconnect();
+            } catch (Exception e) {
+                Log.e("HttpRequestHandler", Objects.requireNonNull(e.getMessage()));
+            }
+        }
+        return httpData;
     }
 
 }
