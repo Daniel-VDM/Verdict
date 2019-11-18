@@ -44,7 +44,7 @@ public class Backend {
      * @param key The key of the data to get from firebase
      * @param listener The return listener for the firebase response
      */
-    public void getDatabase(final String key, final DatabaseListener listener) {
+    public void databaseGet(final String key, final DatabaseListener listener) {
         listener.onStart(key);
         if (databaseCache.containsKey(key)) {
             listener.onSuccess(key, databaseCache.get(key));
@@ -69,7 +69,7 @@ public class Backend {
      * @param key The key of the data to set in the firebase.
      * @param object The data to store in the firebase.
      */
-    public void putDatabase(String key, Object object) {
+    public void databasePut(String key, Object object) {
         DatabaseReference dbRef = database.getReference(key);
         dbRef.setValue(object);
         databaseCache.put(key, object);

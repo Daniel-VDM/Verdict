@@ -50,10 +50,10 @@ public class LandingPage extends AppCompatActivity {
             }
         };
 
-        backend.getDatabase("test_string_0", listener);
-        backend.getDatabase("test_string_1", listener);
-        backend.putDatabase("test_val", "foo-bar-baz");
-        backend.getDatabase("test_val", listener);
+        backend.databaseGet("test_string_0", listener);
+        backend.databaseGet("test_string_1", listener);
+        backend.databasePut("test_val", "foo-bar-baz");
+        backend.databaseGet("test_val", listener);
 
         // Log msgs will appear in logcat & debug console
         Log.e(TAG, "This will execute before DB is returned");
