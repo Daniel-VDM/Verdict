@@ -24,8 +24,18 @@ public class Backend {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final HashMap<String, Object> databaseCache = new HashMap<>();
 
+    private String googlePlacesApiKey;
+    private int serverWaitDelay;
+
     public Backend() {
         // TODO constructors as needed, possibly from places API
+        this.serverWaitDelay = 1000;
+        setGooglePlacesApiKey();
+    }
+
+    public Backend(int serverWaitDelay){
+        this.serverWaitDelay = serverWaitDelay;
+        setGooglePlacesApiKey();
     }
 
     /**
@@ -33,6 +43,31 @@ public class Backend {
      */
     static FirebaseDatabase getFirebaseInstance() {
         return Backend.database;
+    }
+
+    private void setGooglePlacesApiKey(){
+        databaseGet("GOOGLE_PACES_API_KEY", new DatabaseListener() {
+            @Override
+            public void onStart(String key) {
+                Log.d(TAG, "Quarry DB for " + key);
+            }
+
+            @Override
+            public void onSuccess(String key, Object object) {
+                googlePlacesApiKey = (String) object;
+                Log.d(TAG, "Google Place's API key was set");
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+            }
+        });
+        try {
+            Thread.sleep(serverWaitDelay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
