@@ -7,10 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseError;
 
+import org.json.JSONArray;
+
 import java.util.Vector;
 
 import io.verdict.backend.Backend;
 import io.verdict.backend.DatabaseListener;
+import io.verdict.backend.SearchListener;
+import io.verdict.backend.SearchQuarry;
 
 public class LandingPage extends AppCompatActivity {
 
@@ -23,6 +27,24 @@ public class LandingPage extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         databaseExample();
+        searchLawyerExample();
+    }
+
+    // All initial data collection needs to be handled asynchronously
+    private void searchLawyerExample() {
+        SearchQuarry searchQuary = new SearchQuarry(37.422, -122.084,
+                "Defence", "Good", new SearchListener() {
+            @Override
+            public void onFinish(JSONArray jsonArray) {
+                Log.e(TAG, jsonArray.toString());
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.e(TAG, message);
+            }
+        });
+        backend.searchLawyers(LandingPage.this, searchQuary);
     }
 
     private void databaseExample() {

@@ -1,20 +1,26 @@
 package io.verdict.backend;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -23,60 +29,26 @@ public class Backend {
     private static final String TAG = "Backend";
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final HashMap<String, Object> databaseCache = new HashMap<>();
-
-    private String googlePlacesApiKey;
-    private int serverWaitDelay;
+    // Don't steal my key pls and thx.
+    private static final String googlePlacesApiKey = "AIzaSyBofzJmsX2Lue1J3xALbOuy8j91y9EVO78";
 
     public Backend() {
         // TODO constructors as needed, possibly from places API
-        this.serverWaitDelay = 1000;
-        setGooglePlacesApiKey();
-    }
-
-    public Backend(int serverWaitDelay){
-        this.serverWaitDelay = serverWaitDelay;
-        setGooglePlacesApiKey();
     }
 
     /**
      * @return the firebase instance for more specific database control.
      */
-    static FirebaseDatabase getFirebaseInstance() {
+    public static FirebaseDatabase getFirebaseInstance() {
         return Backend.database;
-    }
-
-    private void setGooglePlacesApiKey(){
-        databaseGet("GOOGLE_PACES_API_KEY", new DatabaseListener() {
-            @Override
-            public void onStart(String key) {
-                Log.d(TAG, "Quarry DB for " + key);
-            }
-
-            @Override
-            public void onSuccess(String key, Object object) {
-                googlePlacesApiKey = (String) object;
-                Log.d(TAG, "Google Place's API key was set");
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-                Log.e(TAG, databaseError.getMessage());
-            }
-        });
-        try {
-            Thread.sleep(serverWaitDelay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
      * Firebase has to handle request asynchronously, so a listener if required
      * when quarrying firebase.
-     *
      * Note that the return from the firebase is a java Object that needs to be typecast.
      *
-     * @param key The key of the data to get from firebase
+     * @param key      The key of the data to get from firebase
      * @param listener The return listener for the firebase response
      */
     public void databaseGet(final String key, final DatabaseListener listener) {
@@ -101,7 +73,7 @@ public class Backend {
     }
 
     /**
-     * @param key The key of the data to set in the firebase.
+     * @param key    The key of the data to set in the firebase.
      * @param object The data to store in the firebase.
      */
     public void databasePut(String key, Object object) {
@@ -111,40 +83,61 @@ public class Backend {
     }
 
     /**
-     * Method for requesting web APIs
+     * Main exposed API to search for a lawyer and get data back.
+     * Note that a SeachQuarry object is needed for the data management and listener.
      *
-     * @param httpUrl the request url.
-     * @return the response as a string.
+     * @param context      The context of the activity calling the search
+     * @param searchQuarry The SearchQuarry instance that contains the search params
+     *                     as well as the listener for the view updates.
      */
-    public String readHttp(String httpUrl) {
-        String httpData = "";
-        InputStream stream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(httpUrl);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
-            stream = urlConnection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            StringBuffer buf = new StringBuffer();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buf.append(line);
+    public void searchLawyers(Context context, final SearchQuarry searchQuarry) {
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    JSONArray results = (JSONArray) jsonObject.get("results");
+                    String nextPageToken;
+                    if (jsonObject.has("next_page_token")) {
+                        nextPageToken = (String) jsonObject.get("next_page_token");
+                    } else {
+                        nextPageToken = null;
+                    }
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject lawyer = (JSONObject) results.get(i);
+                        // TODO: generate user hash here & possibly fake data...
+                        searchQuarry.putPlacesResponse(lawyer);
+                    }
+                    JSONObject nextPage = new JSONObject();
+                    nextPage.put("next_page_token", nextPageToken);
+                    searchQuarry.putPlacesResponse(nextPage);
+                } catch (JSONException e) {
+                    Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                }
+                searchQuarry.ready(); // TODO: 2 stage (2nd = db) ready check before callback
             }
-            httpData = buf.toString();
-            reader.close();
-        } catch (Exception e) {
-            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-        } finally {
-            try {
-                assert stream != null;
-                stream.close();
-                urlConnection.disconnect();
-            } catch (Exception e) {
-                Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, Objects.requireNonNull(error.getMessage()));
             }
-        }
-        return httpData;
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String googlePlacesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                "location=" + searchQuarry.getLat() + "," + searchQuarry.getLng() +
+                "&radius=80467.2" + // 50 miles in meters.
+                "&keyword=lawyer%20" + searchQuarry.getLawField() +
+                "%20" + searchQuarry.getSearchPhrase() +
+                "&key=" + googlePlacesApiKey;
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                googlePlacesUrl,
+                (String) null,
+                responseListener,
+                errorListener
+        );
+        requestQueue.add(request);
+        // TODO: the sync with the DB...
     }
 
 }
