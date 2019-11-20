@@ -111,7 +111,6 @@ public class Backend {
     // Private method used in Backend#searchLawyers
     private void handlePlacesResponse(JSONObject jsonObject, final SearchQuarry searchQuarry)
             throws JSONException {
-        Log.d(TAG, jsonObject.toString());
         JSONArray results = (JSONArray) jsonObject.get("results");
         if (jsonObject.has("next_page_token")) {
             searchQuarry.setPlacesNextToken(jsonObject.getString("next_page_token"));
