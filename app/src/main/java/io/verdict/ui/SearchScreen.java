@@ -67,11 +67,11 @@ public class SearchScreen extends AppCompatActivity {
 
     // All initial data collection needs to be handled asynchronously
     private void searchLawyerExample() {
-        SearchQuarry searchQuary = new SearchQuarry(37.422, -122.084,
+        final SearchQuarry searchQuarry = new SearchQuarry(37.422, -122.084,
                 "Defence", "Good", new SearchListener() {
             @Override
             public void onFinish(JSONArray jsonArray) {
-                Log.e(TAG, jsonArray.toString());
+                Log.e(TAG, jsonArray.toString());  // Data is unsorted.
             }
 
             @Override
@@ -79,7 +79,38 @@ public class SearchScreen extends AppCompatActivity {
                 Log.e(TAG, message);
             }
         });
-        backend.searchLawyers(SearchScreen.this, searchQuary);
+
+        // Demo of calling the next page of results, needs thread to not block quarries.
+        // In practice, ALL UI updates NEED to be called in UI thread, use 'runOnUiThread' function.
+        // Moreover, you should only call next 20 pages when it's needed.
+        new Thread() {
+            @Override
+            public void run() {
+                backend.searchLawyers(SearchScreen.this, searchQuarry);
+                try {
+                    Thread.sleep(2000);  // MAKE SURE TO WAIT B4 REQUESTING NEXT PAGE
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // Load next 20 results
+                backend.searchLawyers(SearchScreen.this, searchQuarry);
+                try {
+                    Thread.sleep(2000);  // MAKE SURE TO WAIT B4 REQUESTING NEXT PAGE
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // Load next 20 results
+                backend.searchLawyers(SearchScreen.this, searchQuarry);
+                try {
+                    Thread.sleep(2000);  // MAKE SURE TO WAIT B4 REQUESTING NEXT PAGE
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // Places api caps at 60 results.
+            }
+        }.start();
+
+
     }
 
     private void databaseExample() {
