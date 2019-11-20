@@ -21,8 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 public class Backend {
 
@@ -31,9 +33,10 @@ public class Backend {
     private static final HashMap<String, Object> databaseCache = new HashMap<>();
     // Don't steal my key pls and thx.
     private static final String googlePlacesApiKey = "AIzaSyBofzJmsX2Lue1J3xALbOuy8j91y9EVO78";
+    private Random RNG;
 
     public Backend() {
-        // TODO constructors as needed, possibly from places API
+        RNG = new Random();
     }
 
     /**
@@ -41,6 +44,13 @@ public class Backend {
      */
     public static FirebaseDatabase getFirebaseInstance() {
         return Backend.database;
+    }
+
+    /**
+     * Simple method to clear this classes cache.
+     */
+    public static void clearCache() {
+        Backend.databaseCache.clear();
     }
 
     /**
@@ -60,8 +70,12 @@ public class Backend {
         database.getReference(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Object value = dataSnapshot.getValue();
-                databaseCache.put(key, value);
+                Object value = null;
+                if (dataSnapshot.exists()) {
+                    value = dataSnapshot.getValue();
+                    databaseCache.put(key, value);
+                }
+                // TODO: generate fake data for the Firebase.
                 listener.onSuccess(key, value);
             }
 
@@ -83,6 +97,59 @@ public class Backend {
     }
 
     /**
+     * @param name the clients name from the google places API
+     * @return the key used to look up data for this user the Firebase.
+     */
+    public String getUserKeyFromName(String name) {
+        name = name.replace(".", "").replace("$", "")
+                .replace("[", "").replace("]", "")
+                .replace("#", "").replace("/", "")
+                .replace(" ", "_");
+        return "USER_" + name;
+    }
+
+    // Private method used in Backend#searchLawyers
+    private void handlePlacesResponse(JSONObject jsonObject, final SearchQuarry searchQuarry)
+            throws JSONException {
+        Log.d(TAG, jsonObject.toString());
+        JSONArray results = (JSONArray) jsonObject.get("results");
+        if (jsonObject.has("next_page_token")) {
+            searchQuarry.setPlacesNextToken(jsonObject.getString("next_page_token"));
+        } else {
+            searchQuarry.setPlacesNextToken(null);
+        }
+        final Boolean[] dbGetIsDone = new Boolean[results.length()];
+        Arrays.fill(dbGetIsDone, false);
+        for (int i = 0; i < results.length(); i++) {
+            final int iFinal = i;
+            JSONObject lawyer = (JSONObject) results.get(i);
+            final String key = getUserKeyFromName(lawyer.getString("name"));
+            databaseGet(key, new DatabaseListener() {
+                @Override
+                public void onStart(String key) {
+                }
+
+                @Override
+                public void onSuccess(String key, Object object) {
+                    // TODO: generate random price for price rating...
+                    dbGetIsDone[iFinal] = true;
+                    searchQuarry.putDbResponse(key, (JSONObject) object);
+                    if (!Arrays.asList(dbGetIsDone).contains(false)) {
+                        searchQuarry.setDbReady();
+                    }
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.e(TAG, "Error for " + key + " : " + databaseError.getMessage());
+                }
+            });
+            searchQuarry.putPlacesResponse(key, lawyer);
+        }
+        searchQuarry.setPlacesReady();
+    }
+
+    /**
      * Main exposed API to search for a lawyer and get data back.
      * Note that a SeachQuarry object is needed for the data management and listener.
      *
@@ -95,25 +162,10 @@ public class Backend {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    JSONArray results = (JSONArray) jsonObject.get("results");
-                    String nextPageToken;
-                    if (jsonObject.has("next_page_token")) {
-                        nextPageToken = (String) jsonObject.get("next_page_token");
-                    } else {
-                        nextPageToken = null;
-                    }
-                    for (int i = 0; i < results.length(); i++) {
-                        JSONObject lawyer = (JSONObject) results.get(i);
-                        // TODO: generate user hash here & possibly fake data...
-                        searchQuarry.putPlacesResponse(lawyer);
-                    }
-                    JSONObject nextPage = new JSONObject();
-                    nextPage.put("next_page_token", nextPageToken);
-                    searchQuarry.putPlacesResponse(nextPage);
+                    handlePlacesResponse(jsonObject, searchQuarry);
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                 }
-                searchQuarry.ready(); // TODO: 2 stage (2nd = db) ready check before callback
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -123,21 +175,36 @@ public class Backend {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String googlePlacesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=" + searchQuarry.getLat() + "," + searchQuarry.getLng() +
-                "&radius=80467.2" + // 50 miles in meters.
-                "&keyword=lawyer%20" + searchQuarry.getLawField() +
-                "%20" + searchQuarry.getSearchPhrase() +
-                "&key=" + googlePlacesApiKey;
+
+        String placesUrl;
+        if (searchQuarry.getPlacesNextToken() != null) {
+            placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                    "pagetoken=" + searchQuarry.getPlacesNextToken() +
+                    "&key=" + googlePlacesApiKey;
+            try {
+                Thread.sleep(SearchQuarry.nextPageWait);  // Play it safe...
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                    "location=" + searchQuarry.getLat() + "," + searchQuarry.getLng() +
+                    "&radius=80467.2" + // 50 miles in meters.
+                    "&keyword=lawyer%20" + searchQuarry.getLawField() +
+                    "%20" + searchQuarry.getSearchPhrase() +
+                    "&key=" + googlePlacesApiKey;
+        }
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                googlePlacesUrl,
+                placesUrl,
                 (String) null,
                 responseListener,
                 errorListener
         );
         requestQueue.add(request);
-        // TODO: the sync with the DB...
     }
 
+    // TODO create API for forums requests
+
+    // TODO create API for review + forum update
 }
