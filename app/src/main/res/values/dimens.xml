@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="half_screen_width">540px</dimen>
+    <dimen name="tab_search_height">150px</dimen>
+    <dimen name="tab_search_highlight_height">5px</dimen>
+</resources>

@@ -1,7 +1,10 @@
-package io.verdict;
+package io.verdict.ui;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,24 +14,56 @@ import org.json.JSONArray;
 
 import java.util.Vector;
 
+import io.verdict.R;
 import io.verdict.backend.Backend;
 import io.verdict.backend.DatabaseListener;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
 
-public class LandingPage extends AppCompatActivity {
+public class SearchScreen extends AppCompatActivity {
 
-    private static final String TAG = "LandingPage";
+    private static final String TAG = "SearchScreen";
     private final Backend backend = new Backend();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.search_screen);
+
+        final Button tabSearchButton = findViewById(R.id.tab_search_search);
+        final Button tabForumButton = findViewById(R.id.tab_forum_search);
+        final ImageView tabSearchHighlight = findViewById(R.id.tab_search_highlight_search);
+        final ImageView tabForumHighlight = findViewById(R.id.tab_forum_highlight_search);
+
+        tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
+        tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
+        tabSearchHighlight.setImageAlpha(255);
+        tabForumHighlight.setImageAlpha(0);
+
+        tabSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
+                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
+                tabSearchHighlight.setImageAlpha(255);
+                tabForumHighlight.setImageAlpha(0);
+            }
+        });
+
+        tabForumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
+                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
+                tabSearchHighlight.setImageAlpha(0);
+                tabForumHighlight.setImageAlpha(255);
+            }
+        });
 
         databaseExample();
         searchLawyerExample();
     }
+
 
     // All initial data collection needs to be handled asynchronously
     private void searchLawyerExample() {
@@ -44,7 +79,7 @@ public class LandingPage extends AppCompatActivity {
                 Log.e(TAG, message);
             }
         });
-        backend.searchLawyers(LandingPage.this, searchQuary);
+        backend.searchLawyers(SearchScreen.this, searchQuary);
     }
 
     private void databaseExample() {

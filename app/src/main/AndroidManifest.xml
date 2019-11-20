@@ -17,7 +17,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-        <activity android:name=".LandingPage">
+        <activity android:name=".ui.SearchScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
