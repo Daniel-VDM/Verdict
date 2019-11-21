@@ -29,13 +29,21 @@ import java.util.Random;
 public class Backend {
 
     private static final String TAG = "Backend";
+    private static final double GENERATE_DATA_PROBABILITY = 0.10; // Reduce this in the future.
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final HashMap<String, Object> databaseCache = new HashMap<>();
     // Don't steal my key pls and thx.
     private static final String googlePlacesApiKey = "AIzaSyBofzJmsX2Lue1J3xALbOuy8j91y9EVO78";
+    private static JSONObject dbUserIndex = null;
+
+    private UserDataGenerator userDataGenerator;
     private Random RNG;
 
     public Backend() {
+        if (Backend.dbUserIndex == null) {
+            pullDbUserIndex();
+        }
+        userDataGenerator = new UserDataGenerator(this);
         RNG = new Random();
     }
 
@@ -51,6 +59,27 @@ public class Backend {
      */
     public static void clearCache() {
         Backend.databaseCache.clear();
+    }
+
+    /**
+     * Simple method to pull the userdata from firebase.
+     */
+    public void pullDbUserIndex() {
+        databaseGet("META_USER_INDEX", new DatabaseListener() {
+            @Override
+            public void onStart(String key) {
+            }
+
+            @Override
+            public void onSuccess(String key, Object object) {
+                dbUserIndex = (JSONObject) object;
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+            }
+        });
     }
 
     /**
@@ -75,7 +104,6 @@ public class Backend {
                     value = dataSnapshot.getValue();
                     databaseCache.put(key, value);
                 }
-                // TODO: generate fake data for the Firebase.
                 listener.onSuccess(key, value);
             }
 
@@ -121,8 +149,9 @@ public class Backend {
         Arrays.fill(dbGetIsDone, false);
         for (int i = 0; i < results.length(); i++) {
             final int iFinal = i;
-            JSONObject lawyer = (JSONObject) results.get(i);
+            final JSONObject lawyer = (JSONObject) results.get(i);
             final String key = getUserKeyFromName(lawyer.getString("name"));
+            lawyer.put("USER_TYPE", "lawyer");
             databaseGet(key, new DatabaseListener() {
                 @Override
                 public void onStart(String key) {
@@ -130,7 +159,14 @@ public class Backend {
 
                 @Override
                 public void onSuccess(String key, Object object) {
-                    // TODO: generate random price for price rating...
+                    if (object == null && RNG.nextDouble() < Backend.GENERATE_DATA_PROBABILITY) {
+                        try {
+                            object = userDataGenerator.generateDataForLawyer(lawyer);
+                            databasePut(key, object);
+                        } catch (JSONException e) {
+                            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                        }
+                    }
                     dbGetIsDone[iFinal] = true;
                     searchQuarry.putDbResponse(key, (JSONObject) object);
                     if (!Arrays.asList(dbGetIsDone).contains(false)) {
@@ -201,6 +237,10 @@ public class Backend {
                 errorListener
         );
         requestQueue.add(request);
+    }
+
+    public JSONObject getDbUserIndex() {
+        return dbUserIndex;
     }
 
     // TODO create API for forums requests

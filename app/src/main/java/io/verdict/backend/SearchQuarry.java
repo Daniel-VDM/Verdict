@@ -93,9 +93,9 @@ public class SearchQuarry {
                 JSONObject placesObject = placesResponse.get(key);
                 assert placesObject != null;
                 JSONObject dbObject = dbResponse.get(key);
+                placesObject.put("KEY", key);
                 placesObject.put("DATABASE_CONTENTS",
                         dbObject == null ? JSONObject.NULL : dbObject);
-                placesObject.put("KEY", key);
                 response.put(placesObject);
             }
             clearResults();
