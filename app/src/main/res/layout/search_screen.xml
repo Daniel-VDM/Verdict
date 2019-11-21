@@ -8,12 +8,16 @@
     tools:context=".ui.SearchScreen">
 
     <TextView
+        android:id="@+id/verdict"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="200dp"
+        android:fontFamily="@font/voltaire"
+        android:text="@string/app_name_caps"
+        android:textColor="@color/colorPrimary"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -67,5 +71,28 @@
         app:layout_constraintEnd_toEndOf="@+id/tab_forum_search"
         app:layout_constraintStart_toStartOf="@+id/tab_forum_search"
         app:srcCompat="@drawable/tab_button_highlight" />
+
+    <ImageView
+        android:id="@+id/gavel_icon"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toTopOf="@+id/verdict"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_gavel" />
+
+    <TextView
+        android:id="@+id/catchphrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/secular_one"
+        android:text="@string/app_catchphrase"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verdict" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
