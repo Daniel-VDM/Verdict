@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 
 import io.verdict.R;
 
@@ -40,11 +39,15 @@ public class Backend {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final HashMap<String, String> databaseCache = new HashMap<>();
     private static JSONObject dbUserIndex = null;
+    private static JSONObject dbReviewIndex = null;
     private UserDataGenerator userDataGenerator;
 
     public Backend() {
         if (Backend.dbUserIndex == null) {
             pullDbUserIndex();
+        }
+        if (Backend.dbReviewIndex == null) {
+            pullReviewIndex();
         }
         userDataGenerator = new UserDataGenerator(this);
     }
@@ -64,10 +67,11 @@ public class Backend {
     }
 
     /**
-     * @param name the clients name from the yelp API
+     * @param name   the clients name from the yelp API
+     * @param suffix the suffix used for same name users
      * @return the key used to look up data for this user the Firebase.
      */
-    public static String getUserKeyFromName(String name, String suffix) {
+    public static String getKeyFromName(String name, String suffix) {
         name += "_(" + suffix + ")";
         name = name.replace(".", "").replace("$", "")
                 .replace("[", "").replace("]", "")
@@ -94,6 +98,53 @@ public class Backend {
                         dbUserIndex = new JSONObject();
                         dbUserIndex.put("LAWYERS", new JSONArray());
                         dbUserIndex.put("USERS", new JSONArray());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Simple method to pull the review data from firebase.
+     * <p>
+     * The format is:
+     * {
+     * "PEER_REVIEWS": {
+     * "<REVIEWER_KEY>" : [<REVIEW1>,<REVIEW2>, ...],
+     * .
+     * .
+     * .
+     * },
+     * "USER_REVIEWS":  {
+     * "<REVIEWER_KEY>" : [<REVIEW1>,<REVIEW2>, ...],
+     * .
+     * .
+     * .
+     * }
+     * }
+     */
+    public void pullReviewIndex() {
+        databaseGet("META_REVIEW_INDEX", new DatabaseListener() {
+            @Override
+            public void onStart(String key) {
+            }
+
+            @Override
+            public void onSuccess(String key, String string) {
+                try {
+                    if (string != null) {
+                        dbReviewIndex = new JSONObject(string);
+                    } else {
+                        dbReviewIndex = new JSONObject();
+                        dbReviewIndex.put("PEER_REVIEWS", new JSONObject());
+                        dbReviewIndex.put("USER_REVIEWS", new JSONObject());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -159,7 +210,7 @@ public class Backend {
         new Thread() {
             @Override
             public void run() {
-                new ReviewQuarry(id, new SearchListener() {
+                new ReviewQuarry(id, key, new SearchListener() {
                     @Override
                     public void onFinish(JSONArray jsonArray) {
                         try {
@@ -198,7 +249,7 @@ public class Backend {
             final int iFinal = i;
             final JSONObject lawyer = (JSONObject) results.get(i);
             final String id = lawyer.getString("id");
-            final String key = getUserKeyFromName(lawyer.getString("name"), id);
+            final String key = getKeyFromName(lawyer.getString("name"), id);
             lawyer.put("USER_TYPE", "lawyer");
             databaseGet(key, new DatabaseListener() {
                 @Override
@@ -232,9 +283,9 @@ public class Backend {
                 }
             });
             searchQuarry.putYelpResponse(key, lawyer);
-            synchronized (this){
+            synchronized (this) {
                 JSONArray lawyers = dbUserIndex.getJSONArray("LAWYERS");
-                if(!lawyers.toString().contains(key)){
+                if (!lawyers.toString().contains(key)) {
                     lawyers.put(key);
                     databasePut("META_USER_INDEX", dbUserIndex.toString());
                 }
@@ -295,6 +346,10 @@ public class Backend {
 
     public JSONObject getDbUserIndex() {
         return dbUserIndex;
+    }
+
+    public JSONObject getDbReviewIndex() {
+        return dbReviewIndex;
     }
 
     // TODO create API for forums requests

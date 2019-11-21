@@ -22,27 +22,31 @@ public class ReviewQuarry {
     static final long WAIT_DELAY = 100;
     private static final String TAG = "ReviewQuarry";
     private String id;
+    private String lawyerKey;
     private SearchListener reviewListener;
 
-    ReviewQuarry(String id, SearchListener reviewListener) {
+    ReviewQuarry(String id, String lawyerKey, SearchListener reviewListener) {
         this.id = id;
+        this.lawyerKey = lawyerKey;
         this.reviewListener = reviewListener;
     }
 
-    synchronized void search(final Backend backend, final RequestQueue requestQueue) {
+    void search(final Backend backend, final RequestQueue requestQueue) {
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
                     JSONArray reviews = jsonObject.getJSONArray("reviews");
-                    for (int i = 0; i < reviews.length(); i++){
+                    for (int i = 0; i < reviews.length(); i++) {
                         JSONObject review = reviews.getJSONObject(i);
                         JSONObject user = review.getJSONObject("user");
-                        String key = Backend.getUserKeyFromName(user.getString("name"),
+                        String key = Backend.getKeyFromName(user.getString("name"),
                                 user.getString("id"));
                         user.put("USER_TYPE", "user");
                         user.put("KEY", key);
                         backend.databasePut(key, user.toString());
+                        review.put("REVIEWER_KEY", key);
+                        review.put("LAWYER_KEY", lawyerKey);
                         synchronized (this) {
                             JSONObject userIndex = backend.getDbUserIndex();
                             JSONArray users = userIndex.getJSONArray("USERS");
@@ -50,6 +54,16 @@ public class ReviewQuarry {
                                 users.put(key);
                                 backend.databasePut("META_USER_INDEX", userIndex.toString());
                             }
+                            JSONObject reviewIndex = backend.getDbReviewIndex();
+                            JSONObject userReviews = reviewIndex.getJSONObject("USER_REVIEWS");
+                            if (!userReviews.has(key)) {
+                                userReviews.put(key, new JSONArray());
+                            }
+                            JSONArray thisReviews = userReviews.getJSONArray(key);
+                            if (!thisReviews.toString().contains(review.toString())) {
+                                userReviews.getJSONArray(key).put(review);
+                            }
+                            backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
                         }
                     }
                     reviewListener.onFinish(reviews);
