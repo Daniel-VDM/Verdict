@@ -9,27 +9,26 @@ import java.util.HashMap;
 public class SearchQuarry {
     static final long nextPageWait = 3000;
 
-    private double lat;
-    private double lng;
+    private String location;
     private String lawField;
     private String searchPhrase;
-    private String placesNextToken;
-    private HashMap<String, JSONObject> placesResponse;
+    private int totalResults;
+    private HashMap<String, JSONObject> yelpResponse;
     private HashMap<String, JSONObject> dbResponse;
     private SearchListener searchListener;
-    private boolean placesReady;
+    private boolean yelpReady;
     private boolean dbReady;
 
-    public SearchQuarry(double lat, double lng, String lawField,
+    public SearchQuarry(String location, String lawField,
                         String searchPhrase, SearchListener searchListener) {
-        this.lat = lat;
-        this.lng = lng;
+        this.location = location;
         this.lawField = lawField;
         this.searchPhrase = searchPhrase;
-        this.placesResponse = new HashMap<>();
+        this.yelpResponse = new HashMap<>();
         this.dbResponse = new HashMap<>();
         this.searchListener = searchListener;
-        this.placesReady = false;
+        this.totalResults = 0;
+        this.yelpReady = false;
         this.dbReady = false;
     }
 
@@ -41,32 +40,20 @@ public class SearchQuarry {
         return lawField;
     }
 
-    public double getLng() {
-        return lng;
+    public String getLocation() {
+        return location;
     }
 
-    public double getLat() {
-        return lat;
-    }
-
-    public String getPlacesNextToken() {
-        return placesNextToken;
-    }
-
-    void setPlacesNextToken(String placesNextToken) {
-        this.placesNextToken = placesNextToken;
-    }
-
-    void putPlacesResponse(String key, JSONObject jsonObject) {
-        this.placesResponse.put(key, jsonObject);
+    void putYelpResponse(String key, JSONObject jsonObject) {
+        this.yelpResponse.put(key, jsonObject);
     }
 
     void putDbResponse(String key, JSONObject jsonObject) {
         this.dbResponse.put(key, jsonObject);
     }
 
-    void setPlacesReady() {
-        this.placesReady = true;
+    void setYelpReady() {
+        this.yelpReady = true;
         if (dbReady) {
             ready();
         }
@@ -74,34 +61,42 @@ public class SearchQuarry {
 
     void setDbReady() {
         this.dbReady = true;
-        if (placesReady) {
+        if (yelpReady) {
             ready();
         }
     }
 
     private void clearResults() {
-        placesResponse.clear();
+        yelpResponse.clear();
         dbResponse.clear();
-        placesReady = false;
+        yelpReady = false;
         dbReady = false;
     }
 
     private void ready() {
         try {
             JSONArray response = new JSONArray();
-            for (String key : placesResponse.keySet()) {
-                JSONObject placesObject = placesResponse.get(key);
-                assert placesObject != null;
+            for (String key : yelpResponse.keySet()) {
+                JSONObject yelpObject = yelpResponse.get(key);
+                assert yelpObject != null;
                 JSONObject dbObject = dbResponse.get(key);
-                placesObject.put("DATABASE_CONTENTS",
+                yelpObject.put("KEY", key);
+                yelpObject.put("DATABASE_CONTENTS",
                         dbObject == null ? JSONObject.NULL : dbObject);
-                placesObject.put("KEY", key);
-                response.put(placesObject);
+                response.put(yelpObject);
             }
             clearResults();
             searchListener.onFinish(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getTotalResults() {
+        return totalResults;
+    }
+
+    public void setTotalResults(int totalResults) {
+        this.totalResults = totalResults;
     }
 }

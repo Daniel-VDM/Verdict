@@ -23,19 +23,29 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 public class Backend {
 
     private static final String TAG = "Backend";
+    private static final double GENERATE_DATA_PROBABILITY = 0.10; // Reduce this in the future.
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final HashMap<String, Object> databaseCache = new HashMap<>();
     // Don't steal my key pls and thx.
-    private static final String googlePlacesApiKey = "AIzaSyBofzJmsX2Lue1J3xALbOuy8j91y9EVO78";
+    private static final String yelpApiKey = "PuaW8VIj-ysAuJ3aTlw5JWPI_kMN31KwguyzEHOWjtW_Ck" +
+            "Ohco62syp05jmQQp0R1xHFJYc2QRGcj5RI46iqVR35YmeWEjxtFxhBhsEzAWOGpHBuLRshgHTFqgHWXXYx";
+    private static JSONObject dbUserIndex = null;
+
+    private UserDataGenerator userDataGenerator;
     private Random RNG;
 
     public Backend() {
+        if (Backend.dbUserIndex == null) {
+            pullDbUserIndex();
+        }
+        userDataGenerator = new UserDataGenerator(this);
         RNG = new Random();
     }
 
@@ -51,6 +61,27 @@ public class Backend {
      */
     public static void clearCache() {
         Backend.databaseCache.clear();
+    }
+
+    /**
+     * Simple method to pull the userdata from firebase.
+     */
+    public void pullDbUserIndex() {
+        databaseGet("META_USER_INDEX", new DatabaseListener() {
+            @Override
+            public void onStart(String key) {
+            }
+
+            @Override
+            public void onSuccess(String key, Object object) {
+                dbUserIndex = (JSONObject) object;
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+            }
+        });
     }
 
     /**
@@ -75,7 +106,6 @@ public class Backend {
                     value = dataSnapshot.getValue();
                     databaseCache.put(key, value);
                 }
-                // TODO: generate fake data for the Firebase.
                 listener.onSuccess(key, value);
             }
 
@@ -97,7 +127,7 @@ public class Backend {
     }
 
     /**
-     * @param name the clients name from the google places API
+     * @param name the clients name from the yelp API
      * @return the key used to look up data for this user the Firebase.
      */
     public String getUserKeyFromName(String name) {
@@ -109,20 +139,17 @@ public class Backend {
     }
 
     // Private method used in Backend#searchLawyers
-    private void handlePlacesResponse(JSONObject jsonObject, final SearchQuarry searchQuarry)
+    private void handleYelpSearchResponse(JSONObject jsonObject, final SearchQuarry searchQuarry)
             throws JSONException {
-        JSONArray results = (JSONArray) jsonObject.get("results");
-        if (jsonObject.has("next_page_token")) {
-            searchQuarry.setPlacesNextToken(jsonObject.getString("next_page_token"));
-        } else {
-            searchQuarry.setPlacesNextToken(null);
-        }
+        JSONArray results = (JSONArray) jsonObject.get("businesses");
+        searchQuarry.setTotalResults(jsonObject.getInt("total"));
         final Boolean[] dbGetIsDone = new Boolean[results.length()];
         Arrays.fill(dbGetIsDone, false);
         for (int i = 0; i < results.length(); i++) {
             final int iFinal = i;
-            JSONObject lawyer = (JSONObject) results.get(i);
+            final JSONObject lawyer = (JSONObject) results.get(i);
             final String key = getUserKeyFromName(lawyer.getString("name"));
+            lawyer.put("USER_TYPE", "lawyer");
             databaseGet(key, new DatabaseListener() {
                 @Override
                 public void onStart(String key) {
@@ -130,7 +157,14 @@ public class Backend {
 
                 @Override
                 public void onSuccess(String key, Object object) {
-                    // TODO: generate random price for price rating...
+                    if (object == null && RNG.nextDouble() < Backend.GENERATE_DATA_PROBABILITY) {
+                        try {
+                            object = userDataGenerator.generateDataForLawyer(lawyer);
+                            databasePut(key, object);
+                        } catch (JSONException e) {
+                            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                        }
+                    }
                     dbGetIsDone[iFinal] = true;
                     searchQuarry.putDbResponse(key, (JSONObject) object);
                     if (!Arrays.asList(dbGetIsDone).contains(false)) {
@@ -143,9 +177,9 @@ public class Backend {
                     Log.e(TAG, "Error for " + key + " : " + databaseError.getMessage());
                 }
             });
-            searchQuarry.putPlacesResponse(key, lawyer);
+            searchQuarry.putYelpResponse(key, lawyer);
         }
-        searchQuarry.setPlacesReady();
+        searchQuarry.setYelpReady();
     }
 
     /**
@@ -161,7 +195,7 @@ public class Backend {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    handlePlacesResponse(jsonObject, searchQuarry);
+                    handleYelpSearchResponse(jsonObject, searchQuarry);
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                 }
@@ -175,32 +209,31 @@ public class Backend {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        String placesUrl;
-        if (searchQuarry.getPlacesNextToken() != null) {
-            placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                    "pagetoken=" + searchQuarry.getPlacesNextToken() +
-                    "&key=" + googlePlacesApiKey;
-            try {
-                Thread.sleep(SearchQuarry.nextPageWait);  // Play it safe...
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                    "location=" + searchQuarry.getLat() + "," + searchQuarry.getLng() +
-                    "&radius=80467.2" + // 50 miles in meters.
-                    "&keyword=lawyer%20" + searchQuarry.getLawField() +
-                    "%20" + searchQuarry.getSearchPhrase() +
-                    "&key=" + googlePlacesApiKey;
-        }
+        String yelpSearchUrl = "https://api.yelp.com/v3/businesses/search?" +
+                "location=" + searchQuarry.getLocation() +
+                "&limit=50" +
+                "&radius=40000" + // ~25 miles in meters.
+                "&term=" + searchQuarry.getLawField() +
+                " lawyer " + searchQuarry.getSearchPhrase();
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                placesUrl,
+                yelpSearchUrl,
                 (String) null,
                 responseListener,
                 errorListener
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + yelpApiKey);
+                return params;
+            }
+        };
         requestQueue.add(request);
+    }
+
+    public JSONObject getDbUserIndex() {
+        return dbUserIndex;
     }
 
     // TODO create API for forums requests
