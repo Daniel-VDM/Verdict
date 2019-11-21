@@ -9,7 +9,7 @@ public interface DatabaseListener {
 
     void onStart(String key);
 
-    void onSuccess(String key, Object object);
+    void onSuccess(String key, String value);
 
     void onFailed(DatabaseError databaseError);
 }

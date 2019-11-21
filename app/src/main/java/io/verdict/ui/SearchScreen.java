@@ -103,9 +103,9 @@ public class SearchScreen extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(String key, Object object) {
-                this.attributes.put(key, object);  // Listener can store internal state.
-                exampleData.add(object);
+            public void onSuccess(String key, String string) {
+                this.attributes.put(key, string);  // Listener can store internal state.
+                exampleData.add(string);
                 if (exampleData.size() >= 2) {
                     Log.e(TAG, exampleData.toString());
                     Log.e(TAG, this.attributes.toString());

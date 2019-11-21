@@ -3,4 +3,5 @@
     <string name="tab_search">Search</string>
     <string name="tab_forum">Forum</string>
     <string name="tab_search_width">540px</string>
+    <bool name="force_generate">true</bool>
 </resources>
