@@ -13,23 +13,11 @@ public class UserDataGenerator {
         this.backend = backend;
     }
 
-    private JSONObject generateUserReview(JSONObject lawyer) {
+    private JSONObject generateUser(){
         return null;
     }
 
     private JSONObject generateLawyerReview(JSONObject lawyer) {
-        return null;
-    }
-
-    JSONObject generateNewUser() throws JSONException {
-        JSONObject user = new JSONObject();
-        user.put("USER_TYPE", "user");
-        return null;
-    }
-
-    JSONObject generateDataForUser(JSONObject user) throws JSONException {
-        // TODO: generate reviews based on index from backed (& update index).
-        JSONObject data = new JSONObject();
         return null;
     }
 
@@ -38,11 +26,14 @@ public class UserDataGenerator {
      * This method also updates the firebase's USER_INDEX metadata if it adds new reviewers.
      *
      * @param lawyer Json object for the Yelp api
-     * @return New data for the lawyer
+     * @return The data object associated with LAWYER's KEY in Firebase.
      */
     JSONObject generateDataForLawyer(JSONObject lawyer) throws JSONException {
         // TODO: generate peer reviews based on index from backend (& update index)
+        // TODO: create about-me page...
+        // TODO: store extra
+        // TODO: store / create forum thread data in
         JSONObject data = new JSONObject();
-        return null;
+        return data;
     }
 }

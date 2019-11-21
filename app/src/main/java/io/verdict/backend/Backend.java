@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,17 +28,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
+import io.verdict.R;
+
 public class Backend {
 
-    private static final String TAG = "Backend";
-    private static final double GENERATE_DATA_PROBABILITY = 0.10; // Reduce this in the future.
-    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static final HashMap<String, Object> databaseCache = new HashMap<>();
     // Don't steal my key pls and thx.
-    private static final String yelpApiKey = "PuaW8VIj-ysAuJ3aTlw5JWPI_kMN31KwguyzEHOWjtW_Ck" +
+    static final String yelpApiKey = "PuaW8VIj-ysAuJ3aTlw5JWPI_kMN31KwguyzEHOWjtW_Ck" +
             "Ohco62syp05jmQQp0R1xHFJYc2QRGcj5RI46iqVR35YmeWEjxtFxhBhsEzAWOGpHBuLRshgHTFqgHWXXYx";
+    private static final String TAG = "Backend";
+    private static final int SEARCH_RESULT_LIMIT = 30;
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final HashMap<String, String> databaseCache = new HashMap<>();
     private static JSONObject dbUserIndex = null;
-
     private UserDataGenerator userDataGenerator;
     private Random RNG;
 
@@ -73,8 +75,14 @@ public class Backend {
             }
 
             @Override
-            public void onSuccess(String key, Object object) {
-                dbUserIndex = (JSONObject) object;
+            public void onSuccess(String key, String string) {
+                if (string != null) {
+                    try {
+                        dbUserIndex = new JSONObject(string);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
@@ -101,9 +109,9 @@ public class Backend {
         database.getReference(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Object value = null;
+                String value = null;
                 if (dataSnapshot.exists()) {
-                    value = dataSnapshot.getValue();
+                    value = (String) dataSnapshot.getValue();
                     databaseCache.put(key, value);
                 }
                 listener.onSuccess(key, value);
@@ -118,12 +126,12 @@ public class Backend {
 
     /**
      * @param key    The key of the data to set in the firebase.
-     * @param object The data to store in the firebase.
+     * @param string The serialized data to store in the firebase.
      */
-    public void databasePut(String key, Object object) {
+    public void databasePut(String key, String string) {
         DatabaseReference dbRef = database.getReference(key);
-        dbRef.setValue(object);
-        databaseCache.put(key, object);
+        dbRef.setValue(string);
+        databaseCache.put(key, string);
     }
 
     /**
@@ -139,7 +147,9 @@ public class Backend {
     }
 
     // Private method used in Backend#searchLawyers
-    private void handleYelpSearchResponse(JSONObject jsonObject, final SearchQuarry searchQuarry)
+    private void handleYelpSearchResponse(final Context context, final JSONObject jsonObject,
+                                          final RequestQueue requestQueue,
+                                          final SearchQuarry searchQuarry)
             throws JSONException {
         JSONArray results = (JSONArray) jsonObject.get("businesses");
         searchQuarry.setTotalResults(jsonObject.getInt("total"));
@@ -149,6 +159,7 @@ public class Backend {
             final int iFinal = i;
             final JSONObject lawyer = (JSONObject) results.get(i);
             final String key = getUserKeyFromName(lawyer.getString("name"));
+            final String id = lawyer.getString("id");
             lawyer.put("USER_TYPE", "lawyer");
             databaseGet(key, new DatabaseListener() {
                 @Override
@@ -156,19 +167,48 @@ public class Backend {
                 }
 
                 @Override
-                public void onSuccess(String key, Object object) {
-                    if (object == null && RNG.nextDouble() < Backend.GENERATE_DATA_PROBABILITY) {
-                        try {
-                            object = userDataGenerator.generateDataForLawyer(lawyer);
-                            databasePut(key, object);
-                        } catch (JSONException e) {
-                            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                public void onSuccess(final String key, String string) {
+                    try {
+                        if (string == null
+                                || context.getResources().getBoolean(R.bool.force_generate)
+                                || new JSONObject(string).getJSONArray("USER_REVIEWS").length() == 0) {
+                            final JSONObject obj = userDataGenerator.generateDataForLawyer(lawyer);
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    new ReviewQuarry(id, new SearchListener() {
+                                        @Override
+                                        public void onFinish(JSONArray jsonArray) {
+                                            try {
+                                                obj.put("USER_REVIEWS", jsonArray);
+                                                dbGetIsDone[iFinal] = true;
+                                                searchQuarry.putDbResponse(key, obj);
+                                                databasePut(key, obj.toString());
+                                                if (!Arrays.asList(dbGetIsDone).contains(false)) {
+                                                    searchQuarry.setDbReady();
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(String message) {
+                                            Log.e(TAG, message);
+                                        }
+                                    }).search(requestQueue);
+                                }
+                            }.start();
+                            Thread.sleep(ReviewQuarry.WAIT_DELAY);
+                        } else {
+                            dbGetIsDone[iFinal] = true;
+                            searchQuarry.putDbResponse(key, new JSONObject(string));
+                            if (!Arrays.asList(dbGetIsDone).contains(false)) {
+                                searchQuarry.setDbReady();
+                            }
                         }
-                    }
-                    dbGetIsDone[iFinal] = true;
-                    searchQuarry.putDbResponse(key, (JSONObject) object);
-                    if (!Arrays.asList(dbGetIsDone).contains(false)) {
-                        searchQuarry.setDbReady();
+                    } catch (JSONException | InterruptedException e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                     }
                 }
 
@@ -190,12 +230,13 @@ public class Backend {
      * @param searchQuarry The SearchQuarry instance that contains the search params
      *                     as well as the listener for the view updates.
      */
-    public void searchLawyers(Context context, final SearchQuarry searchQuarry) {
+    synchronized public void searchLawyers(final Context context, final SearchQuarry searchQuarry) {
+        final RequestQueue requestQueue = Volley.newRequestQueue(context);
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    handleYelpSearchResponse(jsonObject, searchQuarry);
+                    handleYelpSearchResponse(context, jsonObject, requestQueue, searchQuarry);
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                 }
@@ -204,14 +245,12 @@ public class Backend {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, Objects.requireNonNull(error.getMessage()));
+                // Volley already dumps an error message to the log
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-
         String yelpSearchUrl = "https://api.yelp.com/v3/businesses/search?" +
                 "location=" + searchQuarry.getLocation() +
-                "&limit=50" +
+                "&limit=" + Backend.SEARCH_RESULT_LIMIT +
                 "&radius=40000" + // ~25 miles in meters.
                 "&term=" + searchQuarry.getLawField() +
                 " lawyer " + searchQuarry.getSearchPhrase();
@@ -229,6 +268,7 @@ public class Backend {
                 return params;
             }
         };
+        request.setRetryPolicy(new DefaultRetryPolicy());
         requestQueue.add(request);
     }
 
