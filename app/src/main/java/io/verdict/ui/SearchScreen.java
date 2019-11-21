@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,11 +31,22 @@ public class SearchScreen extends AppCompatActivity {
     private static final String TAG = "SearchScreen";
     private final Backend backend = new Backend();
 
+    public static final String SEARCH_TEXT_LEGALFIELD = "io.verdict.searchscreen.legalfield";
+    public static final String SEARCH_TEXT_LOCATION = "io.verdict.searchscreen.location";
+    public static final String SEARCH_TEXT_LAWYER = "io.verdict.searchscreen.lawyer";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
 
+        setupTabs();
+
+//        databaseExample();
+//        searchLawyerExample();
+    }
+
+    private void setupTabs() {
         final Button tabSearchButton = findViewById(R.id.tab_search_search);
         final Button tabForumButton = findViewById(R.id.tab_forum_search);
         final ImageView tabSearchHighlight = findViewById(R.id.tab_search_highlight_search);
@@ -48,25 +60,40 @@ public class SearchScreen extends AppCompatActivity {
         tabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                tabSearchHighlight.setImageAlpha(255);
-                tabForumHighlight.setImageAlpha(0);
+//                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
+//                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
+//                tabSearchHighlight.setImageAlpha(255);
+//                tabForumHighlight.setImageAlpha(0);
             }
         });
 
         tabForumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                tabSearchHighlight.setImageAlpha(0);
-                tabForumHighlight.setImageAlpha(255);
+//                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
+//                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
+//                tabSearchHighlight.setImageAlpha(0);
+//                tabForumHighlight.setImageAlpha(255);
             }
         });
+    }
 
-        databaseExample();
-        searchLawyerExample();  // Uncomment to test Detail screen
+    public void searchForResults(View view) {
+        Intent intent = new Intent(this, SearchResults.class);
+
+        EditText searchByLegalText = findViewById(R.id.search_by_legal);
+        String legalField = searchByLegalText.getText().toString();
+        intent.putExtra(SEARCH_TEXT_LEGALFIELD, legalField);
+
+        EditText searchByLocationText = findViewById(R.id.search_by_location);
+        String location = searchByLocationText.getText().toString();
+        intent.putExtra(SEARCH_TEXT_LOCATION, location);
+
+        EditText searchByLawyerText = findViewById(R.id.search_by_lawyer);
+        String lawyer = searchByLawyerText.getText().toString();
+        intent.putExtra(SEARCH_TEXT_LAWYER, lawyer);
+        
+        startActivity(intent);
     }
 
     // All initial data collection needs to be handled asynchronously
