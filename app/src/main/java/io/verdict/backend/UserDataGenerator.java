@@ -13,11 +13,15 @@ public class UserDataGenerator {
         this.backend = backend;
     }
 
-    private JSONObject generateUser(){
+    private JSONObject generateLawyerReview(JSONObject lawyer, int rating) {
+        // TODO: generate peer reviews based on index from backend
+        // Prob read from json file and randomly choose a generic review depending on rating...
         return null;
     }
 
-    private JSONObject generateLawyerReview(JSONObject lawyer) {
+    private JSONObject generateLawyerAboutMe(JSONObject lawyer){
+        // TODO: create about-me page...
+        // Prob read from a json file and randomly choose a generic about me page....
         return null;
     }
 
@@ -29,9 +33,6 @@ public class UserDataGenerator {
      * @return The data object associated with LAWYER's KEY in Firebase.
      */
     JSONObject generateDataForLawyer(JSONObject lawyer) throws JSONException {
-        // TODO: generate peer reviews based on index from backend (& update index)
-        // TODO: create about-me page...
-        // TODO: store extra
         // TODO: store / create forum thread data in
         JSONObject data = new JSONObject();
         return data;

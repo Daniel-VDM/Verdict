@@ -29,13 +29,30 @@ public class ReviewQuarry {
         this.reviewListener = reviewListener;
     }
 
-    synchronized void search(final RequestQueue requestQueue) {
+    synchronized void search(final Backend backend, final RequestQueue requestQueue) {
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    // TODO: go through reviews and generate / update indexes
-                    reviewListener.onFinish(jsonObject.getJSONArray("reviews"));
+                    JSONArray reviews = jsonObject.getJSONArray("reviews");
+                    for (int i = 0; i < reviews.length(); i++){
+                        JSONObject review = reviews.getJSONObject(i);
+                        JSONObject user = review.getJSONObject("user");
+                        String key = Backend.getUserKeyFromName(user.getString("name"),
+                                user.getString("id"));
+                        user.put("USER_TYPE", "user");
+                        user.put("KEY", key);
+                        backend.databasePut(key, user.toString());
+                        synchronized (this) {
+                            JSONObject userIndex = backend.getDbUserIndex();
+                            JSONArray users = userIndex.getJSONArray("USERS");
+                            if (!users.toString().contains(key)) {
+                                users.put(key);
+                                backend.databasePut("META_USER_INDEX", userIndex.toString());
+                            }
+                        }
+                    }
+                    reviewListener.onFinish(reviews);
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                 }

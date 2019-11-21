@@ -41,14 +41,12 @@ public class Backend {
     private static final HashMap<String, String> databaseCache = new HashMap<>();
     private static JSONObject dbUserIndex = null;
     private UserDataGenerator userDataGenerator;
-    private Random RNG;
 
     public Backend() {
         if (Backend.dbUserIndex == null) {
             pullDbUserIndex();
         }
         userDataGenerator = new UserDataGenerator(this);
-        RNG = new Random();
     }
 
     /**
@@ -66,6 +64,19 @@ public class Backend {
     }
 
     /**
+     * @param name the clients name from the yelp API
+     * @return the key used to look up data for this user the Firebase.
+     */
+    public static String getUserKeyFromName(String name, String suffix) {
+        name += "_(" + suffix + ")";
+        name = name.replace(".", "").replace("$", "")
+                .replace("[", "").replace("]", "")
+                .replace("#", "").replace("/", "")
+                .replace(" ", "_");
+        return "USER_" + name;
+    }
+
+    /**
      * Simple method to pull the userdata from firebase.
      */
     public void pullDbUserIndex() {
@@ -76,12 +87,16 @@ public class Backend {
 
             @Override
             public void onSuccess(String key, String string) {
-                if (string != null) {
-                    try {
+                try {
+                    if (string != null) {
                         dbUserIndex = new JSONObject(string);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
+                        dbUserIndex = new JSONObject();
+                        dbUserIndex.put("LAWYERS", new JSONArray());
+                        dbUserIndex.put("USERS", new JSONArray());
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -134,18 +149,6 @@ public class Backend {
         databaseCache.put(key, string);
     }
 
-    /**
-     * @param name the clients name from the yelp API
-     * @return the key used to look up data for this user the Firebase.
-     */
-    public String getUserKeyFromName(String name) {
-        name = name.replace(".", "").replace("$", "")
-                .replace("[", "").replace("]", "")
-                .replace("#", "").replace("/", "")
-                .replace(" ", "_");
-        return "USER_" + name;
-    }
-
     // Helper method to fetch a new yelp review
     private void fetchNewYelpReview(final JSONObject lawyer, final String id,
                                     final Boolean[] dbGetIsDone, final int doneIndex,
@@ -176,7 +179,7 @@ public class Backend {
                     public void onError(String message) {
                         Log.e(TAG, message);
                     }
-                }).search(requestQueue);
+                }).search(Backend.this, requestQueue);
             }
         }.start();
         Thread.sleep(ReviewQuarry.WAIT_DELAY);
@@ -194,8 +197,8 @@ public class Backend {
         for (int i = 0; i < results.length(); i++) {
             final int iFinal = i;
             final JSONObject lawyer = (JSONObject) results.get(i);
-            final String key = getUserKeyFromName(lawyer.getString("name"));
             final String id = lawyer.getString("id");
+            final String key = getUserKeyFromName(lawyer.getString("name"), id);
             lawyer.put("USER_TYPE", "lawyer");
             databaseGet(key, new DatabaseListener() {
                 @Override
@@ -229,6 +232,13 @@ public class Backend {
                 }
             });
             searchQuarry.putYelpResponse(key, lawyer);
+            synchronized (this){
+                JSONArray lawyers = dbUserIndex.getJSONArray("LAWYERS");
+                if(!lawyers.toString().contains(key)){
+                    lawyers.put(key);
+                    databasePut("META_USER_INDEX", dbUserIndex.toString());
+                }
+            }
         }
         searchQuarry.setYelpReady();
     }
