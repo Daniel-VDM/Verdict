@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Verdict</string>
+    <string name="app_name_caps">VERDICT</string>
+    <string name="app_catchphrase">THE LEGAL ASSISTANCE APP</string>
     <string name="tab_search">Search</string>
     <string name="tab_forum">Forum</string>
     <string name="tab_search_width">540px</string>
+    <string name="search_hint_legal_area">Search by legal area</string>
+    <string name="search_hint_location">Search by location</string>
+    <string name="search_hint_lawyer">Search by lawyer name</string>
+    <string name="search_button">Search</string>
     <bool name="force_generate">true</bool>
 </resources>
