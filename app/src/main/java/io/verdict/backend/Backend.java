@@ -146,6 +146,42 @@ public class Backend {
         return "USER_" + name;
     }
 
+    // Helper method to fetch a new yelp review
+    private void fetchNewYelpReview(final JSONObject lawyer, final String id,
+                                    final Boolean[] dbGetIsDone, final int doneIndex,
+                                    final SearchQuarry searchQuarry, final String key,
+                                    final RequestQueue requestQueue)
+            throws JSONException, InterruptedException {
+        final JSONObject obj = userDataGenerator.generateDataForLawyer(lawyer);
+        new Thread() {
+            @Override
+            public void run() {
+                new ReviewQuarry(id, new SearchListener() {
+                    @Override
+                    public void onFinish(JSONArray jsonArray) {
+                        try {
+                            obj.put("USER_REVIEWS", jsonArray);
+                            dbGetIsDone[doneIndex] = true;
+                            searchQuarry.putDbResponse(key, obj);
+                            databasePut(key, obj.toString());
+                            if (!Arrays.asList(dbGetIsDone).contains(false)) {
+                                searchQuarry.setDbReady();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        Log.e(TAG, message);
+                    }
+                }).search(requestQueue);
+            }
+        }.start();
+        Thread.sleep(ReviewQuarry.WAIT_DELAY);
+    }
+
     // Private method used in Backend#searchLawyers
     private void handleYelpSearchResponse(final Context context, final JSONObject jsonObject,
                                           final RequestQueue requestQueue,
@@ -169,37 +205,12 @@ public class Backend {
                 @Override
                 public void onSuccess(final String key, String string) {
                     try {
-                        if (string == null
-                                || context.getResources().getBoolean(R.bool.force_generate)
-                                || new JSONObject(string).getJSONArray("USER_REVIEWS").length() == 0) {
-                            final JSONObject obj = userDataGenerator.generateDataForLawyer(lawyer);
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    new ReviewQuarry(id, new SearchListener() {
-                                        @Override
-                                        public void onFinish(JSONArray jsonArray) {
-                                            try {
-                                                obj.put("USER_REVIEWS", jsonArray);
-                                                dbGetIsDone[iFinal] = true;
-                                                searchQuarry.putDbResponse(key, obj);
-                                                databasePut(key, obj.toString());
-                                                if (!Arrays.asList(dbGetIsDone).contains(false)) {
-                                                    searchQuarry.setDbReady();
-                                                }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(String message) {
-                                            Log.e(TAG, message);
-                                        }
-                                    }).search(requestQueue);
-                                }
-                            }.start();
-                            Thread.sleep(ReviewQuarry.WAIT_DELAY);
+                        if (string == null ||
+                                context.getResources().getBoolean(R.bool.force_generate) ||
+                                new JSONObject(string)
+                                        .getJSONArray("USER_REVIEWS").length() == 0) {
+                            fetchNewYelpReview(lawyer, id, dbGetIsDone,
+                                    iFinal, searchQuarry, key, requestQueue);
                         } else {
                             dbGetIsDone[iFinal] = true;
                             searchQuarry.putDbResponse(key, new JSONObject(string));
