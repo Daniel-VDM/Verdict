@@ -1,5 +1,7 @@
 package io.verdict.backend;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,10 +9,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
-public class UserDataGenerator {
+class UserDataGenerator {
     private static final String TAG = "UserDataGenerator";
 
     private Backend backend;
@@ -159,23 +163,56 @@ public class UserDataGenerator {
             reviewTemplate.put("good-review-template", goodReview);
 
             data.put("review-template", reviewTemplate);
-        } catch (JSONException ignore) {
+        } catch (JSONException e) {
+            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
         }
         return data;
     }
 
-    private JSONObject generateLawyerReview(JSONObject targetLawyer, String sourceLawyerKey,
-                                            double rating) {
+    private JSONObject generateLawyerReview(JSONObject targetLawyer, String sourceLawyerKey) {
         JSONObject review = new JSONObject();
-        // TODO: generate peer reviews based on index from backend...
-        // Prob read from json file and randomly choose a generic review depending on rating...
+        try {
+            int wholeRating = (int) (targetLawyer.getDouble("rating") * 2);
+            int newRating = ThreadLocalRandom.current().nextInt(wholeRating - 2,
+                    Math.max(wholeRating + 2, 10)) / 2;
+            review.put("rating", newRating);
+            review.put("user", new JSONObject().put("name",
+                    Backend.getNameFromKey(sourceLawyerKey)).put("KEY", sourceLawyerKey));
+            List<String> reviews = new ArrayList<>();
+            JSONArray reviewSource;
+            if (newRating < 2.5) {
+                reviewSource = dataGenTemplate.getJSONObject("review-template")
+                        .getJSONArray("bad-review-template");
+            } else {
+                reviewSource = dataGenTemplate.getJSONObject("review-template")
+                        .getJSONArray("good-review-template");
+            }
+            for (int i = 0; i < reviewSource.length(); i++) {
+                reviews.add(reviewSource.getString(i));
+            }
+            Collections.shuffle(reviews);
+            review.put("text", reviews.get(0).replace("<NAME>",
+                    targetLawyer.getString("name")));
+        } catch (JSONException e) {
+            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+        }
         return review;
     }
 
     private JSONObject generateLawyerAboutMe(JSONObject lawyer) {
         JSONObject aboutMe = new JSONObject();
-        // TODO: create about-me page...
-        // Prob read from a json file and randomly choose a generic about me page....
+        try {
+            List<String> aboutMeTemplates = new ArrayList<>();
+            JSONArray aboutMeTemplate = dataGenTemplate.getJSONArray("about-me-template");
+            for (int i = 0; i < aboutMeTemplate.length(); i++) {
+                aboutMeTemplates.add(aboutMeTemplate.getString(i));
+            }
+            Collections.shuffle(aboutMeTemplates);
+            aboutMe.put("text", aboutMeTemplates.get(0).replace("<NAME>",
+                    lawyer.getString("name")));
+        } catch (JSONException e) {
+            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+        }
         return aboutMe;
     }
 
@@ -196,15 +233,15 @@ public class UserDataGenerator {
         }
         Collections.shuffle(allLawyers);
         int numReviews = RNG.nextInt(allLawyers.size() / 10);
-        double rating = lawyer.getDouble("rating");
         JSONArray lawyerReviews = new JSONArray();
         for (int i = 0; i < numReviews; i++) {
             if (RNG.nextDouble() < 0.5) {
                 String sourceLawyerKey = allLawyers.get(i);
-                JSONObject review = generateLawyerReview(lawyer, sourceLawyerKey, rating);
+                JSONObject review = generateLawyerReview(lawyer, sourceLawyerKey);
                 review.put("REVIEWER_KEY", sourceLawyerKey);
-                review.put("LAWYER_KEY", Backend.getKeyFromName(
-                        lawyer.getString("name"), lawyer.getString("id")));
+                String targetLawyerKey = Backend.getKeyFromName(
+                        lawyer.getString("name"), lawyer.getString("id"));
+                review.put("LAWYER_KEY", targetLawyerKey);
                 lawyerReviews.put(review);
                 synchronized (this) {
                     JSONObject reviewIndex = backend.getDbReviewIndex();
@@ -213,7 +250,7 @@ public class UserDataGenerator {
                         peerReviews.put(sourceLawyerKey, new JSONArray());
                     }
                     JSONArray thisReviews = peerReviews.getJSONArray(sourceLawyerKey);
-                    if (!thisReviews.toString().contains(review.toString())) {
+                    if (!thisReviews.toString().contains(targetLawyerKey)) {
                         peerReviews.getJSONArray(sourceLawyerKey).put(review);
                     }
                     backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());

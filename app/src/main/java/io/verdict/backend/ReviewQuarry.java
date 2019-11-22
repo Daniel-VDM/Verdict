@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class ReviewQuarry {
 
-    static final long WAIT_DELAY = 100;
+    static final long WAIT_DELAY = 125;
     private static final String TAG = "ReviewQuarry";
     private String id;
     private String lawyerKey;
