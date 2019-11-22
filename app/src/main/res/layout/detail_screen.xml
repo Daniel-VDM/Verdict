@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DetailScreen">
+
+    <ImageView
+        android:id="@+id/detail_card_bg"
+        android:layout_width="0dp"
+        android:layout_height="310dp"
+        android:contentDescription="@string/background_for_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tab_search_detail"
+        app:srcCompat="@drawable/infocard" />
+
+    <Button
+        android:id="@+id/tab_forum_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_forum"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/tab_search_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_search"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/tab_search_highlight_detail"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_search"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_search_detail"
+        app:layout_constraintEnd_toStartOf="@+id/tab_forum_detail"
+        app:layout_constraintStart_toStartOf="@+id/tab_search_detail"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <ImageView
+        android:id="@+id/tab_forum_highlight_detail"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_forum"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_forum_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tab_forum_detail"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package io.verdict.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseError;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Vector;
 
@@ -64,6 +67,9 @@ public class SearchScreen extends AppCompatActivity {
         searchLawyerExample();
     }
 
+    // TODO: setup fragments...
+    // TODO: setup scrolling on 2 fragments...
+    // TODO: remeber to use the given stars...
 
     // All initial data collection needs to be handled asynchronously
     // Yelp tends to give more results with an empty search phrase.
@@ -72,7 +78,14 @@ public class SearchScreen extends AppCompatActivity {
                 "Defence", "", new SearchListener() {
             @Override
             public void onFinish(JSONArray jsonArray) {
-                Log.e(TAG, jsonArray.toString());  // Data is unsorted.
+                try {
+                    JSONObject lawyer = jsonArray.getJSONObject(0);
+                    Intent detailScreen = new Intent(SearchScreen.this, DetailScreen.class);
+                    detailScreen.putExtra("data", lawyer.toString());
+                    startActivity(detailScreen);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
