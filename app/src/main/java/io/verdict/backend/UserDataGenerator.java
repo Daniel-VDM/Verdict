@@ -232,7 +232,7 @@ class UserDataGenerator {
             allLawyers.add(storedLawyers.getString(i));
         }
         Collections.shuffle(allLawyers);
-        int numReviews = RNG.nextInt(allLawyers.size() / 10);
+        int numReviews = RNG.nextInt((int)Math.round(allLawyers.size()*0.15));
         JSONArray lawyerReviews = new JSONArray();
         for (int i = 0; i < numReviews; i++) {
             if (RNG.nextDouble() < 0.5) {
