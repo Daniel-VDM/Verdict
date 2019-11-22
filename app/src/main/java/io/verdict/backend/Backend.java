@@ -67,6 +67,17 @@ public class Backend {
     }
 
     /**
+     * Recovers (as best as possible) the name from the key
+     *
+     * @param key the key of a user in the Firebase.
+     */
+    public static String getNameFromKey(String key) {
+        String name = key.replace("USER_", "");
+        name = name.substring(0, name.length() - 25);
+        return name.replace("_", " ");
+    }
+
+    /**
      * @param name   the clients name from the yelp API
      * @param suffix the suffix used for same name users
      * @return the key used to look up data for this user the Firebase.

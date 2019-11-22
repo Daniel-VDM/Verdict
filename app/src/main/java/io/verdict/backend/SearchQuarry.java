@@ -44,6 +44,14 @@ public class SearchQuarry {
         return location;
     }
 
+    public void abort(){
+        searchListener.onError("Abort");
+    }
+
+    public void forceFinish(){
+        ready();
+    }
+
     void putYelpResponse(String key, JSONObject jsonObject) {
         this.yelpResponse.put(key, jsonObject);
     }
