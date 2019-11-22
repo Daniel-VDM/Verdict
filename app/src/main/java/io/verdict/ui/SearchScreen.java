@@ -22,6 +22,7 @@ import io.verdict.backend.Backend;
 import io.verdict.backend.DatabaseListener;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
+import io.verdict.ui.DetailScreen.DetailScreen;
 
 public class SearchScreen extends AppCompatActivity {
 
@@ -64,12 +65,8 @@ public class SearchScreen extends AppCompatActivity {
         });
 
         databaseExample();
-        searchLawyerExample();
+//        searchLawyerExample();  // Uncomment to test Detail screen
     }
-
-    // TODO: setup fragments...
-    // TODO: setup scrolling on 2 fragments...
-    // TODO: remeber to use the given stars...
 
     // All initial data collection needs to be handled asynchronously
     // Yelp tends to give more results with an empty search phrase.

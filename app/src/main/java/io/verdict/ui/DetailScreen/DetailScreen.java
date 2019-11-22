@@ -1,11 +1,14 @@
-package io.verdict.ui;
+package io.verdict.ui.DetailScreen;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,8 +20,12 @@ import io.verdict.backend.Backend;
 
 public class DetailScreen extends AppCompatActivity {
 
+    private static final String TAG = "Detail Activity";
+
     private Backend backend;
     private JSONObject lawyer;
+    private SectionsPageAdapter sectionsPageAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,12 @@ public class DetailScreen extends AppCompatActivity {
 
         backend = new Backend();
         processIntent();
+
+        sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        viewPager = findViewById(R.id.DetailFragmentHolder);
+        setupViewPager(viewPager);
+        TabLayout tabLayout= findViewById(R.id.DetailTabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void processIntent(){
@@ -46,5 +59,13 @@ public class DetailScreen extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new DetailAboutFragment(), "Overview");
+        adapter.addFragment(new DetailReviewFragment(), "Reviews");
+        adapter.addFragment(new DetailSubmitFragment(), "Leave a review");
+        viewPager.setAdapter(adapter);
     }
 }

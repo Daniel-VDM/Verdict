@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DetailScreen">
+    tools:context=".ui.DetailScreen.DetailScreen">
 
     <ImageView
         android:id="@+id/detail_card_bg"
@@ -68,5 +68,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tab_forum_detail"
         app:srcCompat="@drawable/tab_button_highlight" />
+
+    <LinearLayout
+        android:id="@+id/DetailTabHoler"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="9dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_card_bg"
+        app:layout_constraintEnd_toEndOf="@+id/detail_card_bg"
+        app:layout_constraintStart_toStartOf="@+id/detail_card_bg">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/DetailTabs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabIndicatorColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/DetailFragmentHolder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_card_bg">
+
+    </androidx.viewpager.widget.ViewPager>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
