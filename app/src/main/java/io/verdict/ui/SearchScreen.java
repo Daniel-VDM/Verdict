@@ -71,14 +71,16 @@ public class SearchScreen extends AppCompatActivity {
     // All initial data collection needs to be handled asynchronously
     // Yelp tends to give more results with an empty search phrase.
     private void searchLawyerExample() {
+        final String lawField = "Criminal";
         final SearchQuarry searchQuarry = new SearchQuarry("Berkeley",
-                "Defence", "", new SearchListener() {
+                lawField, "", new SearchListener() {
             @Override
             public void onFinish(JSONArray jsonArray) {
                 try {
                     JSONObject lawyer = jsonArray.getJSONObject(0);
                     Intent detailScreen = new Intent(SearchScreen.this, DetailScreen.class);
                     detailScreen.putExtra("data", lawyer.toString());
+                    detailScreen.putExtra("lawField", lawField);
                     startActivity(detailScreen);
                 } catch (JSONException e) {
                     e.printStackTrace();

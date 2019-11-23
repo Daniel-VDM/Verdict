@@ -12,7 +12,7 @@
         android:layout_height="310dp"
         android:contentDescription="@string/background_for_card"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tab_search_detail"
         app:srcCompat="@drawable/infocard" />
@@ -72,7 +72,7 @@
     <LinearLayout
         android:id="@+id/DetailTabHoler"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="9dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/detail_card_bg"
@@ -94,12 +94,25 @@
         android:id="@+id/DetailFragmentHolder"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_card_bg">
+        app:layout_constraintTop_toBottomOf="@+id/DetailTabHoler"
+        app:layout_constraintVertical_bias="0.39">
 
     </androidx.viewpager.widget.ViewPager>
+
+    <ImageView
+        android:id="@+id/DetailImage"
+        android:layout_width="125dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/DetailTabHoler"
+        app:layout_constraintStart_toStartOf="@+id/detail_card_bg"
+        app:layout_constraintTop_toBottomOf="@+id/tab_search_detail"
+        app:layout_constraintVertical_bias="0.558"
+        app:srcCompat="@drawable/thumbnail" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
