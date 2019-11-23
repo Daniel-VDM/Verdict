@@ -75,27 +75,28 @@ public class DetailScreen extends AppCompatActivity {
     private void loadHeader() {
         try {
             final Object imageUrl = lawyer.getString("image_url");
-            if (imageUrl == null) {  // TODO check if null condition is correct.
-                return;
-            }
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        InputStream inputStream = (InputStream) new URL(imageUrl.toString())
-                                .getContent();
-                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                detailImage.setImageBitmap(bitmap);
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            if (imageUrl != null) {  // TODO check if null condition is correct.
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            InputStream inputStream = (InputStream) new URL(imageUrl.toString())
+                                    .getContent();
+                            final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    detailImage.setImageBitmap(bitmap);
+                                }
+                            });
+                        } catch (IOException ignore) {
+                        }
                     }
-                }
-            }.start();
+                }.start();
+            }
+
+            // TODO rest of the relevant information (possibly add is open or close!!!)
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
