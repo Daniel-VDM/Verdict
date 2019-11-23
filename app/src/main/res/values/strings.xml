@@ -9,5 +9,7 @@
     <string name="search_hint_location">Search by location</string>
     <string name="search_hint_lawyer">Search by lawyer name</string>
     <string name="search_button">Search</string>
-    <bool name="force_generate">false</bool> # This is dangerous, DO NOT ENABLE for consecutive execution.
+    <string name="background_for_card">background for card</string>
+    <bool name="force_generate">false</bool>
+    # This is dangerous, DO NOT ENABLE for consecutive execution.
 </resources>
