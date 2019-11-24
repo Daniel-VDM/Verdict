@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".ui.SearchScreen">
+    tools:context=".ui.SearchScreen.SearchScreen">
 
     <TextView
         android:id="@+id/verdict"

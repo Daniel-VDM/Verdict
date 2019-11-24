@@ -1,4 +1,4 @@
-package io.verdict.ui;
+package io.verdict.ui.SearchResults;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,13 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.verdict.R;
 import io.verdict.backend.Backend;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
+import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class SearchResults extends AppCompatActivity {
 

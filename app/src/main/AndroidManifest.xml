@@ -18,13 +18,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.DetailScreen.DetailScreen"></activity>
-        <activity android:name=".ui.SearchResults"></activity>
+        <activity android:name=".ui.SearchResults.SearchResults"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".ui.SearchScreen">
+        <activity android:name=".ui.SearchScreen.SearchScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package io.verdict.ui;
+package io.verdict.ui.SearchScreen;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +26,6 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Vector;
 
 import io.verdict.R;
@@ -35,6 +34,7 @@ import io.verdict.backend.DatabaseListener;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
 import io.verdict.ui.DetailScreen.DetailScreen;
+import io.verdict.ui.SearchResults.SearchResults;
 
 public class SearchScreen extends AppCompatActivity {
 
