@@ -95,7 +95,7 @@ public class DetailScreen extends AppCompatActivity {
                 }.start();
             }
 
-            // TODO rest of the relevant information (possibly add is open or close!!!)
+            // TODO rest of the relevant information (connect everything...)
 
         } catch (JSONException e) {
             e.printStackTrace();

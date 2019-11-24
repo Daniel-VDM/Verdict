@@ -65,7 +65,7 @@ public class SearchScreen extends AppCompatActivity {
         });
 
         databaseExample();
-//        searchLawyerExample();  // Uncomment to test Detail screen
+        searchLawyerExample();  // Uncomment to test Detail screen
     }
 
     // All initial data collection needs to be handled asynchronously
