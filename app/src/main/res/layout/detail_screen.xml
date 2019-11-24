@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DetailScreen.DetailScreen">
+    tools:context=".ui.DetailScreen.DetailScreen"
+    android:background="@color/colorBackground">
 
     <ImageView
         android:id="@+id/detail_card_bg"
@@ -94,6 +95,7 @@
         android:id="@+id/DetailFragmentHolder"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="4dp"
         android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

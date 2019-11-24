@@ -1,20 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+android:layout_height="match_parent"
+xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/DetailForumActivityButton"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/my_button_bg"
+            android:text="Forum Activity"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DetailLegalExpertise" />
+
+        <Button
+            android:id="@+id/DetailWebsiteButton"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="55dp"
+            android:background="@drawable/my_button_bg"
+            android:text="Website"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/DetailForumActivityButton" />
+
+        <TextView
+            android:id="@+id/DetailAboutHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:maxLines="1"
+            android:shadowColor="#B4000000"
+            android:text="About"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/DetailAboutMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="TextView"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/DetailAboutHeader"
+            app:layout_constraintTop_toBottomOf="@+id/DetailAboutHeader" />
+
+        <TextView
+            android:id="@+id/DetailLegalAreas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="32dp"
+            android:maxLines="1"
+            android:shadowColor="#B4000000"
+            android:text="Legal Expertise"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DetailAboutMe" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DetailAboutMe"
+            app:srcCompat="@drawable/rectangle" />
+
+        <TextView
+            android:id="@+id/DetailLegalExpertise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/DetailLegalAreas"
+            app:layout_constraintStart_toStartOf="@+id/DetailLegalAreas"
+            app:layout_constraintTop_toBottomOf="@+id/DetailLegalAreas" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

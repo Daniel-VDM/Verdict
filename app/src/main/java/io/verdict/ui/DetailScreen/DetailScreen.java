@@ -214,24 +214,29 @@ public class DetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(DetailScreen.this);
-                    builder.setMessage("Do you want to go to google maps?")
-                            .setCancelable(false)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    try {
-                                        startMapActivity(coordinates.getString("latitude"),
-                                                coordinates.getString("longitude"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                    try {
+                        builder.setMessage("Do you want to look for "
+                                + lawyer.getString("name") + "on google maps?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        try {
+                                            startMapActivity(coordinates.getString("latitude"),
+                                                    coordinates.getString("longitude"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
