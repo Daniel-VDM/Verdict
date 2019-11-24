@@ -13,8 +13,8 @@
 
         <Button
             android:id="@+id/DetailForumActivityButton"
-            android:layout_width="120dp"
-            android:layout_height="30dp"
+            android:layout_width="125dp"
+            android:layout_height="32dp"
             android:layout_marginStart="55dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="32dp"
@@ -28,8 +28,8 @@
 
         <Button
             android:id="@+id/DetailWebsiteButton"
-            android:layout_width="120dp"
-            android:layout_height="30dp"
+            android:layout_width="125dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="55dp"
             android:background="@drawable/my_button_bg"
             android:text="Website"
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="26dp"
             android:layout_marginEnd="32dp"
             android:maxLines="1"
             android:shadowColor="#B4000000"
