@@ -4,14 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.verdict.R;
+import io.verdict.backend.Backend;
+import io.verdict.backend.SearchListener;
+import io.verdict.backend.SearchQuarry;
 
 public class SearchResults extends AppCompatActivity {
+
+    private static final String TAG = "SearchResults";
+    private final Backend backend = new Backend();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +36,39 @@ public class SearchResults extends AppCompatActivity {
         String location = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LOCATION);
         String lawyer = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LAWYER);
 
-        TextView textView = findViewById(R.id.textView);
+        final TextView textView = findViewById(R.id.textView);
         textView.setText(legalField);
-        TextView textView2 = findViewById(R.id.textView2);
+        final TextView textView2 = findViewById(R.id.textView2);
         textView2.setText(location);
-        TextView textView3 = findViewById(R.id.textView3);
+        final TextView textView3 = findViewById(R.id.textView3);
         textView3.setText(lawyer);
+        final TextView textView4 = findViewById(R.id.textView4);
+
+        final SearchQuarry searchQuarry = new SearchQuarry(location, legalField, lawyer, new SearchListener() {
+            @Override
+            public void onFinish(JSONArray jsonArray) {
+                final String jsonArrayString = jsonArray.toString();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView4.setText(jsonArrayString);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.e(TAG, message);
+            }
+        });
+
+        new Thread() {
+            @Override
+            public void run() {
+                backend.searchLawyers(SearchResults.this, searchQuarry);
+            }
+        }.start();
+
     }
 
     private void setupTabs() {
