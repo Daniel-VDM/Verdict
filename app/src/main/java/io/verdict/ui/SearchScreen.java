@@ -1,12 +1,18 @@
 package io.verdict.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 
 import io.verdict.R;
@@ -35,12 +45,33 @@ public class SearchScreen extends AppCompatActivity {
     public static final String SEARCH_TEXT_LOCATION = "io.verdict.searchscreen.location";
     public static final String SEARCH_TEXT_LAWYER = "io.verdict.searchscreen.lawyer";
 
+    public static String[] LEGAL_FIELDS = {
+            "Admiralty",
+            "Bankruptcy",
+            "Business",
+            "Civil Rights",
+            "Criminal",
+            "Entertainment",
+            "Environmental",
+            "Family",
+            "Health",
+            "Immigration",
+            "Intellectual Property",
+            "International",
+            "Labor",
+            "Military",
+            "Personal Injury",
+            "Real Estate",
+            "Tax"
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
 
         setupTabs();
+        setupLegalFieldSpinner();
 
 //        databaseExample();
 //        searchLawyerExample();
@@ -78,11 +109,45 @@ public class SearchScreen extends AppCompatActivity {
         });
     }
 
+    private class HintAdapter extends ArrayAdapter<String> {
+        public HintAdapter(Context theContext, int theLayoutResId, List<String> objects) {
+            super(theContext, theLayoutResId, objects);
+        }
+        @Override
+        public int getCount() {
+            int count = super.getCount();
+            return count > 0 ? count - 1 : count;
+        }
+    }
+
+    private void setupLegalFieldSpinner() {
+        Spinner legalFieldSpinner = findViewById(R.id.search_by_legal);
+        ArrayList<String> legalFieldsList = new ArrayList<>();
+        Collections.addAll(legalFieldsList, LEGAL_FIELDS);
+        legalFieldsList.add(getResources().getString(R.string.search_hint_legal_area));
+
+        HintAdapter adapter = new HintAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, legalFieldsList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        legalFieldSpinner.setAdapter(adapter);
+        legalFieldSpinner.setSelection(adapter.getCount());
+        legalFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                if (pos == LEGAL_FIELDS.length) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
+                }
+                ((TextView) parent.getChildAt(0)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     public void searchForResults(View view) {
         Intent intent = new Intent(this, SearchResults.class);
 
-        EditText searchByLegalText = findViewById(R.id.search_by_legal);
-        String legalField = searchByLegalText.getText().toString();
+        Spinner searchByLegalSpinner = findViewById(R.id.search_by_legal);
+        String legalField = searchByLegalSpinner.getSelectedItem().toString();
         intent.putExtra(SEARCH_TEXT_LEGALFIELD, legalField);
 
         EditText searchByLocationText = findViewById(R.id.search_by_location);
