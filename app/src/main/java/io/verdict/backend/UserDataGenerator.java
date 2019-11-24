@@ -223,7 +223,8 @@ class UserDataGenerator {
      * @param lawyer Json object for the Yelp api
      * @return The data object associated with LAWYER's KEY in Firebase.
      */
-    JSONObject generateDataForLawyer(JSONObject lawyer) throws JSONException {
+    synchronized JSONObject generateDataForLawyer(JSONObject lawyer) throws JSONException {
+        Log.d(TAG, "Generating data for " + lawyer.getString("name"));
         JSONObject data = new JSONObject();
         data.put("ABOUT-ME", generateLawyerAboutMe(lawyer));
         JSONArray storedLawyers = backend.getDbUserIndex().getJSONArray("LAWYERS");
@@ -234,6 +235,8 @@ class UserDataGenerator {
         Collections.shuffle(allLawyers);
         int numReviews = RNG.nextInt((int)Math.round(allLawyers.size()*0.15));
         JSONArray lawyerReviews = new JSONArray();
+        JSONObject reviewIndex = backend.getDbReviewIndex();
+        JSONObject peerReviews = reviewIndex.getJSONObject("PEER_REVIEWS");
         for (int i = 0; i < numReviews; i++) {
             if (RNG.nextDouble() < 0.5) {
                 String sourceLawyerKey = allLawyers.get(i);
@@ -243,20 +246,19 @@ class UserDataGenerator {
                         lawyer.getString("name"), lawyer.getString("id"));
                 review.put("LAWYER_KEY", targetLawyerKey);
                 lawyerReviews.put(review);
-                synchronized (this) {
-                    JSONObject reviewIndex = backend.getDbReviewIndex();
-                    JSONObject peerReviews = reviewIndex.getJSONObject("PEER_REVIEWS");
-                    if (!peerReviews.has(sourceLawyerKey)) {
-                        peerReviews.put(sourceLawyerKey, new JSONArray());
-                    }
-                    JSONArray thisReviews = peerReviews.getJSONArray(sourceLawyerKey);
-                    if (!thisReviews.toString().contains(targetLawyerKey)) {
-                        peerReviews.getJSONArray(sourceLawyerKey).put(review);
-                    }
-                    backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
+                JSONObject reviewIndexEntry = new JSONObject();
+                reviewIndexEntry.put("REVIEWER_KEY", sourceLawyerKey);
+                reviewIndexEntry.put("LAWYER_KEY", targetLawyerKey);
+                if (!peerReviews.has(sourceLawyerKey)) {
+                    peerReviews.put(sourceLawyerKey, new JSONArray());
+                }
+                JSONArray thisReviews = peerReviews.getJSONArray(sourceLawyerKey);
+                if (!thisReviews.toString().contains(reviewIndexEntry.toString())) {
+                    peerReviews.getJSONArray(sourceLawyerKey).put(reviewIndexEntry);
                 }
             }
         }
+        backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
         data.put("PEER_REVIEWS", lawyerReviews);
         return data;
     }

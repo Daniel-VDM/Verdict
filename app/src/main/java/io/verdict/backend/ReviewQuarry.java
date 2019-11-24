@@ -31,12 +31,16 @@ public class ReviewQuarry {
         this.reviewListener = reviewListener;
     }
 
-    void search(final Backend backend, final RequestQueue requestQueue) {
+    synchronized void search(final Backend backend, final RequestQueue requestQueue) {
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
                     JSONArray reviews = jsonObject.getJSONArray("reviews");
+                    JSONObject userIndex = backend.getDbUserIndex();
+                    JSONArray users = userIndex.getJSONArray("USERS");
+                    JSONObject reviewIndex = backend.getDbReviewIndex();
+                    JSONObject userReviews = reviewIndex.getJSONObject("USER_REVIEWS");
                     for (int i = 0; i < reviews.length(); i++) {
                         JSONObject review = reviews.getJSONObject(i);
                         JSONObject user = review.getJSONObject("user");
@@ -50,25 +54,22 @@ public class ReviewQuarry {
                         backend.databasePut(key, user.toString());
                         review.put("REVIEWER_KEY", key);
                         review.put("LAWYER_KEY", lawyerKey);
-                        synchronized (this) {
-                            JSONObject userIndex = backend.getDbUserIndex();
-                            JSONArray users = userIndex.getJSONArray("USERS");
-                            if (!users.toString().contains(key)) {
-                                users.put(key);
-                                backend.databasePut("META_USER_INDEX", userIndex.toString());
-                            }
-                            JSONObject reviewIndex = backend.getDbReviewIndex();
-                            JSONObject userReviews = reviewIndex.getJSONObject("USER_REVIEWS");
-                            if (!userReviews.has(key)) {
-                                userReviews.put(key, new JSONArray());
-                            }
-                            JSONArray thisReviews = userReviews.getJSONArray(key);
-                            if (!thisReviews.toString().contains(review.toString())) {
-                                userReviews.getJSONArray(key).put(review);
-                            }
-                            backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
+                        JSONObject reviewIndexEntry = new JSONObject();
+                        reviewIndexEntry.put("REVIEWER_KEY", key);
+                        reviewIndexEntry.put("LAWYER_KEY", lawyerKey);
+                        if (!users.toString().contains(key)) {
+                            users.put(key);
+                            backend.databasePut("META_USER_INDEX", userIndex.toString());
+                        }
+                        if (!userReviews.has(key)) {
+                            userReviews.put(key, new JSONArray());
+                        }
+                        JSONArray thisReviews = userReviews.getJSONArray(key);
+                        if (!thisReviews.toString().contains(reviewIndexEntry.toString())) {
+                            userReviews.getJSONArray(key).put(reviewIndexEntry);
                         }
                     }
+                    backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
                     reviewListener.onFinish(reviews);
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
