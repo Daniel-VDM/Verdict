@@ -1,16 +1,21 @@
 package io.verdict.ui.SearchResults;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.w3c.dom.Text;
 
 import io.verdict.R;
 import io.verdict.backend.Backend;
@@ -35,22 +40,22 @@ public class SearchResults extends AppCompatActivity {
         String location = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LOCATION);
         String lawyer = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LAWYER);
 
-        final TextView textView = findViewById(R.id.textView);
-        textView.setText(legalField);
-        final TextView textView2 = findViewById(R.id.textView2);
-        textView2.setText(location);
-        final TextView textView3 = findViewById(R.id.textView3);
-        textView3.setText(lawyer);
-        final TextView textView4 = findViewById(R.id.textView4);
+        final ProgressBar resultsLoadingSpinner = findViewById(R.id.results_loading_spinner);
+        final TextView resultsLoadingText = findViewById(R.id.results_loading_text);
+        final RecyclerView resultsRecycler = findViewById(R.id.results_recycler);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        resultsRecycler.setLayoutManager(layoutManager);
 
         final SearchQuarry searchQuarry = new SearchQuarry(location, legalField, lawyer, new SearchListener() {
             @Override
-            public void onFinish(JSONArray jsonArray) {
-                final String jsonArrayString = jsonArray.toString();
+            public void onFinish(final JSONArray jsonArray) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textView4.setText(jsonArrayString);
+                        resultsLoadingSpinner.setAlpha(0);
+                        resultsLoadingText.setAlpha(0);
+                        ResultsRecyclerAdapter resultsAdapter = new ResultsRecyclerAdapter(jsonArray);
+                        resultsRecycler.setAdapter(resultsAdapter);
                     }
                 });
             }
