@@ -2,6 +2,7 @@ package io.verdict.backend;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.LruCache;
 
 import androidx.annotation.NonNull;
 
@@ -37,7 +38,7 @@ public class Backend {
     private static final String TAG = "Backend";
     private static final int SEARCH_RESULT_LIMIT = 30;
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static final HashMap<String, String> databaseCache = new HashMap<>();
+    private static final LruCache<String, String> databaseCache = new LruCache<>(1028 * 1028);
     private static JSONObject dbUserIndex = null;
     private static JSONObject dbReviewIndex = null;
     private UserDataGenerator userDataGenerator;
@@ -63,7 +64,7 @@ public class Backend {
      * Simple method to clear this classes cache.
      */
     public static void clearCache() {
-        Backend.databaseCache.clear();
+        Backend.databaseCache.evictAll();
     }
 
     /**
@@ -179,8 +180,9 @@ public class Backend {
      */
     public void databaseGet(final String key, final DatabaseListener listener) {
         listener.onStart(key);
-        if (databaseCache.containsKey(key)) {
-            listener.onSuccess(key, databaseCache.get(key));
+        String cacheValue = databaseCache.get(key);
+        if (cacheValue != null) {
+            listener.onSuccess(key, cacheValue);
             return;
         }
         database.getReference(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -208,7 +210,9 @@ public class Backend {
     public void databasePut(String key, String string) {
         DatabaseReference dbRef = database.getReference(key);
         dbRef.setValue(string);
-        databaseCache.put(key, string);
+        if (!key.contains("META")){
+            databaseCache.put(key, string);
+        }
     }
 
     // Helper method to fetch a new yelp review
@@ -272,8 +276,7 @@ public class Backend {
                     try {
                         if (string == null ||
                                 context.getResources().getBoolean(R.bool.force_generate) ||
-                                new JSONObject(string)
-                                        .getJSONArray("USER_REVIEWS").length() == 0) {
+                                !(new JSONObject(string).has("PEER_REVIEWS"))) {
                             fetchNewYelpReview(lawyer, id, dbGetIsDone,
                                     iFinal, searchQuarry, key, requestQueue);
                         } else {
