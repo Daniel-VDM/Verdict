@@ -121,6 +121,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="30dp"
+        android:maxLines="2"
         android:text="Ryan D. Harris"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -132,60 +133,38 @@
         android:id="@+id/DetailLawyerType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:text="Legal Area: Criminal Law"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="@+id/DetailName"
         app:layout_constraintStart_toStartOf="@+id/DetailName"
-        app:layout_constraintTop_toTopOf="@+id/DetailName" />
+        app:layout_constraintTop_toBottomOf="@+id/DetailName" />
 
     <ImageView
         android:id="@+id/DetailLocationIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="@+id/DetailLawyerType"
-        app:layout_constraintTop_toTopOf="@+id/DetailAddr0"
+        app:layout_constraintTop_toTopOf="@+id/DetailAddr"
         app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
     <TextView
-        android:id="@+id/DetailAddr0"
+        android:id="@+id/DetailAddr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="505 14th St"
+        android:layout_marginTop="8dp"
+        android:maxLines="3"
         android:textSize="15dp"
         app:layout_constraintStart_toEndOf="@+id/DetailLocationIcon"
         app:layout_constraintTop_toBottomOf="@+id/DetailLawyerType" />
 
-    <TextView
-        android:id="@+id/DetailAddr1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Ste 900"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@+id/DetailAddr0"
-        app:layout_constraintTop_toTopOf="@+id/DetailAddr0" />
-
-    <TextView
-        android:id="@+id/DetailAddr2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Oakland, CA 94612"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@+id/DetailAddr1"
-        app:layout_constraintTop_toTopOf="@+id/DetailAddr1" />
-
     <ImageView
-        android:id="@+id/DatailPhoneIcon"
+        android:id="@+id/DetailPhoneIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@+id/DetailLocationIcon"
-        app:layout_constraintTop_toBottomOf="@+id/DetailAddr2"
+        app:layout_constraintTop_toBottomOf="@+id/DetailAddr"
         app:srcCompat="@drawable/ic_local_phone_black_24dp" />
 
     <TextView
@@ -195,44 +174,9 @@
         android:layout_marginStart="8dp"
         android:text="(866) 842-5384"
         android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/DatailPhoneIcon"
-        app:layout_constraintStart_toEndOf="@+id/DatailPhoneIcon"
-        app:layout_constraintTop_toTopOf="@+id/DatailPhoneIcon" />
-
-    <Button
-        android:id="@+id/DetailWebsiteButton"
-        android:layout_width="62dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/my_button_bg"
-        android:text="Website"
-        android:textAllCaps="false"
-        android:textSize="10dp"
-        app:layout_constraintStart_toStartOf="@+id/DatailPhoneIcon"
-        app:layout_constraintTop_toBottomOf="@+id/DetailPhone" />
-
-    <Button
-        android:id="@+id/DetailMapsButton"
-        android:layout_width="62dp"
-        android:layout_height="24dp"
-        android:background="@drawable/my_button_bg"
-        android:text="Maps"
-        android:textAllCaps="false"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/DetailName"
-        app:layout_constraintTop_toTopOf="@+id/DetailCallButton" />
-
-    <Button
-        android:id="@+id/DetailCallButton"
-        android:layout_width="62dp"
-        android:layout_height="24dp"
-        android:background="@drawable/my_button_bg"
-        android:text="Call"
-        android:textAllCaps="false"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/DetailMapsButton"
-        app:layout_constraintStart_toEndOf="@+id/DetailWebsiteButton"
-        app:layout_constraintTop_toTopOf="@+id/DetailWebsiteButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/DetailPhoneIcon"
+        app:layout_constraintStart_toEndOf="@+id/DetailPhoneIcon"
+        app:layout_constraintTop_toTopOf="@+id/DetailPhoneIcon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
