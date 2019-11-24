@@ -257,7 +257,7 @@ public class DetailScreen extends AppCompatActivity {
     }
 
     private void startMapActivity(String lat, String lng) throws JSONException {
-        Uri gmmIntentUri = Uri.parse("geo:"+ lat +"," + lng + "?q=" + lawyer.getString("name"));
+        Uri gmmIntentUri = Uri.parse("geo:" + lat + "," + lng + "?q=" + lawyer.getString("name"));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -272,4 +272,9 @@ public class DetailScreen extends AppCompatActivity {
         adapter.addFragment(new DetailSubmitFragment(), "Leave a review");
         viewPager.setAdapter(adapter);
     }
+
+    public JSONObject getLawyer() {
+        return lawyer;
+    }
+
 }
