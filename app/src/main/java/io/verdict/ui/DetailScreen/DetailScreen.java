@@ -1,7 +1,10 @@
 package io.verdict.ui.DetailScreen;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -128,14 +132,52 @@ public class DetailScreen extends AppCompatActivity {
             detailPhoneIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startPhoneActivity(phoneNumber);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailScreen.this);
+                    try {
+                        builder.setMessage("Do you want to call " + lawyer.getString("display_phone"))
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        startPhoneActivity(phoneNumber);
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
             detailPhone.setClickable(true);
             detailPhone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startPhoneActivity(phoneNumber);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailScreen.this);
+                    try {
+                        builder.setMessage("Do you want to call " + lawyer.getString("display_phone"))
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        startPhoneActivity(phoneNumber);
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
 
@@ -144,24 +186,54 @@ public class DetailScreen extends AppCompatActivity {
             detailLocationIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-                        startMapActivity(coordinates.getString("latitude"),
-                                coordinates.getString("longitude"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailScreen.this);
+                    builder.setMessage("Do you want to go to google maps?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        startMapActivity(coordinates.getString("latitude"),
+                                                coordinates.getString("longitude"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
             detailAddress.setClickable(true);
             detailAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-                        startMapActivity(coordinates.getString("latitude"),
-                                coordinates.getString("longitude"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailScreen.this);
+                    builder.setMessage("Do you want to go to google maps?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        startMapActivity(coordinates.getString("latitude"),
+                                                coordinates.getString("longitude"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
 
@@ -170,8 +242,13 @@ public class DetailScreen extends AppCompatActivity {
         }
     }
 
-    private void startPhoneActivity(String phoneNumber){
-
+    private void startPhoneActivity(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+        if (checkSelfPermission(Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(intent);
     }
 
     private void startMapActivity(String lat, String lng) throws JSONException {
