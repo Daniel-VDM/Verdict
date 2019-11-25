@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.w3c.dom.Text;
 
 import io.verdict.R;
 import io.verdict.backend.Backend;
@@ -36,9 +34,9 @@ public class SearchResults extends AppCompatActivity {
         setupTabs();
 
         Intent intent = getIntent();
-        String legalField = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LEGALFIELD);
-        String location = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LOCATION);
-        String lawyer = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LAWYER);
+        final String legalField = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LEGALFIELD);
+        final String location = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LOCATION);
+        final String lawyer = intent.getStringExtra(SearchScreen.SEARCH_TEXT_LAWYER);
 
         final ProgressBar resultsLoadingSpinner = findViewById(R.id.results_loading_spinner);
         final TextView resultsLoadingText = findViewById(R.id.results_loading_text);
@@ -54,7 +52,7 @@ public class SearchResults extends AppCompatActivity {
                     public void run() {
                         resultsLoadingSpinner.setAlpha(0);
                         resultsLoadingText.setAlpha(0);
-                        ResultsRecyclerAdapter resultsAdapter = new ResultsRecyclerAdapter(jsonArray);
+                        ResultsRecyclerAdapter resultsAdapter = new ResultsRecyclerAdapter(jsonArray, legalField, SearchResults.this);
                         resultsRecycler.setAdapter(resultsAdapter);
                     }
                 });

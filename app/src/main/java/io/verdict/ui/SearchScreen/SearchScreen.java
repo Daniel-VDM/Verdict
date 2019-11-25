@@ -73,8 +73,6 @@ public class SearchScreen extends AppCompatActivity {
         setupTabs();
         setupLegalFieldSpinner();
 
-//        databaseExample();
-//        searchLawyerExample();
     }
 
     private void setupTabs() {
