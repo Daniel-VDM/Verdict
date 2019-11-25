@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -191,6 +192,7 @@ class UserDataGenerator {
                 reviews.add(reviewSource.getString(i));
             }
             Collections.shuffle(reviews);
+            review.put("time_created", new Date().toString());
             review.put("text", reviews.get(0).replace("<NAME>",
                     targetLawyer.getString("name")));
         } catch (JSONException e) {
