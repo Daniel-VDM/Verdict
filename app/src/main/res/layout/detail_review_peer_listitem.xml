@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/DetailPeerReviewLayouta"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/DetailPeerReviewBg"
+            android:layout_width="345dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/reviewbg" />
+
+        <TextView
+            android:id="@+id/DetailPeerReviewText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:maxLines="5"
+            android:text="TextView"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewName"
+            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewRating"
+            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewRating" />
+
+        <RatingBar
+            android:id="@+id/DetailPeerReviewRating"
+            style="@android:style/Widget.Holo.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:clickable="false"
+            android:isIndicator="true"
+            android:max="5"
+            android:scaleX="0.65"
+            android:scaleY="0.65"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
+            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewName"
+            app:layout_constraintTop_toBottomOf="@+id/DetailPeerReviewName" />
+
+        <TextView
+            android:id="@+id/DetailPeerReviewName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="2"
+            android:text="TextView"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/DetailPeerReviewPic"
+            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg" />
+
+        <ImageView
+            android:id="@+id/DetailPeerReviewPic"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
+            app:srcCompat="@drawable/thumbnail" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

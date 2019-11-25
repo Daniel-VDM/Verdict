@@ -95,7 +95,7 @@ public class DetailScreen extends AppCompatActivity {
     private void loadHeader() {
         try {
             final Object imageUrl = lawyer.getString("image_url");
-            if (imageUrl != null) {
+            if (imageUrl != null && !imageUrl.equals("")) {
                 new Thread() {
                     @Override
                     public void run() {
