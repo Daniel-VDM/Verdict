@@ -68,6 +68,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/result_lawyer_name"
                         app:layout_constraintTop_toBottomOf="@+id/result_laywer_title"
                         app:srcCompat="@drawable/ic_results_location" />
@@ -118,11 +119,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/results_price_rating_text"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/result_client_rating_text" />
+                    app:layout_constraintTop_toBottomOf="@+id/result_client_rating_star1" />
 
                 <TextView
                     android:id="@+id/result_peer_rating_text"
@@ -173,6 +174,119 @@
                     app:layout_constraintBottom_toBottomOf="@+id/result_peer_rating_text"
                     app:layout_constraintStart_toEndOf="@+id/result_peer_rating_text"
                     app:layout_constraintTop_toTopOf="@+id/result_peer_rating_text" />
+
+                <ImageView
+                    android:id="@+id/result_client_rating_star1"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintStart_toStartOf="@+id/result_client_rating_text"
+                    app:layout_constraintTop_toBottomOf="@+id/result_client_rating_text"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_client_rating_star2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_client_rating_star1"
+                    app:layout_constraintStart_toEndOf="@+id/result_client_rating_star1"
+                    app:layout_constraintTop_toTopOf="@+id/result_client_rating_star1"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_client_rating_star3"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_client_rating_star2"
+                    app:layout_constraintStart_toEndOf="@+id/result_client_rating_star2"
+                    app:layout_constraintTop_toTopOf="@+id/result_client_rating_star2"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_client_rating_star4"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_client_rating_star3"
+                    app:layout_constraintStart_toEndOf="@+id/result_client_rating_star3"
+                    app:layout_constraintTop_toTopOf="@+id/result_client_rating_star3"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_client_rating_star5"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_client_rating_star4"
+                    app:layout_constraintStart_toEndOf="@+id/result_client_rating_star4"
+                    app:layout_constraintTop_toTopOf="@+id/result_client_rating_star4"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_peer_rating_star1"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintStart_toStartOf="@+id/result_peer_rating_text"
+                    app:layout_constraintTop_toBottomOf="@+id/result_peer_rating_text"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_peer_rating_star2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_peer_rating_star1"
+                    app:layout_constraintStart_toEndOf="@+id/result_peer_rating_star1"
+                    app:layout_constraintTop_toTopOf="@+id/result_peer_rating_star1"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_peer_rating_star3"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_peer_rating_star2"
+                    app:layout_constraintStart_toEndOf="@+id/result_peer_rating_star2"
+                    app:layout_constraintTop_toTopOf="@+id/result_peer_rating_star2"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_peer_rating_star4"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_peer_rating_star3"
+                    app:layout_constraintStart_toEndOf="@+id/result_peer_rating_star3"
+                    app:layout_constraintTop_toTopOf="@+id/result_peer_rating_star3"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <ImageView
+                    android:id="@+id/result_peer_rating_star5"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_peer_rating_star4"
+                    app:layout_constraintStart_toEndOf="@+id/result_peer_rating_star4"
+                    app:layout_constraintTop_toTopOf="@+id/result_peer_rating_star4"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_rating_star_full" />
+
+                <TextView
+                    android:id="@+id/result_client_rating_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="(10)"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_client_rating_star5"
+                    app:layout_constraintStart_toEndOf="@+id/result_client_rating_star5"
+                    app:layout_constraintTop_toTopOf="@+id/result_client_rating_star5" />
+
+                <TextView
+                    android:id="@+id/result_peer_rating_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="(10)"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_peer_rating_star5"
+                    app:layout_constraintStart_toEndOf="@+id/result_peer_rating_star5"
+                    app:layout_constraintTop_toTopOf="@+id/result_peer_rating_star5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
