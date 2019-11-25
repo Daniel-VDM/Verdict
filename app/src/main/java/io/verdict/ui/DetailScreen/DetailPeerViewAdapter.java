@@ -153,7 +153,7 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
             backend.databaseGet("PIC_" + reviewerKey, new DatabaseListener() {
                 @Override
                 public void onStart(String key) {
-                    Log.d(TAG, "Looking up image for " + key);
+                     Log.d(TAG, "Looking up image for " + key);
                 }
 
                 @Override

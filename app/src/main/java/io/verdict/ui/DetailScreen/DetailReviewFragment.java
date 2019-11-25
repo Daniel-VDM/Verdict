@@ -50,6 +50,8 @@ public class DetailReviewFragment extends Fragment {
         return view;
     }
 
+    // TODO: On click, load up / append the reviews...
+
     private void setupPeerReviews() throws JSONException {
         JSONArray reviews = lawyerDb.getJSONArray("PEER_REVIEWS");
         reviews.put(reviews.getJSONObject(0));
