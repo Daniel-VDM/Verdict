@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".ui.SearchScreen">
+    tools:context=".ui.SearchScreen.SearchScreen">
 
     <TextView
         android:id="@+id/verdict"
@@ -96,43 +96,34 @@
         app:layout_constraintTop_toBottomOf="@+id/verdict" />
 
     <EditText
-        android:id="@+id/search_by_legal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:width="300dp"
-        android:autofillHints="@string/search_hint_legal_area"
-        android:ems="10"
-        android:hint="@string/search_hint_legal_area"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/catchphrase" />
-
-    <EditText
         android:id="@+id/search_by_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
-        android:width="300dp"
         android:autofillHints="@string/search_hint_location"
+        android:background="@drawable/ic_field_bg"
         android:ems="10"
         android:hint="@string/search_hint_location"
-        android:inputType="textPersonName"
+        android:inputType="textPostalAddress"
+        android:paddingHorizontal="@dimen/search_field_padding"
+        android:textColorHint="@android:color/tab_indicator_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_by_legal" />
 
     <EditText
         android:id="@+id/search_by_lawyer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
         android:width="300dp"
         android:autofillHints="@string/search_hint_lawyer"
+        android:background="@drawable/ic_field_bg"
         android:ems="10"
         android:hint="@string/search_hint_lawyer"
         android:inputType="textPersonName"
+        android:paddingHorizontal="@dimen/search_field_padding"
+        android:textColorHint="@android:color/tab_indicator_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_by_location" />
@@ -141,12 +132,25 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:backgroundTint="@color/colorAccent"
+        android:onClick="searchForResults"
         android:text="@string/search_button"
         android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_by_lawyer" />
+
+    <Spinner
+        android:id="@+id/search_by_legal"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/ic_field_bg_dropdown"
+        android:paddingVertical="@dimen/search_field_padding"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catchphrase" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

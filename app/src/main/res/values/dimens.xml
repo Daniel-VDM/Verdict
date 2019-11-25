@@ -3,4 +3,5 @@
     <dimen name="half_screen_width">540px</dimen>
     <dimen name="tab_search_height">150px</dimen>
     <dimen name="tab_search_highlight_height">5px</dimen>
+    <dimen name="search_field_padding">10dp</dimen>
 </resources>

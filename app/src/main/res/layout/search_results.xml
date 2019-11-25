@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SearchResults.SearchResults">
+
+    <Button
+        android:id="@+id/tab_forum_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_forum"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/tab_search_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_search"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/tab_search_highlight_results"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_search"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_search_results"
+        app:layout_constraintEnd_toStartOf="@+id/tab_forum_results"
+        app:layout_constraintStart_toStartOf="@+id/tab_search_results"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <ImageView
+        android:id="@+id/tab_forum_highlight_results"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_forum"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_forum_results"
+        app:layout_constraintEnd_toEndOf="@+id/tab_forum_results"
+        app:layout_constraintStart_toStartOf="@+id/tab_forum_results"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/results_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_search_highlight_results" />
+
+    <ProgressBar
+        android:id="@+id/results_loading_spinner"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/colorPrimaryDark"
+        android:progressTintMode="add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/results_recycler"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <TextView
+        android:id="@+id/results_loading_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/results_loading"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/results_loading_spinner" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
