@@ -52,6 +52,9 @@ public class ReviewQuarry {
                         JSONObject user = review.getJSONObject("user");
                         String key = Backend.getKeyFromName(user.getString("name"),
                                 user.getString("id"));
+
+                        // TODO: randomly pick if the user is verified, (like 10% chance)
+
                         user.put("USER_TYPE", "user");
                         user.put("KEY", key);
                         backend.databasePut(key, user.toString());

@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -191,6 +192,7 @@ class UserDataGenerator {
                 reviews.add(reviewSource.getString(i));
             }
             Collections.shuffle(reviews);
+            review.put("time_created", new Date().toString());
             review.put("text", reviews.get(0).replace("<NAME>",
                     targetLawyer.getString("name")));
         } catch (JSONException e) {
@@ -245,29 +247,27 @@ class UserDataGenerator {
             allLawyers.add(storedLawyers.getString(i));
         }
         Collections.shuffle(allLawyers);
-        int numReviews = RNG.nextInt((int) Math.round(allLawyers.size() * 0.15));
+        int numReviews = RNG.nextInt((int)(Math.max(Math.round(allLawyers.size()), 80) * 0.15));
         JSONArray lawyerReviews = new JSONArray();
         JSONObject reviewIndex = backend.getDbReviewIndex();
         JSONObject peerReviews = reviewIndex.getJSONObject("PEER_REVIEWS");
         for (int i = 0; i < numReviews; i++) {
-            if (RNG.nextDouble() < 0.5) {
-                String sourceLawyerKey = allLawyers.get(i);
-                JSONObject review = generateLawyerReview(lawyer, sourceLawyerKey);
-                review.put("REVIEWER_KEY", sourceLawyerKey);
-                String targetLawyerKey = Backend.getKeyFromName(
-                        lawyer.getString("name"), lawyer.getString("id"));
-                review.put("LAWYER_KEY", targetLawyerKey);
-                lawyerReviews.put(review);
-                JSONObject reviewIndexEntry = new JSONObject();
-                reviewIndexEntry.put("REVIEWER_KEY", sourceLawyerKey);
-                reviewIndexEntry.put("LAWYER_KEY", targetLawyerKey);
-                if (!peerReviews.has(sourceLawyerKey)) {
-                    peerReviews.put(sourceLawyerKey, new JSONArray());
-                }
-                JSONArray thisReviews = peerReviews.getJSONArray(sourceLawyerKey);
-                if (!thisReviews.toString().contains(reviewIndexEntry.toString())) {
-                    peerReviews.getJSONArray(sourceLawyerKey).put(reviewIndexEntry);
-                }
+            String sourceLawyerKey = allLawyers.get(i);
+            JSONObject review = generateLawyerReview(lawyer, sourceLawyerKey);
+            review.put("REVIEWER_KEY", sourceLawyerKey);
+            String targetLawyerKey = Backend.getKeyFromName(
+                    lawyer.getString("name"), lawyer.getString("id"));
+            review.put("LAWYER_KEY", targetLawyerKey);
+            lawyerReviews.put(review);
+            JSONObject reviewIndexEntry = new JSONObject();
+            reviewIndexEntry.put("REVIEWER_KEY", sourceLawyerKey);
+            reviewIndexEntry.put("LAWYER_KEY", targetLawyerKey);
+            if (!peerReviews.has(sourceLawyerKey)) {
+                peerReviews.put(sourceLawyerKey, new JSONArray());
+            }
+            JSONArray thisReviews = peerReviews.getJSONArray(sourceLawyerKey);
+            if (!thisReviews.toString().contains(reviewIndexEntry.toString())) {
+                peerReviews.getJSONArray(sourceLawyerKey).put(reviewIndexEntry);
             }
         }
         backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());

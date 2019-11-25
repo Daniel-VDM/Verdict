@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DetailScreen.DetailScreen">
+    tools:context=".ui.DetailScreen.DetailScreen"
+    android:background="@color/colorBackground">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/DetailFragmentHolder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DetailTabHoler"
+        app:layout_constraintVertical_bias="0.39">
+
+    </androidx.viewpager.widget.ViewPager>
 
     <ImageView
         android:id="@+id/detail_card_bg"
@@ -72,7 +86,7 @@
     <LinearLayout
         android:id="@+id/DetailTabHoler"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="43dp"
         android:layout_marginBottom="9dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/detail_card_bg"
@@ -90,29 +104,84 @@
 
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/DetailFragmentHolder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DetailTabHoler"
-        app:layout_constraintVertical_bias="0.39">
-
-    </androidx.viewpager.widget.ViewPager>
-
     <ImageView
         android:id="@+id/DetailImage"
         android:layout_width="125dp"
         android:layout_height="170dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toTopOf="@+id/DetailTabHoler"
         app:layout_constraintStart_toStartOf="@+id/detail_card_bg"
         app:layout_constraintTop_toBottomOf="@+id/tab_search_detail"
         app:layout_constraintVertical_bias="0.558"
         app:srcCompat="@drawable/thumbnail" />
+
+    <TextView
+        android:id="@+id/DetailName"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="30dp"
+        android:maxLines="2"
+        android:text="Ryan D. Harris"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/DetailImage"
+        app:layout_constraintEnd_toEndOf="@+id/detail_card_bg"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/DetailImage"
+        app:layout_constraintTop_toTopOf="@+id/DetailImage"
+        app:layout_constraintVertical_bias="0.07999998" />
+
+    <TextView
+        android:id="@+id/DetailLawyerType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Legal Area: Criminal Law"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/DetailName"
+        app:layout_constraintStart_toStartOf="@+id/DetailName"
+        app:layout_constraintTop_toBottomOf="@+id/DetailName" />
+
+    <ImageView
+        android:id="@+id/DetailLocationIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/DetailPhoneIcon"
+        app:layout_constraintStart_toStartOf="@+id/DetailLawyerType"
+        app:layout_constraintTop_toTopOf="@+id/DetailAddr"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+    <TextView
+        android:id="@+id/DetailAddr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="3"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/DetailLocationIcon"
+        app:layout_constraintTop_toBottomOf="@+id/DetailLawyerType" />
+
+    <ImageView
+        android:id="@+id/DetailPhoneIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/DetailLocationIcon"
+        app:layout_constraintTop_toBottomOf="@+id/DetailAddr"
+        app:srcCompat="@drawable/ic_local_phone_black_24dp" />
+
+    <TextView
+        android:id="@+id/DetailPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="(866) 842-5384"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/DetailPhoneIcon"
+        app:layout_constraintStart_toEndOf="@+id/DetailPhoneIcon"
+        app:layout_constraintTop_toTopOf="@+id/DetailPhoneIcon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
