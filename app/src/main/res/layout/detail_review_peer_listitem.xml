@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/DetailPeerReviewBg"
+            android:id="@+id/DetailItemReviewBg"
             android:layout_width="345dp"
             android:layout_height="170dp"
             android:layout_marginTop="8dp"
@@ -105,10 +105,10 @@
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/DetailPeerReviewPic"
-            app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintEnd_toEndOf="@+id/DetailItemReviewBg"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/DetailPeerReviewPic"
-            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintTop_toTopOf="@+id/DetailItemReviewBg"
             app:layout_constraintVertical_bias="0.050000012" />
 
         <ImageView
@@ -116,9 +116,9 @@
             android:layout_width="70dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/DetailPeerReviewBg"
-            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewBg"
-            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintBottom_toBottomOf="@+id/DetailItemReviewBg"
+            app:layout_constraintStart_toStartOf="@+id/DetailItemReviewBg"
+            app:layout_constraintTop_toTopOf="@+id/DetailItemReviewBg"
             app:srcCompat="@drawable/thumbnail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

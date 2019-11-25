@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -86,7 +85,7 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
             detailPeerReviewPic = itemView.findViewById(R.id.DetailPeerReviewPic);
             detailPeerReviewName = itemView.findViewById(R.id.DetailPeerReviewName);
             detailPeerReviewText = itemView.findViewById(R.id.DetailPeerReviewText);
-            detailPeerReviewBg = itemView.findViewById(R.id.DetailPeerReviewBg);
+            detailPeerReviewBg = itemView.findViewById(R.id.DetailItemReviewBg);
             detailPeerRatingNumber = itemView.findViewById(R.id.detail_peer_rating_number);
             detailRating = new ArrayList<ImageView>(){{
                add((ImageView) itemView.findViewById(R.id.detail_peer_rating_star1));

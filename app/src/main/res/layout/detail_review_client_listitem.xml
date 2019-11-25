@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/DetailPeerReviewBg"
+            android:id="@+id/DetailItemReviewBg"
             android:layout_width="345dp"
             android:layout_height="170dp"
             android:layout_marginTop="8dp"
@@ -79,22 +79,22 @@
             android:textColor="@color/colorReviewGold"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewName"
-            app:layout_constraintTop_toBottomOf="@+id/DetailPeerReviewName" />
+            app:layout_constraintStart_toStartOf="@+id/DetailClientReviewName"
+            app:layout_constraintTop_toBottomOf="@+id/DetailClientReviewName" />
 
         <TextView
-            android:id="@+id/DetailPeerReviewText"
+            android:id="@+id/DetailClientReviewText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="4"
             android:text="TextView"
             android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewName"
+            app:layout_constraintEnd_toEndOf="@+id/DetailClientReviewName"
             app:layout_constraintStart_toStartOf="@+id/detail_client_rating_number"
             app:layout_constraintTop_toBottomOf="@+id/detail_client_rating_star1" />
 
         <TextView
-            android:id="@+id/DetailPeerReviewName"
+            android:id="@+id/DetailClientReviewName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -104,21 +104,21 @@
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/DetailPeerReviewPic"
-            app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintBottom_toBottomOf="@+id/DetailClientReviewPic"
+            app:layout_constraintEnd_toEndOf="@+id/DetailItemReviewBg"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/DetailPeerReviewPic"
-            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintStart_toEndOf="@+id/DetailClientReviewPic"
+            app:layout_constraintTop_toTopOf="@+id/DetailItemReviewBg"
             app:layout_constraintVertical_bias="0.050000012" />
 
         <ImageView
-            android:id="@+id/DetailPeerReviewPic"
+            android:id="@+id/DetailClientReviewPic"
             android:layout_width="70dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/DetailPeerReviewBg"
-            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewBg"
-            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintBottom_toBottomOf="@+id/DetailItemReviewBg"
+            app:layout_constraintStart_toStartOf="@+id/DetailItemReviewBg"
+            app:layout_constraintTop_toTopOf="@+id/DetailItemReviewBg"
             app:layout_constraintVertical_bias="0.50"
             app:srcCompat="@drawable/thumbnail" />
 
