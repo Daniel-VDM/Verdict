@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -75,7 +76,8 @@ public class DetailScreen extends AppCompatActivity {
     private void loadHeader() {
         try {
             final Object imageUrl = lawyer.getString("image_url");
-            if (imageUrl == null) {  // TODO check if null condition is correct.
+            if (imageUrl == null || imageUrl.equals("")) {
+                Log.d(TAG, "No picture for " + lawyer.getString("name"));
                 return;
             }
             new Thread() {
