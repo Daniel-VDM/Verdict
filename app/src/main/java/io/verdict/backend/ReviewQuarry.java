@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 public class ReviewQuarry {
 
@@ -43,6 +44,11 @@ public class ReviewQuarry {
                     JSONObject userReviews = reviewIndex.getJSONObject("USER_REVIEWS");
                     for (int i = 0; i < reviews.length(); i++) {
                         JSONObject review = reviews.getJSONObject(i);
+                        if (new Random().nextInt(100) < 17) {
+                            review.put("VERIFIED", true);
+                        } else {
+                            review.put("VERIFIED", false);
+                        }
                         JSONObject user = review.getJSONObject("user");
                         String key = Backend.getKeyFromName(user.getString("name"),
                                 user.getString("id"));

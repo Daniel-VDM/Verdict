@@ -226,6 +226,18 @@ class UserDataGenerator {
     synchronized JSONObject generateDataForLawyer(JSONObject lawyer) throws JSONException {
         Log.d(TAG, "Generating data for " + lawyer.getString("name"));
         JSONObject data = new JSONObject();
+        int randNum = RNG.nextInt(100);
+        int price;
+        if (randNum > 0 && randNum < 30) {
+            price = 1;
+        } else if (randNum >= 30 && randNum < 80) {
+            price = 2;
+        } else if (randNum >= 80 && randNum < 93) {
+            price = 3;
+        } else {
+            price = 4;
+        }
+        data.put("PRICE", price);
         data.put("ABOUT-ME", generateLawyerAboutMe(lawyer));
         JSONArray storedLawyers = backend.getDbUserIndex().getJSONArray("LAWYERS");
         List<String> allLawyers = new ArrayList<>();
@@ -233,7 +245,7 @@ class UserDataGenerator {
             allLawyers.add(storedLawyers.getString(i));
         }
         Collections.shuffle(allLawyers);
-        int numReviews = RNG.nextInt((int)Math.round(allLawyers.size()*0.15));
+        int numReviews = RNG.nextInt((int) Math.round(allLawyers.size() * 0.15));
         JSONArray lawyerReviews = new JSONArray();
         JSONObject reviewIndex = backend.getDbReviewIndex();
         JSONObject peerReviews = reviewIndex.getJSONObject("PEER_REVIEWS");
