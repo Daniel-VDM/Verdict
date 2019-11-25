@@ -248,11 +248,8 @@ public class DetailScreen extends AppCompatActivity {
     }
 
     private void startPhoneActivity(String phoneNumber) {
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
-        if (checkSelfPermission(Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
+                phoneNumber, null));
         startActivity(intent);
     }
 

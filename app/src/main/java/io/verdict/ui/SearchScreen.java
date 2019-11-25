@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
 import java.util.Vector;
 
 import io.verdict.R;
@@ -77,7 +78,7 @@ public class SearchScreen extends AppCompatActivity {
             @Override
             public void onFinish(JSONArray jsonArray) {
                 try {
-                    JSONObject lawyer = jsonArray.getJSONObject(0);
+                    JSONObject lawyer = jsonArray.getJSONObject(new Random().nextInt(jsonArray.length()));
                     Intent detailScreen = new Intent(SearchScreen.this, DetailScreen.class);
                     detailScreen.putExtra("data", lawyer.toString());
                     detailScreen.putExtra("lawField", lawField);
