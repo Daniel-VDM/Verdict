@@ -51,7 +51,7 @@ public class DetailReviewFragment extends Fragment {
     }
 
     private void setupPeerReviews() throws JSONException {
-        JSONArray reviews = lawyerDb.getJSONArray("USER_REVIEWS");
+        JSONArray reviews = lawyerDb.getJSONArray("PEER_REVIEWS");
         reviews.put(reviews.getJSONObject(0));
         DetailPeerViewAdapter adapter = new DetailPeerViewAdapter(getContext(), reviews);
         peerReviews.setAdapter(adapter);

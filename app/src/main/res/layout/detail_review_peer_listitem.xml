@@ -25,33 +25,73 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/reviewbg" />
 
+        <ImageView
+            android:id="@+id/detail_peer_rating_star1"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_peer_rating_number"
+            app:layout_constraintStart_toEndOf="@+id/detail_peer_rating_number"
+            app:layout_constraintTop_toTopOf="@+id/detail_peer_rating_number"
+            app:srcCompat="@drawable/ic_rating_star_full" />
+
+        <ImageView
+            android:id="@+id/detail_peer_rating_star2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_peer_rating_star1"
+            app:layout_constraintStart_toEndOf="@+id/detail_peer_rating_star1"
+            app:layout_constraintTop_toTopOf="@+id/detail_peer_rating_star1"
+            app:srcCompat="@drawable/ic_rating_star_full" />
+
+        <ImageView
+            android:id="@+id/detail_peer_rating_star3"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_peer_rating_star2"
+            app:layout_constraintStart_toEndOf="@+id/detail_peer_rating_star2"
+            app:layout_constraintTop_toTopOf="@+id/detail_peer_rating_star2"
+            app:srcCompat="@drawable/ic_rating_star_full" />
+
+        <ImageView
+            android:id="@+id/detail_peer_rating_star4"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_peer_rating_star3"
+            app:layout_constraintStart_toEndOf="@+id/detail_peer_rating_star3"
+            app:layout_constraintTop_toTopOf="@+id/detail_peer_rating_star3"
+            app:srcCompat="@drawable/ic_rating_star_full" />
+
+        <ImageView
+            android:id="@+id/detail_peer_rating_star5"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_peer_rating_star4"
+            app:layout_constraintStart_toEndOf="@+id/detail_peer_rating_star4"
+            app:layout_constraintTop_toTopOf="@+id/detail_peer_rating_star4"
+            app:srcCompat="@drawable/ic_rating_star_full" />
+
+        <TextView
+            android:id="@+id/detail_peer_rating_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5.0"
+            android:textColor="@color/colorReviewGold"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewName"
+            app:layout_constraintTop_toBottomOf="@+id/DetailPeerReviewName" />
+
         <TextView
             android:id="@+id/DetailPeerReviewText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:maxLines="5"
+            android:maxLines="4"
             android:text="TextView"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewName"
-            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewRating"
-            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewRating" />
-
-        <RatingBar
-            android:id="@+id/DetailPeerReviewRating"
-            style="@android:style/Widget.Holo.RatingBar.Indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:clickable="false"
-            android:isIndicator="true"
-            android:max="5"
-            android:scaleX="0.65"
-            android:scaleY="0.65"
-            android:transformPivotX="0dp"
-            android:transformPivotY="0dp"
-            app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewName"
-            app:layout_constraintTop_toBottomOf="@+id/DetailPeerReviewName" />
+            app:layout_constraintStart_toStartOf="@+id/detail_peer_rating_number"
+            app:layout_constraintTop_toBottomOf="@+id/detail_peer_rating_star1" />
 
         <TextView
             android:id="@+id/DetailPeerReviewName"
@@ -64,10 +104,12 @@
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/DetailPeerReviewPic"
             app:layout_constraintEnd_toEndOf="@+id/DetailPeerReviewBg"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/DetailPeerReviewPic"
-            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg" />
+            app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
+            app:layout_constraintVertical_bias="0.050000012" />
 
         <ImageView
             android:id="@+id/DetailPeerReviewPic"
@@ -78,6 +120,7 @@
             app:layout_constraintStart_toStartOf="@+id/DetailPeerReviewBg"
             app:layout_constraintTop_toTopOf="@+id/DetailPeerReviewBg"
             app:srcCompat="@drawable/thumbnail" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

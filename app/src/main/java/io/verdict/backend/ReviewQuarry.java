@@ -52,9 +52,6 @@ public class ReviewQuarry {
                         JSONObject user = review.getJSONObject("user");
                         String key = Backend.getKeyFromName(user.getString("name"),
                                 user.getString("id"));
-
-                        // TODO: randomly pick if the user is verified, (like 10% chance)
-
                         user.put("USER_TYPE", "user");
                         user.put("KEY", key);
                         backend.databasePut(key, user.toString());
@@ -74,6 +71,9 @@ public class ReviewQuarry {
                         if (!thisReviews.toString().contains(reviewIndexEntry.toString())) {
                             userReviews.getJSONArray(key).put(reviewIndexEntry);
                         }
+                        String reviewerPicUrl = review.getJSONObject("user")
+                                .getString("image_url");
+                        backend.databasePut("PIC_" + key, reviewerPicUrl);
                     }
                     backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
                     reviewListener.onFinish(reviews);

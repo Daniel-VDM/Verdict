@@ -73,7 +73,8 @@ public class Backend {
      * @param key the key of a user in the Firebase.
      */
     public static String getNameFromKey(String key) {
-        String name = key.replace("USER_", "");
+        String name = key.replace("USER_", "")
+                .replace("PIC_", "");
         name = name.substring(0, name.length() - 25);
         return name.replace("_", " ");
     }
@@ -279,6 +280,8 @@ public class Backend {
                                 !(new JSONObject(string).has("PEER_REVIEWS"))) {
                             fetchNewYelpReview(lawyer, id, dbGetIsDone,
                                     iFinal, searchQuarry, key, requestQueue);
+                            String lawyerPicUrl = lawyer.getString("image_url");
+                            databasePut("PIC_" + key, lawyerPicUrl);
                         } else {
                             dbGetIsDone[iFinal] = true;
                             searchQuarry.putDbResponse(key, new JSONObject(string));
