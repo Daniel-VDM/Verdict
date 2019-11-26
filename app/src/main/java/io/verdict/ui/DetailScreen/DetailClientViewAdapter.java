@@ -140,6 +140,9 @@ public class DetailClientViewAdapter extends RecyclerView.Adapter<DetailClientVi
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
                                         String url = clientReview.getString("url");
+                                        if (url.equals("") || url.equals("none")){
+                                            return;
+                                        }
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
                                         intent.setData(Uri.parse(url));
                                         context.startActivity(intent);
