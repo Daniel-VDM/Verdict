@@ -211,7 +211,7 @@ public class Backend {
     public void databasePut(String key, String string) {
         DatabaseReference dbRef = database.getReference(key);
         dbRef.setValue(string);
-        if (!key.contains("META")){
+        if (!key.contains("META")) {
             databaseCache.put(key, string);
         }
     }
@@ -372,4 +372,6 @@ public class Backend {
     // TODO create API for forums requests
 
     // TODO create API for review + forum update
+
+    // TODO toast messages if there was an error in the backend.
 }

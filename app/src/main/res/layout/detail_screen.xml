@@ -130,7 +130,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/DetailImage"
         app:layout_constraintTop_toTopOf="@+id/DetailImage"
-        app:layout_constraintVertical_bias="0.07999998" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/DetailLawyerType"
@@ -182,6 +182,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/DetailPhoneIcon"
         app:layout_constraintStart_toEndOf="@+id/DetailPhoneIcon"
         app:layout_constraintTop_toTopOf="@+id/DetailPhoneIcon" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/DetailTabHoler"
+        app:layout_constraintEnd_toEndOf="@+id/DetailTabHoler"
+        app:layout_constraintStart_toStartOf="@+id/DetailTabHoler"
+        app:srcCompat="@drawable/line" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
