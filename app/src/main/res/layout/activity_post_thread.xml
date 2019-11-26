@@ -9,7 +9,6 @@
 
     <Spinner
         android:id="@+id/postThread_selectCategory"
-        style="@style/spinner_style"
         android:layout_width="310dp"
         android:layout_height="57dp"
         android:layout_marginStart="52dp"
