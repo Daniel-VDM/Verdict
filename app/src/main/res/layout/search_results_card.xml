@@ -10,6 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="false"
+        android:clipChildren="true"
+        android:clipToPadding="false"
         android:paddingBottom="16sp">
 
         <androidx.cardview.widget.CardView
