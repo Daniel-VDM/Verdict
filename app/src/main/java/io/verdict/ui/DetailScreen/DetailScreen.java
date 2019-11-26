@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +45,7 @@ public class DetailScreen extends AppCompatActivity {
     private TextView detailLawyerType;
     private TextView detailAddress;
     private TextView detailPhone;
-    private SectionsPageAdapter sectionsPageAdapter;
+    private DetailReviewItemAdapter sectionsPageAdapter;
     private ViewPager viewPager;
 
     @Override
@@ -75,7 +74,7 @@ public class DetailScreen extends AppCompatActivity {
         processIntent();
         loadHeader();
 
-        sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        sectionsPageAdapter = new DetailReviewItemAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.DetailFragmentHolder);
         setupViewPager(viewPager);
         TabLayout tabLayout = findViewById(R.id.DetailTabs);
@@ -262,7 +261,7 @@ public class DetailScreen extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        DetailReviewItemAdapter adapter = new DetailReviewItemAdapter(getSupportFragmentManager());
         adapter.addFragment(new DetailAboutFragment(), "Overview");
         adapter.addFragment(new DetailReviewFragment(), "Reviews");
         adapter.addFragment(new DetailSubmitFragment(), "Leave a review");
@@ -273,4 +272,7 @@ public class DetailScreen extends AppCompatActivity {
         return lawyer;
     }
 
+    public Backend getBackend() {
+        return backend;
+    }
 }

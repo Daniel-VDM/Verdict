@@ -247,7 +247,7 @@ class UserDataGenerator {
             allLawyers.add(storedLawyers.getString(i));
         }
         Collections.shuffle(allLawyers);
-        int numReviews = RNG.nextInt((int)(Math.max(Math.round(allLawyers.size()), 80) * 0.15));
+        int numReviews = RNG.nextInt((int)(Math.min(Math.round(allLawyers.size()), 80) * 0.15));
         JSONArray lawyerReviews = new JSONArray();
         JSONObject reviewIndex = backend.getDbReviewIndex();
         JSONObject peerReviews = reviewIndex.getJSONObject("PEER_REVIEWS");

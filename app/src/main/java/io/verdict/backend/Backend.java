@@ -73,7 +73,8 @@ public class Backend {
      * @param key the key of a user in the Firebase.
      */
     public static String getNameFromKey(String key) {
-        String name = key.replace("USER_", "");
+        String name = key.replace("USER_", "")
+                .replace("PIC_", "");
         name = name.substring(0, name.length() - 25);
         return name.replace("_", " ");
     }
@@ -210,7 +211,7 @@ public class Backend {
     public void databasePut(String key, String string) {
         DatabaseReference dbRef = database.getReference(key);
         dbRef.setValue(string);
-        if (!key.contains("META")){
+        if (!key.contains("META")) {
             databaseCache.put(key, string);
         }
     }
@@ -279,6 +280,8 @@ public class Backend {
                                 !(new JSONObject(string).has("PEER_REVIEWS"))) {
                             fetchNewYelpReview(lawyer, id, dbGetIsDone,
                                     iFinal, searchQuarry, key, requestQueue);
+                            String lawyerPicUrl = lawyer.getString("image_url");
+                            databasePut("PIC_" + key, lawyerPicUrl);
                         } else {
                             dbGetIsDone[iFinal] = true;
                             searchQuarry.putDbResponse(key, new JSONObject(string));
@@ -369,4 +372,6 @@ public class Backend {
     // TODO create API for forums requests
 
     // TODO create API for review + forum update
+
+    // TODO toast messages if there was an error in the backend.
 }

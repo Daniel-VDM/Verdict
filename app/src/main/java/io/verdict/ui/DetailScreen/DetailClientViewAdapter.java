@@ -35,13 +35,13 @@ import io.verdict.R;
 import io.verdict.backend.Backend;
 import io.verdict.backend.DatabaseListener;
 
-public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAdapter.ViewHolder>{
-    private static final String TAG = "DetailPeerViewAdapter";
+public class DetailClientViewAdapter extends RecyclerView.Adapter<DetailClientViewAdapter.ViewHolder>{
+    private static final String TAG = "detailClientViewAdapter";
 
     private JSONArray peerReviews;
     private Context context;
 
-    public DetailPeerViewAdapter(Context context, JSONArray peerReviews) {
+    public DetailClientViewAdapter(Context context, JSONArray peerReviews) {
         this.context = context;
         this.peerReviews = peerReviews;
     }
@@ -50,7 +50,7 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.detail_review_peer_listitem, parent, false);
+                .inflate(R.layout.detail_review_client_listitem, parent, false);
         return new ViewHolder(view);
     }
 
@@ -71,39 +71,43 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView detailPeerReviewPic;
-        private ImageView detailPeerReviewBg;
-        private TextView detailPeerReviewName;
-        private TextView detailPeerReviewText;
-        private TextView detailPeerRatingNumber;
+        private ImageView detailClientReviewPic;
+        private ImageView detailClientReviewBg;
+        private ImageView detailClientVerifiedIcon;
+        private TextView detailClientVerifiedText;
+        private TextView detailClientReviewName;
+        private TextView detailClientReviewText;
+        private TextView detailClientRatingNumber;
         private ArrayList<ImageView> detailRating;
         private Backend backend;
 
         ViewHolder(@NonNull final View itemView) {
             super(itemView);
             backend = new Backend();
-            detailPeerReviewPic = itemView.findViewById(R.id.DetailPeerReviewPic);
-            detailPeerReviewName = itemView.findViewById(R.id.DetailPeerReviewName);
-            detailPeerReviewText = itemView.findViewById(R.id.DetailPeerReviewText);
-            detailPeerReviewBg = itemView.findViewById(R.id.DetailItemReviewBg);
-            detailPeerRatingNumber = itemView.findViewById(R.id.detail_peer_rating_number);
+            detailClientReviewPic = itemView.findViewById(R.id.DetailClientReviewPic);
+            detailClientReviewName = itemView.findViewById(R.id.DetailClientReviewName);
+            detailClientReviewText = itemView.findViewById(R.id.DetailClientReviewText);
+            detailClientReviewBg = itemView.findViewById(R.id.DetailItemReviewBg);
+            detailClientRatingNumber = itemView.findViewById(R.id.detail_client_rating_number);
+            detailClientVerifiedIcon = itemView.findViewById(R.id.DetailVerifiedIcon);
+            detailClientVerifiedText = itemView.findViewById(R.id.detail_client_verified2);
             detailRating = new ArrayList<ImageView>(){{
-               add((ImageView) itemView.findViewById(R.id.detail_peer_rating_star1));
-               add((ImageView) itemView.findViewById(R.id.detail_peer_rating_star2));
-               add((ImageView) itemView.findViewById(R.id.detail_peer_rating_star3));
-               add((ImageView) itemView.findViewById(R.id.detail_peer_rating_star4));
-               add((ImageView) itemView.findViewById(R.id.detail_peer_rating_star5));
+               add((ImageView) itemView.findViewById(R.id.detail_client_rating_star1));
+               add((ImageView) itemView.findViewById(R.id.detail_client_rating_star2));
+               add((ImageView) itemView.findViewById(R.id.detail_client_rating_star3));
+               add((ImageView) itemView.findViewById(R.id.detail_client_rating_star4));
+               add((ImageView) itemView.findViewById(R.id.detail_client_rating_star5));
             }};
         }
 
         @SuppressLint("SetTextI18n")
-        void setupPeerReview(final Context context, JSONObject peerReview) throws JSONException {
-            detailPeerReviewName.setText(peerReview.getJSONObject("user").getString("name"));
-            detailPeerReviewText.setText(peerReview.getString("text"));
-            float rating = (float)peerReview.getLong("rating");
-            detailPeerRatingNumber.setText(rating + "");
+        void setupPeerReview(final Context context, final JSONObject clientReview) throws JSONException {
+            detailClientReviewName.setText(clientReview.getJSONObject("user").getString("name"));
+            detailClientReviewText.setText(clientReview.getString("text"));
+            float rating = (float)clientReview.getLong("rating");
+            detailClientRatingNumber.setText(rating + "");
 
-            fetchAndLoadPic(context, peerReview);
+            fetchAndLoadPic(context, clientReview);
 
             Drawable emptyStar = context.getResources().getDrawable(R.drawable.ic_rating_star_empty);
             Drawable halfStar = context.getResources().getDrawable(R.drawable.ic_rating_star_half);
@@ -119,8 +123,13 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
                 }
             }
 
-            detailPeerReviewBg.setClickable(true);
-            detailPeerReviewBg.setOnClickListener(new View.OnClickListener() {
+            if (!clientReview.getBoolean("VERIFIED")){
+                detailClientVerifiedIcon.setAlpha(0.0f);
+                detailClientVerifiedText.setAlpha(0.0f);
+            }
+
+            detailClientReviewBg.setClickable(true);
+            detailClientReviewBg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -129,10 +138,17 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    String url = "https://www.google.com/";
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(url));
-                                    context.startActivity(intent);
+                                    try {
+                                        String url = clientReview.getString("url");
+                                        if (url.equals("") || url.equals("none")){
+                                            return;
+                                        }
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setData(Uri.parse(url));
+                                        context.startActivity(intent);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -168,7 +184,7 @@ public class DetailPeerViewAdapter extends RecyclerView.Adapter<DetailPeerViewAd
                                     ((DetailScreen)context).runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            detailPeerReviewPic.setImageBitmap(bitmap);
+                                            detailClientReviewPic.setImageBitmap(bitmap);
                                         }
                                     });
                                 } catch (IOException e) {
