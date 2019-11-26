@@ -49,5 +49,6 @@
     <string name="rating_sort">Most Recent</string>
     <string name="recent_sort">Highest Rating</string>
     <string name="top_answer">Top Answers</string>
+    <string name="submit_answer">Submit Answer</string>
 
 </resources>
