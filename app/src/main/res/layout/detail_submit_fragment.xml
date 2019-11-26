@@ -1,8 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/detail_submit_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout_editor_absoluteX="1dp"
+                    tools:layout_editor_absoluteY="575dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </ScrollView>
+
+                <TextView
+                    android:id="@+id/detail_submit_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/details_leave_review_price"
+                    android:textAlignment="inherit"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_rating" />
+
+                <RatingBar
+                    android:id="@+id/detail_submit_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:progressBackgroundTint="@android:color/tab_indicator_text"
+                    android:progressTint="@color/colorReviewGold"
+                    android:secondaryProgressTint="@color/colorTabTextSelected"
+                    android:stepSize="1"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_overall_text" />
+
+                <TextView
+                    android:id="@+id/detail_submit_leave_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginEnd="32dp"
+                    android:maxLines="1"
+                    android:shadowColor="#B4000000"
+                    android:text="@string/details_leave_review"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <SeekBar
+                    android:id="@+id/detail_submit_price_select"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:max="3"
+                    android:progress="1"
+                    android:progressTint="@color/colorAccent"
+                    android:thumbTint="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_price"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_price"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_price" />
+
+                <TextView
+                    android:id="@+id/detail_submit_verified_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/details_leave_review_verified"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_leave_text" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:contentPadding="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_price_select">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/detail_submit_review_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="@string/details_leave_review_prompt"
+                        android:textSize="16sp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/detail_submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/details_leave_review_submit"
+                    android:textColor="@color/colorTabTextSelected"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+                <ImageView
+                    android:id="@+id/detail_submit_divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_verified_text"
+                    app:srcCompat="@drawable/ic_divider_line" />
+
+                <TextView
+                    android:id="@+id/detail_submit_price_baller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/details_leave_review_baller"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintBottom_toTopOf="@+id/detail_submit_price_select"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_price_select" />
+
+                <TextView
+                    android:id="@+id/detail_submit_price_cheap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="@string/details_leave_review_cheap"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintBottom_toTopOf="@+id/detail_submit_price_select"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_price_select" />
+
+                <TextView
+                    android:id="@+id/detail_submit_overall_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/details_leave_review_overall"
+                    android:textAlignment="inherit"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_submit_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
