@@ -50,5 +50,8 @@
     <string name="recent_sort">Highest Rating</string>
     <string name="top_answer">Top Answers</string>
     <string name="submit_answer">Submit Answer</string>
-
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="description_hint">Type your problem</string>
+    <string name="response">Response</string>
 </resources>
