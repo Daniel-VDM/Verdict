@@ -146,7 +146,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/detail_submit_leave_text"
                     app:layout_constraintStart_toStartOf="@+id/detail_submit_leave_text"
                     app:layout_constraintTop_toBottomOf="@+id/detail_submit_verified_text"
-                    app:srcCompat="@drawable/ic_divider_line" />
+                    app:srcCompat="@drawable/rectangle" />
 
                 <TextView
                     android:id="@+id/detail_submit_price_baller"

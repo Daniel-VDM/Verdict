@@ -116,7 +116,7 @@
                 android:layout_gravity="center"
                 android:paddingVertical="24dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/ic_divider_line" />
+                app:srcCompat="@drawable/rectangle" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
