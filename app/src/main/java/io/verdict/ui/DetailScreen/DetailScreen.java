@@ -272,4 +272,7 @@ public class DetailScreen extends AppCompatActivity {
         return lawyer;
     }
 
+    public Backend getBackend() {
+        return backend;
+    }
 }

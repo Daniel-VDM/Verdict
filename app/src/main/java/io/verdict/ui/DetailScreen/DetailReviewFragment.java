@@ -48,7 +48,10 @@ public class DetailReviewFragment extends Fragment {
     private TextView detailPeerReviewsMore;
     private TextView detailClientReviewsMore;
     private TextView detailPriceRating;
-
+    private TextView detailPeerReviewHeader;
+    private TextView detailClientReviewHeader;
+    private ImageView div1;
+    private ImageView div2;
 
     @Nullable
     @Override
@@ -65,6 +68,10 @@ public class DetailReviewFragment extends Fragment {
         detailPeerReviewsMore = view.findViewById(R.id.detail_peer_rating_viewmore);
         detailClientReviewsMore = view.findViewById(R.id.detail_client_rating_viewmore);
         detailPriceRating = view.findViewById(R.id.detail_price_rating2);
+        detailPeerReviewHeader = view.findViewById(R.id.detail_peer_review_header);
+        detailClientReviewHeader = view.findViewById(R.id.detail_client_review_header2);
+        div1 = view.findViewById(R.id.detail_review_break3);
+        div2 = view.findViewById(R.id.detail_review_break4);
         detailClientRatingStars = new ArrayList<ImageView>() {{
             add((ImageView) view.findViewById(R.id.detail_client_rating_star1));
             add((ImageView) view.findViewById(R.id.detail_client_rating_star2));
@@ -97,7 +104,7 @@ public class DetailReviewFragment extends Fragment {
         for (int i = 0; i < jsonArray.length(); i++) {
             sum += jsonArray.getJSONObject(i).getInt("rating");
         }
-        return sum / jsonArray.length();
+        return jsonArray.length() != 0 ? sum / jsonArray.length() : 0;
     }
 
     private void setStars(ArrayList<ImageView> stars, float rating) {
@@ -164,6 +171,10 @@ public class DetailReviewFragment extends Fragment {
             detailPeerReviewsMore.setClickable(false);
             detailPeerReviewsMore.setHeight(0);
             detailPeerReviewsMore.setAlpha(0.0f);
+            div1.setAlpha(0.0f);
+            div1.setMaxHeight(0);
+            detailPeerReviewHeader.setAlpha(0.0f);
+            detailPeerReviewHeader.setHeight(0);
         }
         final DetailPeerViewAdapter adapter = new DetailPeerViewAdapter(getContext(), currPeerReviews);
         peerReviews.setAdapter(adapter);
@@ -202,6 +213,10 @@ public class DetailReviewFragment extends Fragment {
             detailClientReviewsMore.setClickable(false);
             detailClientReviewsMore.setHeight(0);
             detailClientReviewsMore.setAlpha(0.0f);
+            div2.setAlpha(0.0f);
+            div2.setMaxHeight(0);
+            detailClientReviewHeader.setAlpha(0.0f);
+            detailClientReviewHeader.setHeight(0);
         }
         final DetailClientViewAdapter adapter = new DetailClientViewAdapter(getContext(), currClientReviews);
         clientReviews.setAdapter(adapter);
@@ -210,7 +225,7 @@ public class DetailReviewFragment extends Fragment {
         detailClientReviewsMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count = Math.min(3, peerReviewMore.length());
+                int count = Math.min(3, clientReviewMore.length());
                 for (int i = 0; i < count; i++) {
                     try {
                         currClientReviews.put(clientReviewMore.getJSONObject(0));
