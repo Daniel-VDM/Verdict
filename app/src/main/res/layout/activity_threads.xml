@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forum.ThreadsActivity">
+
+    <Button
+        android:id="@+id/threads_tab_forum_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_forum"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/threads_tab_search_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_search"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/threads_tab_search_highlight_search"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_search"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/threads_tab_search_search"
+        app:layout_constraintEnd_toStartOf="@+id/threads_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/threads_tab_search_search"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <ImageView
+        android:id="@+id/threads_tab_forum_highlight_search"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_forum"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/threads_tab_forum_search"
+        app:layout_constraintEnd_toEndOf="@+id/threads_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/threads_tab_forum_search"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <Spinner
+        android:id="@+id/threads_topic_spinner"
+        android:layout_width="373dp"
+        android:layout_height="42dp"
+        android:entries="string/law_topics"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.14" />
+
+    <Button
+        android:id="@+id/most_recent"
+        android:layout_width="121dp"
+        android:layout_height="33dp"
+        android:text="@string/rating_sort"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.762"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.224" />
+
+    <Button
+        android:id="@+id/highest_rating"
+        android:layout_width="121dp"
+        android:layout_height="33dp"
+        android:text="@string/recent_sort"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.762"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.283" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="110dp"
+        android:layout_height="27dp"
+        android:text="@string/sort_by"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.265"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.242" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/threadCardList"
+        android:layout_width="168dp"
+        android:layout_height="385dp"
+        tools:layout_editor_absoluteX="120dp"
+        tools:layout_editor_absoluteY="295dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
