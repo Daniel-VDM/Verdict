@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingTop="32dp"
-                android:text="TextView"
+                android:text="@string/results_info_text"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:visibility="invisible" />
@@ -143,9 +143,11 @@
 
                         <TextView
                             android:id="@+id/results_forum_topic_text"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="TextView"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginEnd="24dp"
+                            android:text="@string/results_forum_topic_card_text"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/results_forum_icon"

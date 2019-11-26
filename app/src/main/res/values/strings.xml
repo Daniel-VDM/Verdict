@@ -13,6 +13,8 @@
     <string name="results_client_rating_text">Client Rating:</string>
     <string name="results_peer_rating_text">Peer Rating:</string>
     <string name="results_price_rating_text">Cost Estimate:</string>
+    <string name="results_info_text">Showing %d results for %s Law around %s</string>
+    <string name="results_forum_topic_card_text">Learn more about %s law on our associated Forum topic</string>
     <string name="background_for_card">background for card</string>
     <bool name="force_generate">false</bool>
     # This is dangerous, DO NOT ENABLE for consecutive execution.
