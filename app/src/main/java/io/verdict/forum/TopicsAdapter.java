@@ -27,7 +27,7 @@ public class TopicsAdapter extends ArrayAdapter<Topic>{
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(tContext).inflate(R.layout.activity_topics,parent,false);
+            listItem = LayoutInflater.from(tContext).inflate(R.layout.list_item,parent,false);
 
         Topic currentTopic = topicsList.get(position);
 

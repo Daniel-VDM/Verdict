@@ -23,7 +23,7 @@ public class Question {
         this.qAuthor = qAuthor;
         this.question = question;
         this.answers = new ArrayList<Answer>();
-        this.qRating = 0;
+        this.qRating = 3;
     }
 
     public String getqTopic() {

@@ -7,11 +7,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.verdict.R;
 
 public class SingleThreadActivity extends AppCompatActivity {
+    private ListView answersList;
+    private TemporaryAnswersAdapter tempAnswersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,41 @@ public class SingleThreadActivity extends AppCompatActivity {
                 single_threadTabForumHighlight.setImageAlpha(255);
             }
         });
+
+
+        final ListView answersList = findViewById(R.id.thread_answer_list);
+        tempAnswersAdapter = new TemporaryAnswersAdapter(this,createDummyAnswers(6));
+        answersList.setAdapter(tempAnswersAdapter);
+
+
+        final TextView question_name = findViewById(R.id.question_name);
+        question_name.setText("+30      Will my case go to trial?");
+
         
     }
+
+    private ArrayList<Answer> createDummyAnswers(int size) {
+        ArrayList<Answer> result = new ArrayList<>();
+        List<String> dummy_answers = new ArrayList<String>();
+        dummy_answers.add("No you should not.");
+        dummy_answers.add("This depends on law 1001.");
+        dummy_answers.add("I think you can try to settle out of court.");
+        dummy_answers.add("You are entitled to a lot of money.");
+        dummy_answers.add("No.");
+        dummy_answers.add("Absolutely");
+
+        for (int i = 0; i < size; i++) {
+            String aQuestion = "Should I take my case to court?";
+            String aDate = "01-11-19";
+            String aAuthor = "Anonymous";
+            String answer_text = dummy_answers.get(i);
+            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text);
+            result.add(a);
+
+        }
+        return result;
+    }
+
+
+
 }

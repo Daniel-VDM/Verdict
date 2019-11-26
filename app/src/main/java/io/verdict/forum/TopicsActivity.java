@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -91,4 +93,5 @@ public class TopicsActivity extends AppCompatActivity {
 
 
     }
+
 }

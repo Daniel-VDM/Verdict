@@ -24,6 +24,46 @@ public class Answer {
         this.aRating = 0;
     }
 
+    public String getaQuestion() {
+        return aQuestion;
+    }
+
+    public void setaQuestion(String aQuestion) {
+        this.aQuestion = aQuestion;
+    }
+
+    public String getaDate() {
+        return aDate;
+    }
+
+    public void setaDate(String aDate) {
+        this.aDate = aDate;
+    }
+
+    public String getaAuthor() {
+        return aAuthor;
+    }
+
+    public void setaAuthor(String aAuthor) {
+        this.aAuthor = aAuthor;
+    }
+
+    public int getaRating() {
+        return aRating;
+    }
+
+    public void setaRating(int aRating) {
+        this.aRating = aRating;
+    }
+
+    public String getanswer_text() {
+        return answer_text;
+    }
+
+    public void setanswer_text(String answer_text) {
+        this.answer_text = answer_text;
+    }
+
 
 
 }

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
     tools:context=".forum.TopicsActivity">
 
     <Button
@@ -38,6 +39,7 @@
         android:id="@+id/topics_tab_search_highlight_search"
         android:layout_width="@dimen/half_screen_width"
         android:layout_height="@dimen/tab_search_highlight_height"
+        android:layout_above="@id/topics_list"
         android:alpha="255"
         android:contentDescription="@string/tab_search"
         android:elevation="2dp"
@@ -60,9 +62,12 @@
 
     <ListView
         android:id="@+id/topics_list"
-        android:layout_width="409dp"
-        android:layout_height="672dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="405dp"
+        android:layout_height="660dp"
+        android:layout_marginTop="84dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.view.Menu;
+import android.view.MenuItem;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -16,6 +19,8 @@ import io.verdict.R;
 
 
 public class ThreadsActivity extends AppCompatActivity {
+    private ListView threadsList;
+    private TemporaryThreadsAdapter tempAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,27 +65,45 @@ public class ThreadsActivity extends AppCompatActivity {
         //change to set current topic using intent. currently set to Personal Injury
         threads_spinner.setSelection(14);
 
-        RecyclerView recList = (RecyclerView) findViewById(R.id.threadCardList);
+        /*ThreadsAdapter threadadapter = new ThreadsAdapter(createDummyQuestions(6));
+        /*final RecyclerView recList = (RecyclerView) findViewById(R.id.threadCardList);
         recList.setHasFixedSize(true);
+
         LinearLayoutManager llm = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false);
         recList.setLayoutManager(llm);
 
-        ThreadsAdapter threadadapter = new ThreadsAdapter(createDummyQuestions(1));
-        recList.setAdapter(threadadapter);
+        recList.setAdapter(threadadapter);*/
+
+        final ListView threadsList = findViewById(R.id.list_of_threads);
+        tempAdapter = new TemporaryThreadsAdapter(this,createDummyQuestions(6));
+        threadsList.setAdapter(tempAdapter);
+
+
 
 
     }
 
-    private List<Question> createDummyQuestions(int size) {
 
-        List<Question> result = new ArrayList<Question>();
-        String qTopic = "Personal Injury";
-        String date = "01-11-19";
-        String qAuthor = "Anonymous";
-        String question = "Should I take my case to court?";
-        Question q = new Question(qTopic, date, qAuthor, question);
-        result.add(q);
+    private ArrayList<Question> createDummyQuestions(int size) {
+        ArrayList<Question> result = new ArrayList<Question>();
+        List<String> dummy_questions = new ArrayList<String>();
+        dummy_questions.add("Should I take my case to court?");
+        dummy_questions.add("Who is the best lawyer in my area?");
+        dummy_questions.add("Who should I ask for help?");
+        dummy_questions.add("What am I entitled to?");
+        dummy_questions.add("What do I do now?");
+        dummy_questions.add("How do I file a case?");
+
+        for (int i = 0; i < size; i++) {
+            String qTopic = "Personal Injury";
+            String date = "01-11-19";
+            String qAuthor = "Anonymous";
+            String question = dummy_questions.get(i);
+            Question q = new Question(qTopic, date, qAuthor, question);
+            result.add(q);
+
+        }
         return result;
     }
 }
