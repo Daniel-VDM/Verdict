@@ -1,11 +1,17 @@
 package io.verdict.ui.SearchResults;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,12 +20,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.verdict.R;
 import io.verdict.backend.Backend;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
 import io.verdict.ui.SearchScreen.SearchScreen;
+
+import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
 public class SearchResults extends AppCompatActivity {
 
@@ -40,6 +50,12 @@ public class SearchResults extends AppCompatActivity {
 
         final ProgressBar resultsLoadingSpinner = findViewById(R.id.results_loading_spinner);
         final TextView resultsLoadingText = findViewById(R.id.results_loading_text);
+
+        final TextView resultsInfoText = findViewById(R.id.results_info);
+        final ImageView resultsInfoDivider = findViewById(R.id.results_divider);
+        final CardView resultsForumTopicCard = findViewById(R.id.results_forum_topic_card);
+        final TextView resultsForumTopicText = findViewById(R.id.results_forum_topic_text);
+
         final RecyclerView resultsRecycler = findViewById(R.id.results_recycler);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         resultsRecycler.setLayoutManager(layoutManager);
@@ -50,8 +66,32 @@ public class SearchResults extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        resultsLoadingSpinner.setAlpha(0);
-                        resultsLoadingText.setAlpha(0);
+                        resultsLoadingSpinner.setVisibility(View.INVISIBLE);
+                        resultsLoadingText.setVisibility(View.INVISIBLE);
+
+                        resultsInfoText.setVisibility(View.VISIBLE);
+                        resultsInfoDivider.setVisibility(View.VISIBLE);
+                        String searchArea = location;
+                        if (jsonArray.length() > 0) {
+                            try {
+                                JSONObject firstResultLocation = jsonArray.getJSONObject(0).getJSONObject("location");
+                                String city = firstResultLocation.getString("city");
+                                String state = firstResultLocation.getString("state");
+                                String zip = firstResultLocation.getString("zip_code");
+                                searchArea = String.format("%s %s, %s", city, state, zip);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        String resultsInfoString = String.format(getString(R.string.results_info_text), jsonArray.length(), legalField, searchArea);
+                        resultsInfoText.setText(resultsInfoString);
+
+                        resultsForumTopicCard.setVisibility(View.VISIBLE);
+                        String resultsForumTopicString = String.format(getString(R.string.results_forum_topic_card_text), legalField);
+                        Spannable resultsForumTopicSpannable = new SpannableString(resultsForumTopicString);
+                        resultsForumTopicSpannable.setSpan(new UnderlineSpan(), resultsForumTopicString.length()-11, resultsForumTopicString.length(), 0);
+                        resultsForumTopicText.setText(resultsForumTopicSpannable);
+
                         ResultsRecyclerAdapter resultsAdapter = new ResultsRecyclerAdapter(jsonArray, legalField, SearchResults.this);
                         resultsRecycler.setAdapter(resultsAdapter);
                     }
