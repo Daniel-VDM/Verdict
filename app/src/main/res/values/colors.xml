@@ -7,4 +7,6 @@
     <color name="colorTabTextNotSelected">#B3FFFFFF</color>
     <color name="colorReviewGold">#EB6E00</color>
     <color name="colorBackground">#EFEFEF</color>
+    <color name="colorBackgroundGrey">#E5E5E5</color>
+    <color name="colorButtonSubmitGreen">#008024</color>
 </resources>

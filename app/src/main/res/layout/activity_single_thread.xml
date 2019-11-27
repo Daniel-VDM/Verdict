@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.forum.SingleThreadActivity">
+
+    <Button
+        android:id="@+id/single_thread_tab_forum_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_forum"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/single_thread_tab_search_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_search"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/single_thread_tab_search_highlight_search"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_search"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/single_thread_tab_search_search"
+        app:layout_constraintEnd_toStartOf="@+id/single_thread_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/single_thread_tab_search_search"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <ImageView
+        android:id="@+id/single_thread_tab_forum_highlight_search"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_forum"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/single_thread_tab_forum_search"
+        app:layout_constraintEnd_toEndOf="@+id/single_thread_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/single_thread_tab_forum_search"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <TextView
+        android:id="@+id/question_name"
+        android:layout_width="316dp"
+        android:layout_height="51dp"
+        android:textColor="@android:color/black"
+        android:text="TextView"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <TextView
+        android:id="@+id/top_answer"
+        android:layout_width="90dp"
+        android:layout_height="22dp"
+        android:text="@string/top_answer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.258" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_answer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.944" />
+
+    <ListView
+        android:id="@+id/thread_answer_list"
+        android:layout_width="309dp"
+        android:layout_height="344dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.635" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
