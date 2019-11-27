@@ -1,4 +1,4 @@
-package io.verdict.ui.forum;
+package io.verdict.ui.Forum;
 
 import android.view.View;
 import android.widget.TextView;

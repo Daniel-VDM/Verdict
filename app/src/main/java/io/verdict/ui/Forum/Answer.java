@@ -1,4 +1,4 @@
-package io.verdict.ui.forum;
+package io.verdict.ui.Forum;
 
 public class Answer {
     // Store the question this answer is under

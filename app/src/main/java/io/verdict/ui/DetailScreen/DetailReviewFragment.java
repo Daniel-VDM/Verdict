@@ -171,6 +171,8 @@ public class DetailReviewFragment extends Fragment {
             detailPeerReviewsMore.setClickable(false);
             detailPeerReviewsMore.setHeight(0);
             detailPeerReviewsMore.setAlpha(0.0f);
+        }
+        if (currPeerReviews.length() == 0) {
             div1.setAlpha(0.0f);
             div1.setMaxHeight(0);
             detailPeerReviewHeader.setAlpha(0.0f);
@@ -213,6 +215,8 @@ public class DetailReviewFragment extends Fragment {
             detailClientReviewsMore.setClickable(false);
             detailClientReviewsMore.setHeight(0);
             detailClientReviewsMore.setAlpha(0.0f);
+        }
+        if (currClientReviews.length() == 0) {
             div2.setAlpha(0.0f);
             div2.setMaxHeight(0);
             detailClientReviewHeader.setAlpha(0.0f);

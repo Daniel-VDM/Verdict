@@ -19,11 +19,11 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.DetailScreen.DetailScreen"></activity>
         <activity android:name=".ui.SearchResults.SearchResults"></activity>
-        <activity android:name=".ui.forum.SingleThreadActivity"></activity>
-        <activity android:name=".ui.forum.ThreadsActivity" />
-        <activity android:name=".ui.forum.TopicsActivity" />
-        <activity android:name=".ui.forum.PostResponseActivity" />
-        <activity android:name=".ui.forum.PostThreadActivity" />
+        <activity android:name=".ui.Forum.SingleThreadActivity"></activity>
+        <activity android:name=".ui.Forum.ThreadsActivity" />
+        <activity android:name=".ui.Forum.TopicsActivity" />
+        <activity android:name=".ui.Forum.PostResponseActivity" />
+        <activity android:name=".ui.Forum.PostThreadActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
