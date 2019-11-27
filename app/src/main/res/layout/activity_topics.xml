@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    tools:context=".forum.TopicsActivity">
+    tools:context=".ui.forum.TopicsActivity">
 
     <Button
         android:id="@+id/topics_tab_forum_search"

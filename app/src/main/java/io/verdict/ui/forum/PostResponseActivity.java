@@ -1,4 +1,4 @@
-package io.verdict;
+package io.verdict.ui.forum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import io.verdict.R;
 
 public class PostResponseActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package io.verdict;
+package io.verdict.ui.forum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+
+import io.verdict.R;
 
 public class PostThreadActivity extends AppCompatActivity {
 

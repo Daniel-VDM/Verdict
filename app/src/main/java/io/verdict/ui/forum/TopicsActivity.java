@@ -1,28 +1,14 @@
-package io.verdict.forum;
+package io.verdict.ui.forum;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.database.DatabaseError;
-
-import org.json.JSONArray;
-
-import java.util.Vector;
 
 import io.verdict.R;
-import io.verdict.backend.Backend;
-import io.verdict.backend.DatabaseListener;
-import io.verdict.backend.SearchListener;
-import io.verdict.backend.SearchQuarry;
-import android.os.Bundle;
+
 import android.widget.ListView;
 import java.util.ArrayList;
 

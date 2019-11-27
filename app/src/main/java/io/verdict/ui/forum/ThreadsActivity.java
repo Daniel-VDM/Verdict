@@ -1,4 +1,4 @@
-package io.verdict.forum;
+package io.verdict.ui.forum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,10 +9,7 @@ import android.widget.ImageView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.view.Menu;
-import android.view.MenuItem;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 import java.util.ArrayList;
 import io.verdict.R;

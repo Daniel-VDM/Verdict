@@ -1,19 +1,12 @@
-package io.verdict.forum;
-import androidx.appcompat.app.AppCompatActivity;
+package io.verdict.ui.forum;
 
-import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Spinner;
+
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.verdict.R;
 

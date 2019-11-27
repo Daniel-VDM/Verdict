@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostResponseActivity">
+    tools:context=".ui.forum.PostResponseActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackgroundGrey"
-        tools:context=".PostThreadActivity">
+        tools:context=".ui.forum.PostThreadActivity">
 
         <EditText
             android:id="@+id/postResponse_titleName"

@@ -1,4 +1,4 @@
-package io.verdict.forum;
+package io.verdict.ui.forum;
 
 public class Topic {
     // Store the id of the topic image

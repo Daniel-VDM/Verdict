@@ -1,6 +1,4 @@
-package io.verdict.forum;
-
-import java.util.ArrayList;
+package io.verdict.ui.forum;
 
 public class Answer {
     // Store the question this answer is under

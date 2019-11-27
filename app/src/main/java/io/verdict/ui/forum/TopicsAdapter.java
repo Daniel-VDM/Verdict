@@ -1,4 +1,4 @@
-package io.verdict.forum;
+package io.verdict.ui.forum;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package io.verdict.forum;
+package io.verdict.ui.forum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
