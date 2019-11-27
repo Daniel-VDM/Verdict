@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.forum.ThreadsActivity">
+    tools:context=".ui.Forum.ThreadsActivity">
 
     <Button
         android:id="@+id/threads_tab_forum_search"

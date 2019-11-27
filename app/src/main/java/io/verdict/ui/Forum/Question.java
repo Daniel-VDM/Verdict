@@ -1,4 +1,4 @@
-package io.verdict.ui.forum;
+package io.verdict.ui.Forum;
 
 import java.util.ArrayList;
 
