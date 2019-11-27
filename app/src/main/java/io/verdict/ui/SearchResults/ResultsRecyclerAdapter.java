@@ -89,6 +89,7 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<ResultsRecycler
     public void onBindViewHolder(final ResultsViewHolder holder, int position) {
         try {
             final JSONObject result = resultsJsonArray.getJSONObject(position);
+            final String resultString = result.toString();
             final String name = result.getString("name");
             final String title = result.getJSONArray("categories").getJSONObject(0).getString("title");
             final String city = result.getJSONObject("location").getString("city");
@@ -166,7 +167,7 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<ResultsRecycler
                     String lawField = currentLawField + " Law";
 
                     Intent detailScreenIntent = new Intent(searchResultsActivity, DetailScreen.class);
-                    detailScreenIntent.putExtra("data", result.toString());
+                    detailScreenIntent.putExtra("data", resultString);
                     detailScreenIntent.putExtra("lawField", lawField);
 
                     searchResultsActivity.startActivity(detailScreenIntent);
