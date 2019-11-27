@@ -133,16 +133,12 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<ResultsRecycler
                 clientRatingSum += clientRatingsArray.getJSONObject(i).getInt("rating");
             }
             holder.resultClientRatingCount.setText(String.format("(%d)", clientRatingsArray.length()));
-            if (clientRatingsArray.length() == 0) {
-                holder.resultClientRatingAvg.setText("None");
-                holder.resultClientRatingAvg.setTextColor(searchResultsActivity.getResources().getColor(R.color.colorPrimaryDark));
-                Drawable emptyStar = searchResultsActivity.getResources().getDrawable(R.drawable.ic_rating_star_empty);
-                setStarRatingImages(holder.resultClientRatingStars, 0);
-            } else {
-                double clientRatingAvg = ((double)clientRatingSum)/clientRatingsArray.length();
-                holder.resultClientRatingAvg.setText(String.format("%.1f", clientRatingAvg));
-                setStarRatingImages(holder.resultClientRatingStars, clientRatingAvg);
+            double clientRatingAvg = 0.0;
+            if (clientRatingsArray.length() > 0) {
+                clientRatingAvg = ((double) clientRatingSum) / clientRatingsArray.length();
             }
+            holder.resultClientRatingAvg.setText(String.format("%.1f", clientRatingAvg));
+            setStarRatingImages(holder.resultClientRatingStars, clientRatingAvg);
 
             int peerRatingSum = 0;
             JSONArray peerRatingsArray = result.getJSONObject("DATABASE_CONTENTS").getJSONArray("PEER_REVIEWS");
@@ -150,16 +146,12 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<ResultsRecycler
                 peerRatingSum += peerRatingsArray.getJSONObject(i).getInt("rating");
             }
             holder.resultPeerRatingCount.setText(String.format("(%d)", peerRatingsArray.length()));
-            if (peerRatingsArray.length() == 0) {
-                holder.resultPeerRatingAvg.setText("None");
-                holder.resultPeerRatingAvg.setTextColor(searchResultsActivity.getResources().getColor(R.color.colorPrimaryDark));
-                Drawable emptyStar = searchResultsActivity.getResources().getDrawable(R.drawable.ic_rating_star_empty);
-                setStarRatingImages(holder.resultPeerRatingStars, 0);
-            } else {
-                double peerRatingAvg = ((double)peerRatingSum)/peerRatingsArray.length();
-                holder.resultPeerRatingAvg.setText(String.format("%.1f", peerRatingAvg));
-                setStarRatingImages(holder.resultPeerRatingStars, peerRatingAvg);
+            double peerRatingAvg = 0.0;
+            if (peerRatingsArray.length() > 0){
+                peerRatingAvg = ((double)peerRatingSum)/peerRatingsArray.length();
             }
+            holder.resultPeerRatingAvg.setText(String.format("%.1f", peerRatingAvg));
+            setStarRatingImages(holder.resultPeerRatingStars, peerRatingAvg);
 
             holder.resultCard.setOnClickListener(new View.OnClickListener() {
                 @Override
