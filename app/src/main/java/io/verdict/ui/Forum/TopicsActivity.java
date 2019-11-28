@@ -1,20 +1,22 @@
 package io.verdict.ui.Forum;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 import io.verdict.R;
-
-import android.widget.ListView;
-import java.util.ArrayList;
+import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class TopicsActivity extends AppCompatActivity {
 
-    private ListView topicsList;
     private TopicsAdapter tAdapter;
 
     @Override
@@ -34,28 +36,17 @@ public class TopicsActivity extends AppCompatActivity {
         topicsTabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                topicsTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                topicsTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                topicsTabSearchHighlight.setImageAlpha(255);
-                topicsTabForumHighlight.setImageAlpha(0);
+                Intent intent = new Intent(TopicsActivity.this, SearchScreen.class);
+                startActivity(intent);
             }
         });
 
-        topicsTabForumButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                topicsTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                topicsTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                topicsTabSearchHighlight.setImageAlpha(0);
-                topicsTabForumHighlight.setImageAlpha(255);
-            }
-        });
 
         final ListView topicsList = findViewById(R.id.topics_list);
         ArrayList<Topic> topics_list_content = new ArrayList<>();
 
         //Might want to move this, stil need to change some images
-        String[] law_topics = this.getResources().getStringArray(R.array.law_topics);
+        final String[] law_topics = this.getResources().getStringArray(R.array.law_topics);
         topics_list_content.add(new Topic(R.drawable.ic_briefcase, law_topics[0])); //maritime
         topics_list_content.add(new Topic(R.drawable.ic_briefcase, law_topics[1])); //bankruptcy
         topics_list_content.add(new Topic(R.drawable.ic_briefcase, law_topics[2])); //business
@@ -76,7 +67,14 @@ public class TopicsActivity extends AppCompatActivity {
 
         tAdapter = new TopicsAdapter(this,topics_list_content);
         topicsList.setAdapter(tAdapter);
-
+        topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String lawField = law_topics[i];
+                Intent intent = new Intent(TopicsActivity.this, ThreadsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

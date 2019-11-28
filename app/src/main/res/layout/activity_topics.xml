@@ -62,12 +62,12 @@
 
     <ListView
         android:id="@+id/topics_list"
-        android:layout_width="405dp"
-        android:layout_height="660dp"
-        android:layout_marginTop="84dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/topics_tab_forum_highlight_search" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
