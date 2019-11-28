@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".ui.Forum.ThreadsActivity">
 
     <Button
@@ -58,38 +59,12 @@
         app:layout_constraintStart_toStartOf="@+id/threads_tab_forum_search"
         app:srcCompat="@drawable/tab_button_highlight" />
 
-    <Button
-        android:id="@+id/most_recent"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/my_button_bg"
-        android:text="@string/rating_sort"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/highest_rating"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="68dp"
-        android:background="@drawable/my_button_bg"
-        android:text="@string/recent_sort"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/most_recent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/most_recent" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/forum_section_writeNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:scaleX="1.1"
         android:scaleY="1.1"
@@ -98,22 +73,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_edit_ico" />
 
+    <TextView
+        android:id="@+id/most_recent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Most Recent ▼"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/forum_section_header"
+        app:layout_constraintTop_toBottomOf="@+id/forum_section_header" />
+
     <ListView
         android:id="@+id/list_of_threads"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
         android:gravity="center"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/most_recent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forum_section_header">
+        app:layout_constraintTop_toBottomOf="@+id/most_recent">
 
     </ListView>
 
@@ -129,11 +113,21 @@
         android:text="Legal Area"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/threads_tab_forum_search" />
+
+    <TextView
+        android:id="@+id/highest_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="▼ Highest Rating"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/forum_section_header"
+        app:layout_constraintTop_toTopOf="@+id/most_recent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

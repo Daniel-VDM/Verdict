@@ -4,10 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".ui.Forum.SingleThreadActivity">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TODO: refactor this to follow style of everthing else."
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="132dp" />
+
     <Button
-        android:id="@+id/single_thread_tab_forum_search"
+        android:id="@+id/post_response_tab_forum_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="@dimen/half_screen_width"
@@ -21,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/single_thread_tab_search_search"
+        android:id="@+id/post_response_tab_search_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="@dimen/half_screen_width"
@@ -35,74 +44,115 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/single_thread_tab_search_highlight_search"
+        android:id="@+id/post_response_tab_search_highlight_search"
         android:layout_width="@dimen/half_screen_width"
         android:layout_height="@dimen/tab_search_highlight_height"
         android:alpha="255"
         android:contentDescription="@string/tab_search"
         android:elevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/single_thread_tab_search_search"
-        app:layout_constraintEnd_toStartOf="@+id/single_thread_tab_forum_search"
-        app:layout_constraintStart_toStartOf="@+id/single_thread_tab_search_search"
+        app:layout_constraintBottom_toBottomOf="@+id/post_response_tab_search_search"
+        app:layout_constraintEnd_toStartOf="@+id/post_response_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/post_response_tab_search_search"
         app:srcCompat="@drawable/tab_button_highlight" />
 
     <ImageView
-        android:id="@+id/single_thread_tab_forum_highlight_search"
+        android:id="@+id/post_response_tab_forum_highlight_search"
         android:layout_width="@dimen/half_screen_width"
         android:layout_height="@dimen/tab_search_highlight_height"
         android:alpha="255"
         android:contentDescription="@string/tab_forum"
         android:elevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/single_thread_tab_forum_search"
-        app:layout_constraintEnd_toEndOf="@+id/single_thread_tab_forum_search"
-        app:layout_constraintStart_toStartOf="@+id/single_thread_tab_forum_search"
+        app:layout_constraintBottom_toBottomOf="@+id/post_response_tab_forum_search"
+        app:layout_constraintEnd_toEndOf="@+id/post_response_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/post_response_tab_forum_search"
         app:srcCompat="@drawable/tab_button_highlight" />
 
     <TextView
         android:id="@+id/question_name"
-        android:layout_width="316dp"
-        android:layout_height="51dp"
-        android:textColor="@android:color/black"
-        android:text="TextView"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16" />
-
-    <TextView
-        android:id="@+id/top_answer"
-        android:layout_width="90dp"
-        android:layout_height="22dp"
-        android:text="@string/top_answer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.149"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.258" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:maxLines="2"
+        android:shadowColor="#B4000000"
+        android:text="@string/title"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/line_break"
+        app:layout_constraintStart_toStartOf="@+id/line_break"
+        app:layout_constraintTop_toBottomOf="@+id/post_response_tab_forum_search" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/single_thread_submit_button"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/my_button_bg"
         android:text="@string/submit_answer"
+        android:textAllCaps="false"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/line_break"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.944" />
+        app:layout_constraintTop_toBottomOf="@+id/question_name"
+        app:srcCompat="@drawable/rectangle" />
 
     <ListView
         android:id="@+id/thread_answer_list"
-        android:layout_width="309dp"
-        android:layout_height="344dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/single_thread_submit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.635" />
+        app:layout_constraintTop_toBottomOf="@+id/single_thread_lawfield">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/singe_thread_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="+25 Likes"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/line_break"
+        app:layout_constraintTop_toBottomOf="@+id/line_break" />
+
+    <TextView
+        android:id="@+id/singe_thread_posted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="11-11-11"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/line_break"
+        app:layout_constraintTop_toBottomOf="@+id/line_break" />
+
+    <TextView
+        android:id="@+id/single_thread_lawfield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/singe_thread_likes"
+        app:layout_constraintEnd_toStartOf="@+id/singe_thread_posted"
+        app:layout_constraintStart_toEndOf="@+id/singe_thread_likes"
+        app:layout_constraintTop_toTopOf="@+id/singe_thread_likes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package io.verdict.ui.Forum;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import io.verdict.R;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
@@ -23,17 +22,23 @@ public class SingleThreadActivity extends AppCompatActivity {
     private ListView answersList;
     private Question question;
     private TemporaryAnswersAdapter tempAnswersAdapter;
+    private TextView question_name;
+    private TextView question_likes;
+    private TextView question_date;
+    private TextView question_field;
+    private Button submit;
     private String lawField;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_thread);
 
-        final Button single_threadTabSearchButton = findViewById(R.id.single_thread_tab_search_search);
-        final Button single_threadTabForumButton = findViewById(R.id.single_thread_tab_forum_search);
-        final ImageView single_threadTabSearchHighlight = findViewById(R.id.single_thread_tab_search_highlight_search);
-        final ImageView single_threadTabForumHighlight = findViewById(R.id.single_thread_tab_forum_highlight_search);
+        final Button single_threadTabSearchButton = findViewById(R.id.post_response_tab_search_search);
+        final Button single_threadTabForumButton = findViewById(R.id.post_response_tab_forum_search);
+        final ImageView single_threadTabSearchHighlight = findViewById(R.id.post_response_tab_search_highlight_search);
+        final ImageView single_threadTabForumHighlight = findViewById(R.id.post_response_tab_forum_highlight_search);
 
         single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
         single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
@@ -49,21 +54,35 @@ public class SingleThreadActivity extends AppCompatActivity {
         });
 
         answersList = findViewById(R.id.thread_answer_list);
+        question_name = findViewById(R.id.question_name);
+        question_likes = findViewById(R.id.singe_thread_likes);
+        question_date = findViewById(R.id.singe_thread_posted);
+        question_field = findViewById(R.id.single_thread_lawfield);
+        submit = findViewById(R.id.single_thread_submit_button);
         processIntent();
+
+        question_name.setText(question.getquestion());
+        question_likes.setText("+" + question.getqRating() + " Likes");
+        question_date.setText(question.getdate());
+        question_field.setText(lawField);
 
         tempAnswersAdapter = new TemporaryAnswersAdapter(this, question.getanswers());
         answersList.setAdapter(tempAnswersAdapter);
 
-
-        final TextView question_name = findViewById(R.id.question_name);
-        question_name.setText("+30      Will my case go to trial?");
-
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: serialize the question and put it in intent for reponse activity.
+                Intent intent = new Intent(SingleThreadActivity.this, PostResponseActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void processIntent() {
         try {
             Intent intent = getIntent();
-            intent.getStringExtra("LAW_FIELD");
+            lawField = intent.getStringExtra("LAW_FIELD");
             JSONObject jsonQuestion = new JSONObject(intent.getStringExtra("QUESTION"));
             question = new Question(jsonQuestion);
         } catch (JSONException e) {

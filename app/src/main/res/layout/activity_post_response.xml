@@ -10,8 +10,59 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackgroundGrey"
-        tools:context=".ui.Forum.PostThreadActivity">
+        android:background="@color/colorBackgroundGrey">
+
+        <Button
+            android:id="@+id/post_response_tab_forum_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="@dimen/half_screen_width"
+            android:height="@dimen/tab_search_height"
+            android:background="@drawable/tab_button"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:text="@string/tab_forum"
+            android:textColor="@color/colorTabTextSelected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/post_response_tab_search_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="@dimen/half_screen_width"
+            android:height="@dimen/tab_search_height"
+            android:background="@drawable/tab_button"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:text="@string/tab_search"
+            android:textColor="@color/colorTabTextSelected"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/post_response_tab_search_highlight_search"
+            android:layout_width="@dimen/half_screen_width"
+            android:layout_height="@dimen/tab_search_highlight_height"
+            android:alpha="255"
+            android:contentDescription="@string/tab_search"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/post_response_tab_search_search"
+            app:layout_constraintEnd_toStartOf="@+id/post_response_tab_forum_search"
+            app:layout_constraintStart_toStartOf="@+id/post_response_tab_search_search"
+            app:srcCompat="@drawable/tab_button_highlight" />
+
+        <ImageView
+            android:id="@+id/post_response_tab_forum_highlight_search"
+            android:layout_width="@dimen/half_screen_width"
+            android:layout_height="@dimen/tab_search_highlight_height"
+            android:alpha="255"
+            android:contentDescription="@string/tab_forum"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/post_response_tab_forum_search"
+            app:layout_constraintEnd_toEndOf="@+id/post_response_tab_forum_search"
+            app:layout_constraintStart_toStartOf="@+id/post_response_tab_forum_search"
+            app:srcCompat="@drawable/tab_button_highlight" />
 
         <EditText
             android:id="@+id/postResponse_titleName"
@@ -48,19 +99,21 @@
             android:layout_width="310dp"
             android:layout_height="64dp"
             android:layout_marginStart="52dp"
-            android:layout_marginTop="116dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/border"
             android:freezesText="true"
             android:translationZ="-3dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/post_response_tab_search_highlight_search" />
 
         <EditText
             android:id="@+id/postResponse_responseContent"
-            android:layout_width="280dp"
-            android:layout_height="340dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="36dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@android:color/white"
             android:ems="10"
             android:gravity="top"
@@ -69,8 +122,11 @@
             android:maxLines="10"
             android:singleLine="false"
             android:textAlignment="viewStart"
+            app:layout_constraintBottom_toBottomOf="@+id/postResponse_responseWrapper"
+            app:layout_constraintEnd_toEndOf="@+id/postResponse_responseWrapper"
             app:layout_constraintStart_toStartOf="@+id/postResponse_responseWrapper"
-            app:layout_constraintTop_toTopOf="@+id/postResponse_responseWrapper" />
+            app:layout_constraintTop_toBottomOf="@+id/postResponse_responseTitle"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/postResponse_responseTitle"
@@ -85,43 +141,47 @@
         <TextView
             android:id="@+id/postResponse_responseWrapper"
             android:layout_width="310dp"
-            android:layout_height="384dp"
+            android:layout_height="0dp"
             android:layout_marginStart="52dp"
-            android:layout_marginTop="204dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/border"
             android:translationZ="-3dp"
+            app:layout_constraintBottom_toTopOf="@+id/postResponse_submitButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/postResponse_titleWrapper"
+            app:layout_constraintVertical_bias="0.0" />
 
         <CheckBox
             android:id="@+id/postResponse_anonymous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="68dp"
-            android:layout_marginBottom="70dp"
             android:buttonTint="#0F701B"
             android:text="Anonymous"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/postResponse_submitButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/postResponse_submitButton" />
 
         <Button
             android:id="@+id/postResponse_submitButton"
             android:layout_width="92dp"
             android:layout_height="33dp"
             android:layout_marginEnd="68dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="24dp"
             android:background="@color/colorButtonSubmitGreen"
             android:text="Submit"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TODO: refactor this to follow style of everthing else."
+            tools:layout_editor_absoluteX="42dp"
+            tools:layout_editor_absoluteY="70dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

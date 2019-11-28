@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 import io.verdict.R;
@@ -41,6 +43,7 @@ public class TopicsActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton fab = findViewById(R.id.forum_topics_writeNew);
 
         final ListView topicsList = findViewById(R.id.topics_list);
         ArrayList<Topic> topics_list_content = new ArrayList<>();
@@ -77,6 +80,13 @@ public class TopicsActivity extends AppCompatActivity {
             }
         });
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TopicsActivity.this, PostThreadActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

@@ -15,6 +15,8 @@ public class Answer {
     private String aDate;
     // Store the name of person who wrote answer (could be anonymous)
     private String aAuthor;
+
+    private String aAuthorId;
     // Store the number of thumbs up on the answer
     private int aRating;
     // Store the answer
@@ -26,16 +28,17 @@ public class Answer {
         this.aQuestion = aQuestion;
         this.aDate = aDate;
         this.aAuthor = aAuthor;
+        this.aAuthorId = "";
         this.answer_text = answer_text;
         this.aRating = 0;
         this.userType = userType;
     }
 
-
     public Answer(JSONObject jsonObject) throws JSONException {
         this.aQuestion = jsonObject.getString("aQuestion");
         this.aDate = jsonObject.getString("aDate");
         this.aAuthor = jsonObject.getString("aAuthor");
+        this.aAuthorId = jsonObject.getString("aAuthorId");
         this.answer_text = jsonObject.getString("answer_text");
         this.aRating = jsonObject.getInt("aRating");
         this.userType = jsonObject.getString("userType");
@@ -108,6 +111,7 @@ public class Answer {
         jsonObject.put("aQuestion", this.aQuestion);
         jsonObject.put("aDate", this.aDate);
         jsonObject.put("aAuthor", this.aAuthor);
+        jsonObject.put("aAuthorId", this.aAuthorId);
         jsonObject.put("answer_text", this.answer_text);
         jsonObject.put("aRating", this.aRating);
         jsonObject.put("userType", this.userType);

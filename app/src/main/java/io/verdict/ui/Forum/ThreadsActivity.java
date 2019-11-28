@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ThreadsActivity extends AppCompatActivity {
     private ListView threadsList;
     private String lawField;
     private ThreadListAdapter listAdapter;
+    private FloatingActionButton submitThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,9 @@ public class ThreadsActivity extends AppCompatActivity {
         processIntent();
 
         ((TextView)findViewById(R.id.forum_section_header)).setText(lawField);
+        submitThread = findViewById(R.id.forum_section_writeNew);
 
-        // TODO add Sort By logic
+        // TODO add Sort By logic  (possibly rework button placement).
         ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter.createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
         threads_topics_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -68,6 +72,13 @@ public class ThreadsActivity extends AppCompatActivity {
                 intent.putExtra("LAW_FIELD", lawField);
                 Question question = questions.get(i);
                 intent.putExtra("QUESTION", question.toString());
+                startActivity(intent);
+            }
+        });
+        submitThread.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ThreadsActivity.this, PostThreadActivity.class);
                 startActivity(intent);
             }
         });
