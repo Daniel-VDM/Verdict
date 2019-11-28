@@ -1,23 +1,25 @@
 package io.verdict.ui.Forum;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import io.verdict.R;
+import io.verdict.ui.SearchScreen.SearchScreen;
 
 
 public class ThreadsActivity extends AppCompatActivity {
     private ListView threadsList;
-    private TemporaryThreadsAdapter tempAdapter;
+    private ThreadListAdapter tempAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,30 +39,14 @@ public class ThreadsActivity extends AppCompatActivity {
         threadsTabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                threadsTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                threadsTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                threadsTabSearchHighlight.setImageAlpha(255);
-                threadsTabForumHighlight.setImageAlpha(0);
-            }
-        });
-
-        threadsTabForumButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                threadsTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                threadsTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                threadsTabSearchHighlight.setImageAlpha(0);
-                threadsTabForumHighlight.setImageAlpha(255);
+                Intent intent = new Intent(ThreadsActivity.this, SearchScreen.class);
+                startActivity(intent);
             }
         });
 
         //add Sort By logic
-        final Spinner threads_spinner = findViewById(R.id.threads_topic_spinner);
         ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter.createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
         threads_topics_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        threads_spinner.setAdapter(threads_topics_adapter);
-        //change to set current topic using intent. currently set to Personal Injury
-        threads_spinner.setSelection(14);
 
         /*ThreadsAdapter threadadapter = new ThreadsAdapter(createDummyQuestions(6));
         /*final RecyclerView recList = (RecyclerView) findViewById(R.id.threadCardList);
@@ -73,12 +59,8 @@ public class ThreadsActivity extends AppCompatActivity {
         recList.setAdapter(threadadapter);*/
 
         final ListView threadsList = findViewById(R.id.list_of_threads);
-        tempAdapter = new TemporaryThreadsAdapter(this,createDummyQuestions(6));
+        tempAdapter = new ThreadListAdapter(this, createDummyQuestions(6));
         threadsList.setAdapter(tempAdapter);
-
-
-
-
     }
 
 
