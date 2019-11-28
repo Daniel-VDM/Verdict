@@ -58,24 +58,11 @@
         app:layout_constraintStart_toStartOf="@+id/threads_tab_forum_search"
         app:srcCompat="@drawable/tab_button_highlight" />
 
-    <!--<androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/threadCardList"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.576"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />-->
-
     <Button
         android:id="@+id/most_recent"
         android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="60dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="68dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/my_button_bg"
         android:text="@string/rating_sort"
@@ -87,8 +74,8 @@
     <Button
         android:id="@+id/highest_rating"
         android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="60dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="68dp"
         android:background="@drawable/my_button_bg"
         android:text="@string/recent_sort"
         android:textAllCaps="false"
@@ -97,12 +84,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/most_recent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/forum_section_writeNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:scaleX="1.1"
+        android:scaleY="1.1"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_edit_ico" />
+
     <ListView
         android:id="@+id/list_of_threads"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:divider="@android:color/transparent"
@@ -112,9 +113,27 @@
         app:layout_constraintBottom_toTopOf="@+id/most_recent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/threads_tab_search_search">
+        app:layout_constraintTop_toBottomOf="@+id/forum_section_header">
 
     </ListView>
+
+    <TextView
+        android:id="@+id/forum_section_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="1"
+        android:shadowColor="#B4000000"
+        android:text="Legal Area"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/threads_tab_forum_search" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

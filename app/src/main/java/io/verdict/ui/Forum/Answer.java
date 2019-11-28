@@ -1,5 +1,13 @@
 package io.verdict.ui.Forum;
 
+import androidx.annotation.NonNull;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Answer {
     // Store the question this answer is under
     private String aQuestion;
@@ -11,15 +19,48 @@ public class Answer {
     private int aRating;
     // Store the answer
     private String answer_text;
-
+    private String userType;
 
     // Constructor that is used to create an instance of the Answer object
-    public Answer(String aQuestion, String aDate, String aAuthor, String answer_text) {
+    public Answer(String aQuestion, String aDate, String aAuthor, String answer_text, String userType) {
         this.aQuestion = aQuestion;
         this.aDate = aDate;
         this.aAuthor = aAuthor;
         this.answer_text = answer_text;
         this.aRating = 0;
+        this.userType = userType;
+    }
+
+
+    public Answer(JSONObject jsonObject) throws JSONException {
+        this.aQuestion = jsonObject.getString("aQuestion");
+        this.aDate = jsonObject.getString("aDate");
+        this.aAuthor = jsonObject.getString("aAuthor");
+        this.answer_text = jsonObject.getString("answer_text");
+        this.aRating = jsonObject.getInt("aRating");
+        this.userType = jsonObject.getString("userType");
+    }
+
+    public static ArrayList<Answer> createDummyAnswers(int size) {
+        ArrayList<Answer> result = new ArrayList<>();
+        List<String> dummy_answers = new ArrayList<String>();
+        dummy_answers.add("No you should not.");
+        dummy_answers.add("This depends on law 1001.");
+        dummy_answers.add("I think you can try to settle out of court.");
+        dummy_answers.add("You are entitled to a lot of money.");
+        dummy_answers.add("No.");
+        dummy_answers.add("Absolutely");
+
+        for (int i = 0; i < size; i++) {
+            String aQuestion = "Should I take my case to court?";
+            String aDate = "01-11-19";
+            String aAuthor = "Anonymous";
+            String answer_text = dummy_answers.get(i);
+            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text, "user");
+            result.add(a);
+
+        }
+        return result;
     }
 
     public String getaQuestion() {
@@ -62,6 +103,26 @@ public class Answer {
         this.answer_text = answer_text;
     }
 
+    public JSONObject jsonSerialize() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("aQuestion", this.aQuestion);
+        jsonObject.put("aDate", this.aDate);
+        jsonObject.put("aAuthor", this.aAuthor);
+        jsonObject.put("answer_text", this.answer_text);
+        jsonObject.put("aRating", this.aRating);
+        jsonObject.put("userType", this.userType);
+        return jsonObject;
+    }
 
+    @NonNull
+    @Override
+    public String toString() {
+        try {
+            return jsonSerialize().toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return super.toString();
+        }
+    }
 
 }

@@ -3,10 +3,12 @@ package io.verdict.ui.Forum;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +21,8 @@ import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class ThreadsActivity extends AppCompatActivity {
     private ListView threadsList;
-    private ThreadListAdapter tempAdapter;
+    private String lawField;
+    private ThreadListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +47,33 @@ public class ThreadsActivity extends AppCompatActivity {
             }
         });
 
-        //add Sort By logic
+        processIntent();
+
+        ((TextView)findViewById(R.id.forum_section_header)).setText(lawField);
+
+        // TODO add Sort By logic
         ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter.createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
         threads_topics_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        /*ThreadsAdapter threadadapter = new ThreadsAdapter(createDummyQuestions(6));
-        /*final RecyclerView recList = (RecyclerView) findViewById(R.id.threadCardList);
-        recList.setHasFixedSize(true);
+        final ArrayList<Question> questions =  createDummyQuestions(6);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false);
-        recList.setLayoutManager(llm);
+        threadsList = findViewById(R.id.list_of_threads);
+        listAdapter = new ThreadListAdapter(this, questions);
+        threadsList.setAdapter(listAdapter);
 
-        recList.setAdapter(threadadapter);*/
-
-        final ListView threadsList = findViewById(R.id.list_of_threads);
-        tempAdapter = new ThreadListAdapter(this, createDummyQuestions(6));
-        threadsList.setAdapter(tempAdapter);
+        threadsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(ThreadsActivity.this, SingleThreadActivity.class);
+                intent.putExtra("LAW_FIELD", lawField);
+                Question question = questions.get(i);
+                intent.putExtra("QUESTION", question.toString());
+                startActivity(intent);
+            }
+        });
     }
 
-
+    // TODO hook this up to the backend and use loading spinner between fetch...
     private ArrayList<Question> createDummyQuestions(int size) {
         ArrayList<Question> result = new ArrayList<Question>();
         List<String> dummy_questions = new ArrayList<String>();
@@ -75,7 +85,7 @@ public class ThreadsActivity extends AppCompatActivity {
         dummy_questions.add("How do I file a case?");
 
         for (int i = 0; i < size; i++) {
-            String qTopic = "Personal Injury";
+            String qTopic = lawField;
             String date = "01-11-19";
             String qAuthor = "Anonymous";
             String question = dummy_questions.get(i);
@@ -84,5 +94,10 @@ public class ThreadsActivity extends AppCompatActivity {
 
         }
         return result;
+    }
+
+    private void processIntent(){
+        Intent intent = getIntent();
+        lawField = intent.getStringExtra("LAW_FIELD");
     }
 }

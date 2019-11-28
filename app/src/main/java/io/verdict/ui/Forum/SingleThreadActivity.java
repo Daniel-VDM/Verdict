@@ -1,7 +1,6 @@
 package io.verdict.ui.Forum;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,14 +8,22 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import io.verdict.R;
+import io.verdict.ui.SearchScreen.SearchScreen;
 
+@SuppressWarnings("ConstantConditions")
 public class SingleThreadActivity extends AppCompatActivity {
     private ListView answersList;
+    private Question question;
     private TemporaryAnswersAdapter tempAnswersAdapter;
+    private String lawField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,57 +43,32 @@ public class SingleThreadActivity extends AppCompatActivity {
         single_threadTabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                single_threadTabSearchHighlight.setImageAlpha(255);
-                single_threadTabForumHighlight.setImageAlpha(0);
+                Intent intent = new Intent(SingleThreadActivity.this, SearchScreen.class);
+                startActivity(intent);
             }
         });
 
-        single_threadTabForumButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                single_threadTabSearchHighlight.setImageAlpha(0);
-                single_threadTabForumHighlight.setImageAlpha(255);
-            }
-        });
+        answersList = findViewById(R.id.thread_answer_list);
+        processIntent();
 
-
-        final ListView answersList = findViewById(R.id.thread_answer_list);
-        tempAnswersAdapter = new TemporaryAnswersAdapter(this,createDummyAnswers(6));
+        tempAnswersAdapter = new TemporaryAnswersAdapter(this, question.getanswers());
         answersList.setAdapter(tempAnswersAdapter);
 
 
         final TextView question_name = findViewById(R.id.question_name);
         question_name.setText("+30      Will my case go to trial?");
 
-        
     }
 
-    private ArrayList<Answer> createDummyAnswers(int size) {
-        ArrayList<Answer> result = new ArrayList<>();
-        List<String> dummy_answers = new ArrayList<String>();
-        dummy_answers.add("No you should not.");
-        dummy_answers.add("This depends on law 1001.");
-        dummy_answers.add("I think you can try to settle out of court.");
-        dummy_answers.add("You are entitled to a lot of money.");
-        dummy_answers.add("No.");
-        dummy_answers.add("Absolutely");
-
-        for (int i = 0; i < size; i++) {
-            String aQuestion = "Should I take my case to court?";
-            String aDate = "01-11-19";
-            String aAuthor = "Anonymous";
-            String answer_text = dummy_answers.get(i);
-            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text);
-            result.add(a);
-
+    private void processIntent() {
+        try {
+            Intent intent = getIntent();
+            intent.getStringExtra("LAW_FIELD");
+            JSONObject jsonQuestion = new JSONObject(intent.getStringExtra("QUESTION"));
+            question = new Question(jsonQuestion);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return result;
     }
-
-
 
 }

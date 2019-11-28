@@ -1,5 +1,11 @@
 package io.verdict.ui.Forum;
 
+import androidx.annotation.NonNull;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Question {
@@ -14,7 +20,7 @@ public class Question {
     // Store the question
     private String question;
     // Store all answers under this question
-    private ArrayList answers;
+    private ArrayList<Answer> answers;
 
     // Constructor that is used to create an instance of the Question object
     public Question(String qTopic, String date, String qAuthor, String question) {
@@ -22,8 +28,21 @@ public class Question {
         this.date = date;
         this.qAuthor = qAuthor;
         this.question = question;
-        this.answers = new ArrayList<Answer>();
+        this.answers = Answer.createDummyAnswers(6);
         this.qRating = 3;
+    }
+
+    public Question(JSONObject jsonObject) throws JSONException {
+        this.qTopic = jsonObject.getString("qTopic");
+        this.date = jsonObject.getString("date");
+        this.qAuthor = jsonObject.getString("qAuthor");
+        this.question = jsonObject.getString("question");
+        this.answers = new ArrayList<>();
+        JSONArray jsonAnswers = jsonObject.getJSONArray("answers");
+        for (int i = 0; i < jsonAnswers.length(); i++) {
+            this.answers.add(new Answer((JSONObject) jsonAnswers.get(i)));
+        }
+        this.qRating = jsonObject.getInt("qRating");
     }
 
     public String getqTopic() {
@@ -66,13 +85,39 @@ public class Question {
         this.question = question;
     }
 
-    public ArrayList getanswers() {
+    public ArrayList<Answer> getanswers() {
         return answers;
     }
 
-    public void setanswers(ArrayList answers) {
+    public void setanswers(ArrayList<Answer> answers) {
         this.answers = answers;
     }
 
+    public JSONObject jsonSerialize() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("qTopic", this.qTopic);
+        jsonObject.put("date", this.date);
+        jsonObject.put("qAuthor", this.qAuthor);
+        jsonObject.put("question", this.question);
+        jsonObject.put("qRating", this.qRating);
 
+        JSONArray jsonArray = new JSONArray();
+        for (Answer answer : answers) {
+            jsonArray.put(answer.jsonSerialize());
+        }
+        jsonObject.put("answers", jsonArray);
+
+        return jsonObject;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        try {
+            return jsonSerialize().toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return super.toString();
+        }
+    }
 }

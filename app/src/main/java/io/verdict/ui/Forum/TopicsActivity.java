@@ -72,6 +72,7 @@ public class TopicsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String lawField = law_topics[i];
                 Intent intent = new Intent(TopicsActivity.this, ThreadsActivity.class);
+                intent.putExtra("LAW_FIELD", lawField);
                 startActivity(intent);
             }
         });
