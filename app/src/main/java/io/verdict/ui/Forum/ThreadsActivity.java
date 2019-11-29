@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,9 @@ public class ThreadsActivity extends AppCompatActivity {
     private String lawField;
     private ThreadListAdapter listAdapter;
     private FloatingActionButton submitThread;
+    private SearchView search;
+    private boolean isSortByDate;
+    private boolean isSortByRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class ThreadsActivity extends AppCompatActivity {
 
         ((TextView)findViewById(R.id.forum_section_header)).setText(lawField);
         submitThread = findViewById(R.id.forum_section_writeNew);
+        search = findViewById(R.id.threads_filter_content);
 
         // TODO add Sort By logic  (possibly rework button placement).
         ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter.createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
@@ -80,6 +85,19 @@ public class ThreadsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ThreadsActivity.this, PostThreadActivity.class);
                 startActivity(intent);
+            }
+        });
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                listAdapter.filter(s);
+                // TODO add sort logic after filter...
+                return true;
             }
         });
     }

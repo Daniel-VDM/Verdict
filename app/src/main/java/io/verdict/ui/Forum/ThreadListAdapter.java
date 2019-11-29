@@ -13,12 +13,14 @@ import java.util.List;
 
 public class ThreadListAdapter extends ArrayAdapter<Question>{
     private Context ttContext;
-    private List<Question> threadsList = new ArrayList<>();
+    private List<Question> originalThreadsList;
+    private List<Question> threadsList;
 
     public ThreadListAdapter(Context context, ArrayList<Question> list) {
         super(context, 0 , list);
         ttContext = context;
         threadsList = list;
+        originalThreadsList = new ArrayList<>(list);
     }
 
     @Override
@@ -39,6 +41,40 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
         date.setText("\t" + currentThread.getdate());
 
         return listItem;
+    }
+
+
+    private boolean match(String[] input, String reference){
+        reference = reference.toLowerCase();
+        for (String s: input){
+            if (!reference.contains(s)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Naive implementation of search.
+     *
+     * @param s filter string
+     */
+    void filter(String s){
+        String[] inputToks = s.replaceAll("[^a-zA-Z ]", "")
+                .toLowerCase().split("\\s+");
+        List<Question> newThreadsList = new ArrayList<>();
+        if (inputToks.length == 0){
+            newThreadsList = new ArrayList<>(originalThreadsList);
+        } else {
+            for (Question question: originalThreadsList){
+                if (match(inputToks, question.getquestion())){
+                    newThreadsList.add(question);
+                }
+            }
+        }
+        clear();
+        addAll(newThreadsList);
+        notifyDataSetChanged();
     }
 
 }

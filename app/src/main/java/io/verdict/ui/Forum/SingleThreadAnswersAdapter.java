@@ -12,12 +12,12 @@ import java.util.List;
 
 import io.verdict.R;
 
-public class TemporaryAnswersAdapter extends ArrayAdapter<Answer> {
+public class SingleThreadAnswersAdapter extends ArrayAdapter<Answer> {
 
     private Context aContext;
     private List<Answer> answersList = new ArrayList<>();
 
-    public TemporaryAnswersAdapter(Context context, ArrayList<Answer> list) {
+    public SingleThreadAnswersAdapter(Context context, ArrayList<Answer> list) {
         super(context, 0, list);
         aContext = context;
         answersList = list;

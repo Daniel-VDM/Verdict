@@ -21,7 +21,7 @@ import io.verdict.ui.SearchScreen.SearchScreen;
 public class SingleThreadActivity extends AppCompatActivity {
     private ListView answersList;
     private Question question;
-    private TemporaryAnswersAdapter tempAnswersAdapter;
+    private SingleThreadAnswersAdapter tempAnswersAdapter;
     private TextView question_name;
     private TextView question_likes;
     private TextView question_date;
@@ -74,7 +74,7 @@ public class SingleThreadActivity extends AppCompatActivity {
             question_detail.setHeight(0);
         }
 
-        tempAnswersAdapter = new TemporaryAnswersAdapter(this, question.getanswers());
+        tempAnswersAdapter = new SingleThreadAnswersAdapter(this, question.getanswers());
         answersList.setAdapter(tempAnswersAdapter);
         answersList.setFocusable(false);
         answersList.setClickable(false);
