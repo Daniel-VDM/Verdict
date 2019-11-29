@@ -1,16 +1,9 @@
 package io.verdict.ui.SearchResults;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,9 +25,8 @@ import io.verdict.R;
 import io.verdict.backend.Backend;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
+import io.verdict.ui.Forum.TopicsActivity;
 import io.verdict.ui.SearchScreen.SearchScreen;
-
-import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
 public class SearchResults extends AppCompatActivity {
 
@@ -89,7 +86,7 @@ public class SearchResults extends AppCompatActivity {
                         resultsForumTopicCard.setVisibility(View.VISIBLE);
                         String resultsForumTopicString = String.format(getString(R.string.results_forum_topic_card_text), legalField);
                         Spannable resultsForumTopicSpannable = new SpannableString(resultsForumTopicString);
-                        resultsForumTopicSpannable.setSpan(new UnderlineSpan(), resultsForumTopicString.length()-11, resultsForumTopicString.length(), 0);
+                        resultsForumTopicSpannable.setSpan(new UnderlineSpan(), resultsForumTopicString.length() - 11, resultsForumTopicString.length(), 0);
                         resultsForumTopicText.setText(resultsForumTopicSpannable);
 
                         ResultsRecyclerAdapter resultsAdapter = new ResultsRecyclerAdapter(jsonArray, legalField, SearchResults.this);
@@ -124,23 +121,11 @@ public class SearchResults extends AppCompatActivity {
         tabSearchHighlight.setImageAlpha(255);
         tabForumHighlight.setImageAlpha(0);
 
-        tabSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-//                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-//                tabSearchHighlight.setImageAlpha(255);
-//                tabForumHighlight.setImageAlpha(0);
-            }
-        });
-
         tabForumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-//                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-//                tabSearchHighlight.setImageAlpha(0);
-//                tabForumHighlight.setImageAlpha(255);
+                Intent intent = new Intent(SearchResults.this, TopicsActivity.class);
+                startActivity(intent);
             }
         });
     }

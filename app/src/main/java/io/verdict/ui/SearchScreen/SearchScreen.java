@@ -34,6 +34,7 @@ import io.verdict.backend.DatabaseListener;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
 import io.verdict.ui.DetailScreen.DetailScreen;
+import io.verdict.ui.Forum.TopicsActivity;
 import io.verdict.ui.SearchResults.SearchResults;
 
 public class SearchScreen extends AppCompatActivity {
@@ -86,23 +87,11 @@ public class SearchScreen extends AppCompatActivity {
         tabSearchHighlight.setImageAlpha(255);
         tabForumHighlight.setImageAlpha(0);
 
-        tabSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-//                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-//                tabSearchHighlight.setImageAlpha(255);
-//                tabForumHighlight.setImageAlpha(0);
-            }
-        });
-
         tabForumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                tabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-//                tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-//                tabSearchHighlight.setImageAlpha(0);
-//                tabForumHighlight.setImageAlpha(255);
+                Intent intent = new Intent(SearchScreen.this, TopicsActivity.class);
+                startActivity(intent);
             }
         });
     }

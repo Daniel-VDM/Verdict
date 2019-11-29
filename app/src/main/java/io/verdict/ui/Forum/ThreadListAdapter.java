@@ -11,11 +11,11 @@ import io.verdict.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemporaryThreadsAdapter extends ArrayAdapter<Question>{
+public class ThreadListAdapter extends ArrayAdapter<Question>{
     private Context ttContext;
     private List<Question> threadsList = new ArrayList<>();
 
-    public TemporaryThreadsAdapter(Context context, ArrayList<Question> list) {
+    public ThreadListAdapter(Context context, ArrayList<Question> list) {
         super(context, 0 , list);
         ttContext = context;
         threadsList = list;
@@ -25,16 +25,18 @@ public class TemporaryThreadsAdapter extends ArrayAdapter<Question>{
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(ttContext).inflate(R.layout.threads_card,parent,false);
+            listItem = LayoutInflater.from(ttContext).inflate(R.layout.forum_threads_card,parent,false);
 
         Question currentThread = threadsList.get(position);
 
-        TextView tq = (TextView)listItem.findViewById(R.id.thread_question);
+        TextView tq = listItem.findViewById(R.id.thread_question);
         tq.setText(String.valueOf(currentThread.getquestion()));
 
-        TextView rating = (TextView) listItem.findViewById(R.id.thread_rating);
+        TextView rating = listItem.findViewById(R.id.thread_rating);
         rating.setText('+'+ String.valueOf(currentThread.getqRating()));
 
+        TextView date = listItem.findViewById(R.id.thread_date);
+        date.setText("\t" + currentThread.getdate());
 
         return listItem;
     }

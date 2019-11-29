@@ -1,7 +1,5 @@
 package io.verdict.ui.Forum;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +7,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.verdict.R;
+import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class PostThreadActivity extends AppCompatActivity {
 
@@ -21,64 +24,50 @@ public class PostThreadActivity extends AppCompatActivity {
     Spinner selectCategory;
     EditText threadTitle;
     EditText threadDescription;
-    CheckBox isAnonymous;
     Button submitButton;
+
+    // Note: DO NOT DO implicit category, that shit is needless work.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_thread);
+        setContentView(R.layout.forum_post_thread);
 
-        selectCategory = (Spinner) findViewById(R.id.postThread_selectCategory);
-        threadTitle = (EditText) findViewById(R.id.postThread_titleContent);
-        threadDescription = (EditText) findViewById(R.id.postThread_descriptionContent);
-        isAnonymous = (CheckBox) findViewById(R.id.postResponse_anonymous);
-        submitButton = (Button) findViewById(R.id.postResponse_submitButton);
+        final Button single_threadTabSearchButton = findViewById(R.id.post_thread_tab_search_search);
+        final Button single_threadTabForumButton = findViewById(R.id.post_thread_tab_forum_search);
+        final ImageView single_threadTabSearchHighlight = findViewById(R.id.post_thread_tab_search_highlight_search);
+        final ImageView single_threadTabForumHighlight = findViewById(R.id.post_thread_tab_forum_highlight_search);
 
-        Intent i = getIntent();
-        ArrayList arrayList = i.getStringArrayListExtra("categories");
-        arrayList.add(0, "Select Category");
-        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, arrayList);
+        single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
+        single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
+        single_threadTabForumHighlight.setImageAlpha(255);
+        single_threadTabSearchHighlight.setImageAlpha(0);
+
+        single_threadTabSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostThreadActivity.this, SearchScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        selectCategory = findViewById(R.id.post_thead_topic_list);
+        threadTitle = findViewById(R.id.postThread_titleContent);
+        threadDescription = findViewById(R.id.postThread_descriptionContent);
+        submitButton = findViewById(R.id.postThread_submitButton);
+
+        ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.law_topics)));
+        arrayList.add(0, "Select Legal Field");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item, arrayList);
         selectCategory.setAdapter(arrayAdapter);
         selectCategory.setSelection(0);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (threadTitle.getText().toString() != "") {
-                    Intent intent = new Intent(PostThreadActivity.this, ThreadsActivity.class);
-                    intent.putExtra("category", selectCategory.getSelectedItem().toString());
-                    intent.putExtra("title", threadTitle.getText().toString());
-                    intent.putExtra("description", threadDescription.getText().toString());
-                    intent.putExtra("anonymous", isAnonymous.isChecked());
-                    startActivity(intent);
-                    finish();
-                }
+                // TODO: connect this to the backend and hit the back button
+                //       maybe even do a reload
             }
         });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

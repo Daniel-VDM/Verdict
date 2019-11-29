@@ -129,7 +129,7 @@
         app:layout_constraintTop_toBottomOf="@+id/search_by_location" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/single_thread_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorAccent"

@@ -6,17 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import io.verdict.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.verdict.R;
+
 public class TemporaryAnswersAdapter extends ArrayAdapter<Answer> {
 
     private Context aContext;
     private List<Answer> answersList = new ArrayList<>();
 
     public TemporaryAnswersAdapter(Context context, ArrayList<Answer> list) {
-        super(context, 0 , list);
+        super(context, 0, list);
         aContext = context;
         answersList = list;
     }
@@ -24,18 +26,18 @@ public class TemporaryAnswersAdapter extends ArrayAdapter<Answer> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(aContext).inflate(R.layout.thread_answer,parent,false);
+        if (listItem == null)
+            listItem = LayoutInflater.from(aContext).inflate(R.layout.forum_thread_answer, parent, false);
 
         Answer currentAnswer = answersList.get(position);
 
-        TextView author = (TextView)listItem.findViewById(R.id.thread_answer_name);
+        TextView author = listItem.findViewById(R.id.response_name);
         author.setText(String.valueOf(currentAnswer.getaAuthor()));
 
-        TextView aRating = (TextView) listItem.findViewById(R.id.thread_answer_rating);
-        aRating.setText('+'+ String.valueOf(currentAnswer.getaRating()));
+        TextView aRating = listItem.findViewById(R.id.response_rating);
+        aRating.setText('+' + String.valueOf(currentAnswer.getaRating()));
 
-        TextView aText = (TextView) listItem.findViewById(R.id.thread_answer_text);
+        TextView aText = listItem.findViewById(R.id.response_body);
         aText.setText(String.valueOf(currentAnswer.getanswer_text()));
 
 

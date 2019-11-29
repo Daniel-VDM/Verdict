@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundGrey"
+    tools:context=".ui.Forum.PostThreadActivity">
+
+    <TextView
+        android:id="@+id/post_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:maxLines="2"
+        android:shadowColor="#B4000000"
+        android:text="Submit a question anonymously!"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_thread_tab_search_search" />
+
+    <Button
+        android:id="@+id/post_thread_tab_forum_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_forum"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/post_thread_tab_search_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="@dimen/half_screen_width"
+        android:height="@dimen/tab_search_height"
+        android:background="@drawable/tab_button"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/tab_search"
+        android:textColor="@color/colorTabTextSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/post_thread_tab_search_highlight_search"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_search"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_thread_tab_search_search"
+        app:layout_constraintEnd_toStartOf="@+id/post_thread_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/post_thread_tab_search_search"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <ImageView
+        android:id="@+id/post_thread_tab_forum_highlight_search"
+        android:layout_width="@dimen/half_screen_width"
+        android:layout_height="@dimen/tab_search_highlight_height"
+        android:alpha="255"
+        android:contentDescription="@string/tab_forum"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_thread_tab_forum_search"
+        app:layout_constraintEnd_toEndOf="@+id/post_thread_tab_forum_search"
+        app:layout_constraintStart_toStartOf="@+id/post_thread_tab_forum_search"
+        app:srcCompat="@drawable/tab_button_highlight" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/postThread_selectCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_header">
+
+        <Spinner
+            android:id="@+id/post_thead_topic_list"
+            android:layout_width="325dp"
+            android:layout_height="45dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/postThread_titleWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postThread_selectCategory">
+
+        <TextView
+            android:id="@+id/postThread_titleWrapper_inner"
+            android:layout_width="325dp"
+            android:layout_height="57dp"
+            android:freezesText="false" />
+
+        <TextView
+            android:id="@+id/postThread_titleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:text="Question" />
+
+        <EditText
+            android:id="@+id/postThread_titleContent"
+            android:layout_width="269dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white"
+            android:ems="10"
+            android:inputType="textPersonName" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/post_thread_content_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/postThread_submitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postThread_titleWrapper">
+
+        <TextView
+            android:id="@+id/postThread_descriptionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/description" />
+
+        <EditText
+            android:id="@+id/postThread_descriptionContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="(Optional) Detail regarding question"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:singleLine="false"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/postThread_descriptionWrapper"
+            android:layout_width="325dp"
+            android:layout_height="match_parent"
+            android:freezesText="false"
+            android:textSize="12sp"
+            android:translationZ="-3dp" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/postThread_submitButton"
+        android:layout_width="125dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorButtonSubmitGreen"
+        android:text="Submit"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

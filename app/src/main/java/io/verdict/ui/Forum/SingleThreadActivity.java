@@ -1,7 +1,7 @@
 package io.verdict.ui.Forum;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,24 +9,37 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.verdict.R;
+import io.verdict.ui.SearchScreen.SearchScreen;
 
+@SuppressWarnings("ConstantConditions")
 public class SingleThreadActivity extends AppCompatActivity {
     private ListView answersList;
+    private Question question;
     private TemporaryAnswersAdapter tempAnswersAdapter;
+    private TextView question_name;
+    private TextView question_likes;
+    private TextView question_date;
+    private TextView question_field;
+    private TextView question_detail;
+    private Button submitResponse;
+    private String lawField;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_thread);
+        setContentView(R.layout.forum_single_thread);
 
-        final Button single_threadTabSearchButton = findViewById(R.id.single_thread_tab_search_search);
-        final Button single_threadTabForumButton = findViewById(R.id.single_thread_tab_forum_search);
-        final ImageView single_threadTabSearchHighlight = findViewById(R.id.single_thread_tab_search_highlight_search);
-        final ImageView single_threadTabForumHighlight = findViewById(R.id.single_thread_tab_forum_highlight_search);
+        final Button single_threadTabSearchButton = findViewById(R.id.post_response_tab_search_search);
+        final Button single_threadTabForumButton = findViewById(R.id.post_response_tab_forum_search);
+        final ImageView single_threadTabSearchHighlight = findViewById(R.id.post_response_tab_search_highlight_search);
+        final ImageView single_threadTabForumHighlight = findViewById(R.id.post_response_tab_forum_highlight_search);
 
         single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
         single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
@@ -36,57 +49,55 @@ public class SingleThreadActivity extends AppCompatActivity {
         single_threadTabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                single_threadTabSearchHighlight.setImageAlpha(255);
-                single_threadTabForumHighlight.setImageAlpha(0);
+                Intent intent = new Intent(SingleThreadActivity.this, SearchScreen.class);
+                startActivity(intent);
             }
         });
 
-        single_threadTabForumButton.setOnClickListener(new View.OnClickListener() {
+        answersList = findViewById(R.id.thread_answer_list);
+        question_name = findViewById(R.id.question_name);
+        question_likes = findViewById(R.id.singe_thread_likes);
+        question_date = findViewById(R.id.singe_thread_posted);
+        question_field = findViewById(R.id.single_thread_lawfield);
+        question_detail = findViewById(R.id.post_responses_detail);
+        submitResponse = findViewById(R.id.single_thread_submit_button);
+        processIntent();
+
+        question_name.setText(question.getquestion());
+        question_likes.setText("Like (+" + question.getqRating() + ")");
+        question_date.setText(question.getdate());
+        question_field.setText(lawField);
+        String qDetails = question.getQuestionDetails();
+        if (qDetails != null && qDetails.length() > 0) {
+            question_detail.setText("Details: " + qDetails);
+        } else {
+            question_detail.setHeight(0);
+        }
+
+        tempAnswersAdapter = new TemporaryAnswersAdapter(this, question.getanswers());
+        answersList.setAdapter(tempAnswersAdapter);
+        answersList.setFocusable(false);
+        answersList.setClickable(false);
+
+        submitResponse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                single_threadTabSearchButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
-                single_threadTabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextSelected, null));
-                single_threadTabSearchHighlight.setImageAlpha(0);
-                single_threadTabForumHighlight.setImageAlpha(255);
+                // TODO: serialize the question and put it in intent for reponse activity.
+                Intent intent = new Intent(SingleThreadActivity.this, PostResponseActivity.class);
+                startActivity(intent);
             }
         });
-
-
-        final ListView answersList = findViewById(R.id.thread_answer_list);
-        tempAnswersAdapter = new TemporaryAnswersAdapter(this,createDummyAnswers(6));
-        answersList.setAdapter(tempAnswersAdapter);
-
-
-        final TextView question_name = findViewById(R.id.question_name);
-        question_name.setText("+30      Will my case go to trial?");
-
-        
     }
 
-    private ArrayList<Answer> createDummyAnswers(int size) {
-        ArrayList<Answer> result = new ArrayList<>();
-        List<String> dummy_answers = new ArrayList<String>();
-        dummy_answers.add("No you should not.");
-        dummy_answers.add("This depends on law 1001.");
-        dummy_answers.add("I think you can try to settle out of court.");
-        dummy_answers.add("You are entitled to a lot of money.");
-        dummy_answers.add("No.");
-        dummy_answers.add("Absolutely");
-
-        for (int i = 0; i < size; i++) {
-            String aQuestion = "Should I take my case to court?";
-            String aDate = "01-11-19";
-            String aAuthor = "Anonymous";
-            String answer_text = dummy_answers.get(i);
-            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text);
-            result.add(a);
-
+    private void processIntent() {
+        try {
+            Intent intent = getIntent();
+            lawField = intent.getStringExtra("LAW_FIELD");
+            JSONObject jsonQuestion = new JSONObject(intent.getStringExtra("QUESTION"));
+            question = new Question(jsonQuestion);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return result;
     }
-
-
 
 }
