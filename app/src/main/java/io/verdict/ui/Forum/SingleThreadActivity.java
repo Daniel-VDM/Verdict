@@ -67,7 +67,7 @@ public class SingleThreadActivity extends AppCompatActivity {
         question_likes.setText("Like (+" + question.getqRating() + ")");
         question_date.setText(question.getdate());
         question_field.setText(lawField);
-        String qDetails = question.getQuestionDetails();
+        final String qDetails = question.getQuestionDetails();
         if (qDetails != null && qDetails.length() > 0) {
             question_detail.setText("Details: " + qDetails);
         } else {
@@ -82,8 +82,9 @@ public class SingleThreadActivity extends AppCompatActivity {
         submitResponse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: serialize the question and put it in intent for reponse activity.
                 Intent intent = new Intent(SingleThreadActivity.this, PostResponseActivity.class);
+                intent.putExtra("QUESTION", question.toString());
+                intent.putExtra("LAW_FIELD", lawField);
                 startActivity(intent);
             }
         });
