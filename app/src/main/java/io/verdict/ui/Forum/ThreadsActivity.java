@@ -31,6 +31,7 @@ public class ThreadsActivity extends AppCompatActivity {
     private SearchView search;
     private TextView highestRatingFilter;
     private TextView mostRecentFilter;
+    private TextView noAnswersText;
     private ArrayList<Question> questions;
     private boolean isSortByDate;
     private boolean isSortByRating;
@@ -69,6 +70,8 @@ public class ThreadsActivity extends AppCompatActivity {
         highestRatingFilter.setClickable(true);
         mostRecentFilter = findViewById(R.id.most_recent);
         mostRecentFilter.setClickable(true);
+        noAnswersText = findViewById(R.id.threads_no_question);
+        noAnswersText.setAlpha(0.0f);
 
         ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter
                 .createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
@@ -94,17 +97,25 @@ public class ThreadsActivity extends AppCompatActivity {
         highestRatingFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                noAnswersText.setAlpha(0.0f);
                 isSortByRating = true;
                 isSortByDate = false;
                 listAdapter.sortByRating();
+                if(listAdapter.isCurrentEmpty()){
+                    noAnswersText.setAlpha(1.0f);
+                }
             }
         });
         mostRecentFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                noAnswersText.setAlpha(0.0f);
                 isSortByRating = false;
                 isSortByDate = true;
                 listAdapter.sortByDate();
+                if(listAdapter.isCurrentEmpty()){
+                    noAnswersText.setAlpha(1.0f);
+                }
             }
         });
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -115,11 +126,15 @@ public class ThreadsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                noAnswersText.setAlpha(0.0f);
                 listAdapter.filter(s);
                 if (isSortByDate){
                     listAdapter.sortByDate();
                 } else if (isSortByRating){
                     listAdapter.sortByRating();
+                }
+                if(listAdapter.isCurrentEmpty()){
+                    noAnswersText.setAlpha(1.0f);
                 }
                 return true;
             }
@@ -134,6 +149,9 @@ public class ThreadsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        if(listAdapter.isCurrentEmpty()){
+            noAnswersText.setAlpha(1.0f);
+        }
     }
 
     // TODO hook this up to the backend and use loading spinner between fetch...

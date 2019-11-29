@@ -49,6 +49,9 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
         return listItem;
     }
 
+    public boolean isCurrentEmpty(){
+        return threadsList.size() == 0;
+    }
 
     private boolean match(String[] input, String reference){
         reference = reference.toLowerCase();

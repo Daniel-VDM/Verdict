@@ -83,6 +83,17 @@
         app:layout_constraintEnd_toEndOf="@+id/forum_section_header"
         app:layout_constraintTop_toBottomOf="@+id/threads_filter_content_holder" />
 
+    <TextView
+        android:id="@+id/threads_no_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="No questions have been asked :("
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/list_of_threads"
+        app:layout_constraintStart_toStartOf="@+id/list_of_threads"
+        app:layout_constraintTop_toTopOf="@+id/list_of_threads" />
+
     <ListView
         android:id="@+id/list_of_threads"
         android:layout_width="0dp"
