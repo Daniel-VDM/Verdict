@@ -33,7 +33,7 @@ public class ThreadsAdapter extends RecyclerView.Adapter<ThreadsAdapter.ThreadsV
     public ThreadsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.threads_card, viewGroup, false);
+                inflate(R.layout.forum_threads_card, viewGroup, false);
 
         return new ThreadsViewHolder(itemView);
     }

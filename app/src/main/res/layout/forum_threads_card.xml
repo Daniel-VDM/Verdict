@@ -40,7 +40,7 @@
             android:maxLines="2"
             android:text="test"
             android:textColor="@android:color/black"
-            android:textSize="14dp"
+            android:textSize="15dp"
             android:visibility="visible"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintStart_toEndOf="@+id/thread_rating"

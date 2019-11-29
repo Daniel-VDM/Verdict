@@ -27,7 +27,7 @@ public class PostResponseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_response);
+        setContentView(R.layout.forum_post_response);
 
         final Button single_threadTabSearchButton = findViewById(R.id.post_response_tab_search_search);
         final Button single_threadTabForumButton = findViewById(R.id.post_response_tab_forum_search);

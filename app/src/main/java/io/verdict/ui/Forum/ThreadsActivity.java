@@ -30,7 +30,7 @@ public class ThreadsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_threads);
+        setContentView(R.layout.forum_threads);
 
         final Button threadsTabSearchButton = findViewById(R.id.threads_tab_search_search);
         final Button threadsTabForumButton = findViewById(R.id.threads_tab_forum_search);

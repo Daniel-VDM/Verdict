@@ -27,7 +27,7 @@ public class TemporaryAnswersAdapter extends ArrayAdapter<Answer> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItem = convertView;
         if (listItem == null)
-            listItem = LayoutInflater.from(aContext).inflate(R.layout.thread_answer, parent, false);
+            listItem = LayoutInflater.from(aContext).inflate(R.layout.forum_thread_answer, parent, false);
 
         Answer currentAnswer = answersList.get(position);
 

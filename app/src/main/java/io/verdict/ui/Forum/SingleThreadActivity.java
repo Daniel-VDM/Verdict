@@ -34,7 +34,7 @@ public class SingleThreadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_thread);
+        setContentView(R.layout.forum_single_thread);
 
         final Button single_threadTabSearchButton = findViewById(R.id.post_response_tab_search_search);
         final Button single_threadTabForumButton = findViewById(R.id.post_response_tab_forum_search);

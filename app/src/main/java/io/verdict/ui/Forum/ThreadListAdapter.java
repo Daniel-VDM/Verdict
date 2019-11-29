@@ -25,7 +25,7 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(ttContext).inflate(R.layout.threads_card,parent,false);
+            listItem = LayoutInflater.from(ttContext).inflate(R.layout.forum_threads_card,parent,false);
 
         Question currentThread = threadsList.get(position);
 

@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:maxLines="2"
         android:shadowColor="#B4000000"
-        android:text="Submit a Question"
+        android:text="Submit a question anonymously!"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="24dp"
@@ -132,7 +132,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/postThread_anonymous"
+        app:layout_constraintBottom_toTopOf="@+id/postThread_submitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
@@ -171,28 +171,16 @@
             android:translationZ="-3dp" />
     </androidx.cardview.widget.CardView>
 
-    <CheckBox
-        android:id="@+id/postThread_anonymous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:buttonTint="#0F701B"
-        android:checked="false"
-        android:text="Anonymous"
-        app:layout_constraintBottom_toBottomOf="@+id/postThread_submitButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/postThread_submitButton" />
-
     <Button
         android:id="@+id/postThread_submitButton"
-        android:layout_width="92dp"
-        android:layout_height="33dp"
-        android:layout_marginEnd="68dp"
+        android:layout_width="125dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="24dp"
         android:background="@color/colorButtonSubmitGreen"
         android:text="Submit"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

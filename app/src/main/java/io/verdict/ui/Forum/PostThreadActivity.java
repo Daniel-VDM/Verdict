@@ -24,7 +24,6 @@ public class PostThreadActivity extends AppCompatActivity {
     Spinner selectCategory;
     EditText threadTitle;
     EditText threadDescription;
-    CheckBox isAnonymous;
     Button submitButton;
 
     // Note: DO NOT DO implicit category, that shit is needless work.
@@ -32,7 +31,7 @@ public class PostThreadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_thread);
+        setContentView(R.layout.forum_post_thread);
 
         final Button single_threadTabSearchButton = findViewById(R.id.post_thread_tab_search_search);
         final Button single_threadTabForumButton = findViewById(R.id.post_thread_tab_forum_search);
@@ -55,7 +54,6 @@ public class PostThreadActivity extends AppCompatActivity {
         selectCategory = findViewById(R.id.post_thead_topic_list);
         threadTitle = findViewById(R.id.postThread_titleContent);
         threadDescription = findViewById(R.id.postThread_descriptionContent);
-        isAnonymous = findViewById(R.id.postThread_anonymous);
         submitButton = findViewById(R.id.postThread_submitButton);
 
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.law_topics)));

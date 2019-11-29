@@ -24,7 +24,7 @@ public class TopicsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topics);
+        setContentView(R.layout.forum_topics);
         final Button topicsTabSearchButton = findViewById(R.id.topics_tab_search_search);
         final Button topicsTabForumButton = findViewById(R.id.topics_tab_forum_search);
         final ImageView topicsTabSearchHighlight = findViewById(R.id.topics_tab_search_highlight_search);
