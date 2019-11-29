@@ -29,6 +29,7 @@ import java.util.Objects;
 
 import io.verdict.R;
 import io.verdict.backend.Backend;
+import io.verdict.ui.Forum.TopicsActivity;
 
 @SuppressWarnings({"ConstantConditions", "FieldCanBeLocal"})
 public class DetailScreen extends AppCompatActivity {
@@ -69,6 +70,14 @@ public class DetailScreen extends AppCompatActivity {
         tabForumButton.setTextColor(getResources().getColor(R.color.colorTabTextNotSelected, null));
         tabSearchHighlight.setImageAlpha(255);
         tabForumHighlight.setImageAlpha(0);
+
+        tabForumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailScreen.this, TopicsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         backend = new Backend();
         processIntent();
@@ -115,7 +124,7 @@ public class DetailScreen extends AppCompatActivity {
                 }.start();
             }
             detailName.setText(lawyer.getString("name"));
-            detailLawyerType.setText("Legal Area: " + lawField);
+            detailLawyerType.setText(lawField);
             JSONArray addrArray = lawyer.getJSONObject("location")
                     .getJSONArray("display_address");
             StringBuilder addr = new StringBuilder();
@@ -214,7 +223,7 @@ public class DetailScreen extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(DetailScreen.this);
                     try {
                         builder.setMessage("Do you want to look for "
-                                + lawyer.getString("name") + "on google maps?")
+                                + lawyer.getString("name") + " on google maps?")
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override

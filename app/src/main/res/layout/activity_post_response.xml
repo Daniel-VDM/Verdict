@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="+25 Likes"
+            android:text="Like (+25)"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/line_break2"
@@ -72,9 +72,9 @@
             android:id="@+id/response_post_responses_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="9dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="details    "
             android:textSize="15sp"
             android:textStyle="italic"
@@ -134,51 +134,50 @@
             app:layout_constraintStart_toStartOf="@+id/post_response_tab_forum_search"
             app:srcCompat="@drawable/tab_button_highlight" />
 
-        <EditText
-            android:id="@+id/postResponse_responseContent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/white"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="@string/description_hint"
-            android:inputType="textMultiLine"
-            android:maxLines="10"
-            android:singleLine="false"
-            android:textAlignment="viewStart"
-            app:layout_constraintBottom_toBottomOf="@+id/postResponse_responseWrapper"
-            app:layout_constraintEnd_toEndOf="@+id/postResponse_responseWrapper"
-            app:layout_constraintStart_toStartOf="@+id/postResponse_responseWrapper"
-            app:layout_constraintTop_toBottomOf="@+id/postResponse_responseTitle"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/postResponse_responseTitle"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/post_thread_content_holder"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/response"
-            app:layout_constraintStart_toStartOf="@+id/postResponse_responseWrapper"
-            app:layout_constraintTop_toTopOf="@+id/postResponse_responseWrapper" />
-
-        <TextView
-            android:id="@+id/postResponse_responseWrapper"
-            android:layout_width="310dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/border"
-            android:translationZ="-3dp"
-            app:layout_constraintBottom_toTopOf="@+id/postResponse_submitButton"
+            app:layout_constraintBottom_toTopOf="@+id/postResponse_anonymous"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/response_post_responses_detail"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/response_post_responses_detail">
+
+            <TextView
+                android:id="@+id/postResponse_descriptionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/description" />
+
+            <EditText
+                android:id="@+id/postResponse_descriptionContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Type your response here"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:singleLine="false"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/postResponse_descriptionWrapper"
+                android:layout_width="325dp"
+                android:layout_height="match_parent"
+                android:freezesText="false"
+                android:textSize="12sp"
+                android:translationZ="-3dp" />
+        </androidx.cardview.widget.CardView>
 
         <CheckBox
             android:id="@+id/postResponse_anonymous"

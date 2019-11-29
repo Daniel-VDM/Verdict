@@ -100,16 +100,20 @@
 
     <ListView
         android:id="@+id/thread_answer_list"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/single_thread_submit_button"
+        android:layout_marginTop="24dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:listSelector="@android:color/transparent"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_responses_detail">
+        app:layout_constraintTop_toBottomOf="@+id/post_responses_detail"
+        app:layout_constraintVertical_bias="0.0">
 
     </ListView>
 
@@ -119,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="3dp"
-        android:text="+25 Likes"
+        android:text="Like (+23)"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/line_break"
@@ -151,9 +155,9 @@
         android:id="@+id/post_responses_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="9dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:text="details    "
         android:textSize="15sp"
         android:textStyle="italic"

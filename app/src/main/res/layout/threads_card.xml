@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         card_view:layout_constraintBottom_toTopOf="@+id/thread_date"
         card_view:layout_constraintTop_toTopOf="@+id/thread_date">
 
@@ -35,16 +35,16 @@
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:maxLines="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="2"
             android:text="test"
             android:textColor="@android:color/black"
-            android:textSize="18dp"
+            android:textSize="14dp"
             android:visibility="visible"
-            card_view:layout_constraintBottom_toBottomOf="@+id/thread_rating"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintStart_toEndOf="@+id/thread_rating"
-            card_view:layout_constraintTop_toTopOf="@+id/thread_rating" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/thread_date"

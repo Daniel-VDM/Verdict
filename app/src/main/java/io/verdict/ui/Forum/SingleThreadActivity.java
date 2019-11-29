@@ -27,7 +27,7 @@ public class SingleThreadActivity extends AppCompatActivity {
     private TextView question_date;
     private TextView question_field;
     private TextView question_detail;
-    private Button submit;
+    private Button submitResponse;
     private String lawField;
 
     @SuppressLint("SetTextI18n")
@@ -60,15 +60,15 @@ public class SingleThreadActivity extends AppCompatActivity {
         question_date = findViewById(R.id.singe_thread_posted);
         question_field = findViewById(R.id.single_thread_lawfield);
         question_detail = findViewById(R.id.post_responses_detail);
-        submit = findViewById(R.id.single_thread_submit_button);
+        submitResponse = findViewById(R.id.single_thread_submit_button);
         processIntent();
 
         question_name.setText(question.getquestion());
-        question_likes.setText("+" + question.getqRating() + " Likes");
+        question_likes.setText("Like (+" + question.getqRating() + ")");
         question_date.setText(question.getdate());
         question_field.setText(lawField);
         String qDetails = question.getQuestionDetails();
-        if (qDetails != null && qDetails.length() > 0){
+        if (qDetails != null && qDetails.length() > 0) {
             question_detail.setText("Details: " + qDetails);
         } else {
             question_detail.setHeight(0);
@@ -76,8 +76,10 @@ public class SingleThreadActivity extends AppCompatActivity {
 
         tempAnswersAdapter = new TemporaryAnswersAdapter(this, question.getanswers());
         answersList.setAdapter(tempAnswersAdapter);
+        answersList.setFocusable(false);
+        answersList.setClickable(false);
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        submitResponse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: serialize the question and put it in intent for reponse activity.
