@@ -8,8 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import io.verdict.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 public class ThreadListAdapter extends ArrayAdapter<Question>{
     private Context ttContext;
@@ -74,6 +80,35 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
         }
         clear();
         addAll(newThreadsList);
+        notifyDataSetChanged();
+    }
+
+    void sortByDate(){
+        Collections.sort(threadsList, new Comparator<Question>() {
+            @Override
+            public int compare(Question question, Question t1) {
+                try {
+                    Date date1 = Question.dateFormat.parse(question.getdate());
+                    Date date2 = Question.dateFormat.parse(t1.getdate());
+                    return date2.compareTo(date1);
+                } catch (java.text.ParseException ignore){
+                    return 0;
+                }
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    void sortByRating(){
+        Collections.sort(threadsList, new Comparator<Question>() {
+            @Override
+            public int compare(Question question, Question t1) {
+                if (question.getqRating() == t1.getqRating()){
+                    return 0;
+                }
+                return question.getqRating() < t1.getqRating() ? 1 : -1;
+            }
+        });
         notifyDataSetChanged();
     }
 

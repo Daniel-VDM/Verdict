@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import io.verdict.R;
 import io.verdict.ui.SearchScreen.SearchScreen;
@@ -28,6 +29,9 @@ public class ThreadsActivity extends AppCompatActivity {
     private ThreadListAdapter listAdapter;
     private FloatingActionButton submitThread;
     private SearchView search;
+    private TextView highestRatingFilter;
+    private TextView mostRecentFilter;
+    private ArrayList<Question> questions;
     private boolean isSortByDate;
     private boolean isSortByRating;
 
@@ -53,38 +57,54 @@ public class ThreadsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        isSortByDate = false;
+        isSortByRating = false;
 
         processIntent();
 
         ((TextView)findViewById(R.id.forum_section_header)).setText(lawField);
         submitThread = findViewById(R.id.forum_section_writeNew);
         search = findViewById(R.id.threads_filter_content);
+        highestRatingFilter = findViewById(R.id.highest_rating);
+        highestRatingFilter.setClickable(true);
+        mostRecentFilter = findViewById(R.id.most_recent);
+        mostRecentFilter.setClickable(true);
 
-        // TODO add Sort By logic  (possibly rework button placement).
-        ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter.createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> threads_topics_adapter = ArrayAdapter
+                .createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
         threads_topics_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        final ArrayList<Question> questions =  createDummyQuestions(6);
+        questions =  createDummyQuestions(6);
 
         threadsList = findViewById(R.id.list_of_threads);
         listAdapter = new ThreadListAdapter(this, questions);
         threadsList.setAdapter(listAdapter);
 
-        threadsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(ThreadsActivity.this, SingleThreadActivity.class);
-                intent.putExtra("LAW_FIELD", lawField);
-                Question question = questions.get(i);
-                intent.putExtra("QUESTION", question.toString());
-                startActivity(intent);
-            }
-        });
+        setupListeners();
+    }
+
+    private void setupListeners() {
         submitThread.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ThreadsActivity.this, PostThreadActivity.class);
                 startActivity(intent);
+            }
+        });
+        highestRatingFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isSortByRating = true;
+                isSortByDate = false;
+                listAdapter.sortByRating();
+            }
+        });
+        mostRecentFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isSortByRating = false;
+                isSortByDate = true;
+                listAdapter.sortByDate();
             }
         });
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -96,8 +116,22 @@ public class ThreadsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 listAdapter.filter(s);
-                // TODO add sort logic after filter...
+                if (isSortByDate){
+                    listAdapter.sortByDate();
+                } else if (isSortByRating){
+                    listAdapter.sortByRating();
+                }
                 return true;
+            }
+        });
+        threadsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(ThreadsActivity.this, SingleThreadActivity.class);
+                intent.putExtra("LAW_FIELD", lawField);
+                Question question = questions.get(i);
+                intent.putExtra("QUESTION", question.toString());
+                startActivity(intent);
             }
         });
     }
@@ -115,11 +149,11 @@ public class ThreadsActivity extends AppCompatActivity {
 
         for (int i = 0; i < size; i++) {
             String qTopic = lawField;
-            String date = "01-11-19";
+            String date = "01-11-" + String.format("%02d", new Random().nextInt(31));
             String qAuthor = "Anonymous";
             String question = dummy_questions.get(i);
             String questionDetails = "This is a test";
-            Question q = new Question(qTopic, date, qAuthor, question, questionDetails);
+            Question q = new Question(qTopic, date, qAuthor, question, questionDetails, new Random().nextInt(20));
             result.add(q);
 
         }
