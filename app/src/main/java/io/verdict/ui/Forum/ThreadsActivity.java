@@ -100,7 +100,8 @@ public class ThreadsActivity extends AppCompatActivity {
             String date = "01-11-19";
             String qAuthor = "Anonymous";
             String question = dummy_questions.get(i);
-            Question q = new Question(qTopic, date, qAuthor, question);
+            String questionDetails = "This is a test";
+            Question q = new Question(qTopic, date, qAuthor, question, questionDetails);
             result.add(q);
 
         }

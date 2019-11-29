@@ -8,12 +8,21 @@
     tools:context=".ui.Forum.PostThreadActivity">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/post_header"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="TODO: refactor this to follow style of everthing else."
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="68dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:maxLines="2"
+        android:shadowColor="#B4000000"
+        android:text="Submit a Question"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_thread_tab_search_search" />
 
     <Button
         android:id="@+id/post_thread_tab_forum_search"
@@ -67,96 +76,100 @@
         app:layout_constraintStart_toStartOf="@+id/post_thread_tab_forum_search"
         app:srcCompat="@drawable/tab_button_highlight" />
 
-    <Spinner
+    <androidx.cardview.widget.CardView
         android:id="@+id/postThread_selectCategory"
-        android:layout_width="310dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/post_thread_tab_search_highlight_search" />
+        app:layout_constraintTop_toBottomOf="@+id/post_header">
 
-    <EditText
-        android:id="@+id/postThread_titleContent"
-        android:layout_width="269dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/white"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/postThread_titleWrapper"
-        app:layout_constraintTop_toTopOf="@+id/postThread_titleWrapper" />
+        <Spinner
+            android:id="@+id/post_thead_topic_list"
+            android:layout_width="325dp"
+            android:layout_height="45dp" />
 
-    <TextView
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/postThread_titleWrapper"
-        android:layout_width="310dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="52dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@drawable/border"
-        android:freezesText="true"
-        android:translationZ="-3dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postThread_selectCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/postThread_selectCategory">
 
-    <TextView
-        android:id="@+id/postThread_descriptionWrapper"
-        android:layout_width="310dp"
+        <TextView
+            android:id="@+id/postThread_titleWrapper_inner"
+            android:layout_width="325dp"
+            android:layout_height="57dp"
+            android:freezesText="false" />
+
+        <TextView
+            android:id="@+id/postThread_titleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:text="Question" />
+
+        <EditText
+            android:id="@+id/postThread_titleContent"
+            android:layout_width="269dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white"
+            android:ems="10"
+            android:inputType="textPersonName" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/post_thread_content_holder"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="52dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/border"
-        android:freezesText="true"
-        android:translationZ="-3dp"
-        app:layout_constraintBottom_toTopOf="@+id/postThread_submitButton"
+        app:layout_constraintBottom_toTopOf="@+id/postThread_anonymous"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postThread_titleWrapper"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/postThread_titleWrapper">
 
-    <EditText
-        android:id="@+id/postThread_descriptionContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/white"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="@string/description_hint"
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:singleLine="false"
-        android:textAlignment="viewStart"
-        app:layout_constraintBottom_toBottomOf="@+id/postThread_descriptionWrapper"
-        app:layout_constraintEnd_toEndOf="@+id/postThread_descriptionWrapper"
-        app:layout_constraintStart_toStartOf="@+id/postThread_descriptionWrapper"
-        app:layout_constraintTop_toBottomOf="@+id/postThread_descriptionTitle"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/postThread_descriptionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/description" />
 
-    <TextView
-        android:id="@+id/postThread_titleTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
-        android:text="@string/title"
-        app:layout_constraintStart_toStartOf="@+id/postThread_titleWrapper"
-        app:layout_constraintTop_toTopOf="@+id/postThread_titleWrapper" />
+        <EditText
+            android:id="@+id/postThread_descriptionContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="(Optional) Detail regarding question"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:singleLine="false"
+            android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/postThread_descriptionTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/description"
-        app:layout_constraintStart_toStartOf="@+id/postThread_descriptionWrapper"
-        app:layout_constraintTop_toTopOf="@+id/postThread_descriptionWrapper" />
+        <TextView
+            android:id="@+id/postThread_descriptionWrapper"
+            android:layout_width="325dp"
+            android:layout_height="match_parent"
+            android:freezesText="false"
+            android:textSize="12sp"
+            android:translationZ="-3dp" />
+    </androidx.cardview.widget.CardView>
 
     <CheckBox
         android:id="@+id/postThread_anonymous"

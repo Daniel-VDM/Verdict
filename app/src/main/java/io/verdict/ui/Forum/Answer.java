@@ -23,6 +23,8 @@ public class Answer {
     private String answer_text;
     private String userType;
 
+    // TODO: answer needs an annoyn filed...
+
     // Constructor that is used to create an instance of the Answer object
     public Answer(String aQuestion, String aDate, String aAuthor, String answer_text, String userType) {
         this.aQuestion = aQuestion;

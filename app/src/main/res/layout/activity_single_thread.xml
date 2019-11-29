@@ -7,14 +7,6 @@
     android:background="@color/colorBackground"
     tools:context=".ui.Forum.SingleThreadActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TODO: refactor this to follow style of everthing else."
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="132dp" />
-
     <Button
         android:id="@+id/post_response_tab_forum_search"
         android:layout_width="wrap_content"
@@ -117,7 +109,7 @@
         app:layout_constraintBottom_toTopOf="@+id/single_thread_submit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/single_thread_lawfield">
+        app:layout_constraintTop_toBottomOf="@+id/post_responses_detail">
 
     </ListView>
 
@@ -126,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="3dp"
         android:text="+25 Likes"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
@@ -137,7 +129,7 @@
         android:id="@+id/singe_thread_posted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="8dp"
         android:text="11-11-11"
         android:textSize="14sp"
@@ -154,5 +146,19 @@
         app:layout_constraintEnd_toStartOf="@+id/singe_thread_posted"
         app:layout_constraintStart_toEndOf="@+id/singe_thread_likes"
         app:layout_constraintTop_toTopOf="@+id/singe_thread_likes" />
+
+    <TextView
+        android:id="@+id/post_responses_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="16dp"
+        android:text="details    "
+        android:textSize="15sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/question_name"
+        app:layout_constraintStart_toStartOf="@+id/question_name"
+        app:layout_constraintTop_toBottomOf="@+id/single_thread_lawfield" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

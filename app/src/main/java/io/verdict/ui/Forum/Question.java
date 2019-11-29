@@ -19,15 +19,17 @@ public class Question {
     private int qRating;
     // Store the question
     private String question;
+    private String questionDetails;
     // Store all answers under this question
     private ArrayList<Answer> answers;
 
     // Constructor that is used to create an instance of the Question object
-    public Question(String qTopic, String date, String qAuthor, String question) {
+    public Question(String qTopic, String date, String qAuthor, String question, String questionDetails) {
         this.qTopic = qTopic;
         this.date = date;
         this.qAuthor = qAuthor;
         this.question = question;
+        this.questionDetails = questionDetails;
         this.answers = Answer.createDummyAnswers(6);
         this.qRating = 3;
     }
@@ -37,6 +39,7 @@ public class Question {
         this.date = jsonObject.getString("date");
         this.qAuthor = jsonObject.getString("qAuthor");
         this.question = jsonObject.getString("question");
+        this.questionDetails = jsonObject.getString("questionDetails");
         this.answers = new ArrayList<>();
         JSONArray jsonAnswers = jsonObject.getJSONArray("answers");
         for (int i = 0; i < jsonAnswers.length(); i++) {
@@ -99,6 +102,7 @@ public class Question {
         jsonObject.put("date", this.date);
         jsonObject.put("qAuthor", this.qAuthor);
         jsonObject.put("question", this.question);
+        jsonObject.put("questionDetails", this.questionDetails);
         jsonObject.put("qRating", this.qRating);
 
         JSONArray jsonArray = new JSONArray();
@@ -119,5 +123,13 @@ public class Question {
             e.printStackTrace();
             return super.toString();
         }
+    }
+
+    public String getQuestionDetails() {
+        return questionDetails;
+    }
+
+    public void setQuestionDetails(String questionDetails) {
+        this.questionDetails = questionDetails;
     }
 }

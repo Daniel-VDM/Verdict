@@ -52,14 +52,14 @@ public class PostThreadActivity extends AppCompatActivity {
             }
         });
 
-        selectCategory = findViewById(R.id.postThread_selectCategory);
+        selectCategory = findViewById(R.id.post_thead_topic_list);
         threadTitle = findViewById(R.id.postThread_titleContent);
         threadDescription = findViewById(R.id.postThread_descriptionContent);
         isAnonymous = findViewById(R.id.postThread_anonymous);
         submitButton = findViewById(R.id.postThread_submitButton);
 
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.law_topics)));
-        arrayList.add(0, "Select Category");
+        arrayList.add(0, "Select Legal Field");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item, arrayList);
         selectCategory.setAdapter(arrayAdapter);

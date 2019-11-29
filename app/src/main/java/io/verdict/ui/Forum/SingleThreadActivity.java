@@ -26,6 +26,7 @@ public class SingleThreadActivity extends AppCompatActivity {
     private TextView question_likes;
     private TextView question_date;
     private TextView question_field;
+    private TextView question_detail;
     private Button submit;
     private String lawField;
 
@@ -58,6 +59,7 @@ public class SingleThreadActivity extends AppCompatActivity {
         question_likes = findViewById(R.id.singe_thread_likes);
         question_date = findViewById(R.id.singe_thread_posted);
         question_field = findViewById(R.id.single_thread_lawfield);
+        question_detail = findViewById(R.id.post_responses_detail);
         submit = findViewById(R.id.single_thread_submit_button);
         processIntent();
 
@@ -65,6 +67,12 @@ public class SingleThreadActivity extends AppCompatActivity {
         question_likes.setText("+" + question.getqRating() + " Likes");
         question_date.setText(question.getdate());
         question_field.setText(lawField);
+        String qDetails = question.getQuestionDetails();
+        if (qDetails != null && qDetails.length() > 0){
+            question_detail.setText("Details: " + qDetails);
+        } else {
+            question_detail.setHeight(0);
+        }
 
         tempAnswersAdapter = new TemporaryAnswersAdapter(this, question.getanswers());
         answersList.setAdapter(tempAnswersAdapter);
