@@ -25,6 +25,7 @@ import io.verdict.R;
 import io.verdict.backend.Backend;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
+import io.verdict.ui.Forum.ThreadsActivity;
 import io.verdict.ui.Forum.TopicsActivity;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
@@ -84,6 +85,15 @@ public class SearchResults extends AppCompatActivity {
                         resultsInfoText.setText(resultsInfoString);
 
                         resultsForumTopicCard.setVisibility(View.VISIBLE);
+                        resultsForumTopicCard.setClickable(true);
+                        resultsForumTopicCard.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(SearchResults.this, ThreadsActivity.class);
+                                intent.putExtra("LAW_FIELD", legalField);
+                                startActivity(intent);
+                            }
+                        });
                         String resultsForumTopicString = String.format(getString(R.string.results_forum_topic_card_text), legalField);
                         Spannable resultsForumTopicSpannable = new SpannableString(resultsForumTopicString);
                         resultsForumTopicSpannable.setSpan(new UnderlineSpan(), resultsForumTopicString.length() - 11, resultsForumTopicString.length(), 0);

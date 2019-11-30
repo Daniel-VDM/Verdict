@@ -31,6 +31,7 @@ import java.util.Objects;
 
 import io.verdict.R;
 
+@SuppressWarnings("unchecked")
 public class Backend {
 
     // Don't steal my key pls and thx.
@@ -363,14 +364,12 @@ public class Backend {
         requestQueue.add(request);
     }
 
-    public JSONObject getDbUserIndex() {
-        return dbUserIndex;
-    }
-
-    public JSONObject getDbReviewIndex() {
-        return dbReviewIndex;
-    }
-
+    /**
+     * Simple method to initialize the database's forum data, overriding the
+     * existing forum data.
+     *
+     * @param jsonObject The json object for the forum data.
+     */
     public void initForumData(JSONObject jsonObject) throws JSONException {
         Map<String, Map<String, String>> topicsMap = new HashMap<>();
         Iterator<String> keys = jsonObject.keys();
@@ -390,7 +389,42 @@ public class Backend {
         Log.e(TAG, "Initialized forum data");
     }
 
-    // TODO create API for forums requests
+    /**
+     * Fetches a serialized JSONArray of serialized questions.
+     * Here, serialized is just a string representation of JSON objects.
+     *
+     * @param legalField       The legal field for the desired questions.
+     * @param databaseListener The return listener.
+     */
+    public void getForumQuestions(final String legalField, final DatabaseListener databaseListener) {
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY).child(legalField);
+        databaseListener.onStart(legalField);
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                JSONArray jsonArray = new JSONArray();
+                HashMap<String, String> questionMap = (HashMap<String, String>) dataSnapshot.getValue();
+                assert questionMap != null;
+                for (String s : questionMap.values()) {
+                    jsonArray.put(s);
+                }
+                databaseListener.onSuccess(legalField, jsonArray.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                databaseListener.onFailed(databaseError);
+            }
+        });
+    }
+
+    public JSONObject getDbUserIndex() {
+        return dbUserIndex;
+    }
+
+    public JSONObject getDbReviewIndex() {
+        return dbReviewIndex;
+    }
 
     // TODO toast messages if there was an error in the backend.
 }

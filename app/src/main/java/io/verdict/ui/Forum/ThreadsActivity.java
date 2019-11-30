@@ -1,7 +1,9 @@
 package io.verdict.ui.Forum;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,16 +16,23 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import io.verdict.R;
+import io.verdict.backend.Backend;
+import io.verdict.backend.DatabaseListener;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
 
 public class ThreadsActivity extends AppCompatActivity {
+    private static final String TAG = "ThreadsActivity";
+
     private ListView threadsList;
     private String lawField;
     private ThreadListAdapter listAdapter;
@@ -35,6 +44,7 @@ public class ThreadsActivity extends AppCompatActivity {
     private ArrayList<Question> questions;
     private boolean isSortByDate;
     private boolean isSortByRating;
+    private Backend backend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,8 @@ public class ThreadsActivity extends AppCompatActivity {
         });
         isSortByDate = false;
         isSortByRating = false;
+        questions = new ArrayList<>();
+        backend = new Backend();
 
         processIntent();
 
@@ -79,13 +91,61 @@ public class ThreadsActivity extends AppCompatActivity {
 
         setupAdapter();
         setupListeners();
+        updateQuestions();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateQuestions() {
+        backend.getForumQuestions(lawField, new DatabaseListener() {
+            @Override
+            public void onStart(String key) {
+                noAnswersText.setAlpha(1.0f);
+                noAnswersText.setText("Fetching forum data...");
+                Log.d(TAG, "Fetching forum data for thread");
+            }
+
+            @Override
+            public void onSuccess(String key, String value) {
+                try {
+                    questions = new ArrayList<>();
+                    JSONArray jsonArray = new JSONArray(value);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = new JSONObject(jsonArray.getString(i));
+                        questions.add(new Question(jsonObject));
+                    }
+                    runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            noAnswersText.setText("No questions have been asked :(");
+                            setupAdapter();
+                        }
+                    });
+                } catch (JSONException e) {
+                    noAnswersText.setAlpha(1.0f);
+                    noAnswersText.setText("Error loading forum data...");
+                    Log.e(TAG, e.toString());
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                noAnswersText.setAlpha(1.0f);
+                noAnswersText.setText("Error loading forum data...");
+                Log.e(TAG, databaseError.toString());
+            }
+        });
     }
 
     private void setupAdapter() {
-        questions = createDummyQuestions(6);  // TODO: load fresh question from the backend.
         threadsList = findViewById(R.id.list_of_threads);
         listAdapter = new ThreadListAdapter(this, questions);
         threadsList.setAdapter(listAdapter);
+        if (listAdapter.isCurrentEmpty()) {
+            noAnswersText.setAlpha(1.0f);
+        } else {
+            noAnswersText.setAlpha(0.0f);
+        }
     }
 
     private void setupListeners() {
@@ -151,39 +211,13 @@ public class ThreadsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if (listAdapter.isCurrentEmpty()) {
-            noAnswersText.setAlpha(1.0f);
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setupAdapter();
-        setupListeners();
-    }
-
-    // TODO hook this up to the backend and use loading spinner between fetch...
-    private ArrayList<Question> createDummyQuestions(int size) {
-        ArrayList<Question> result = new ArrayList<Question>();
-        List<String> dummy_questions = new ArrayList<String>();
-        dummy_questions.add("Should I take my case to court?");
-        dummy_questions.add("Who is the best lawyer in my area?");
-        dummy_questions.add("Who should I ask for help?");
-        dummy_questions.add("What am I entitled to?");
-        dummy_questions.add("What do I do now?");
-        dummy_questions.add("How do I file a case?");
-
-        for (int i = 0; i < size; i++) {
-            String qTopic = lawField;
-            String date = "01-11-" + String.format("%02d", new Random().nextInt(31));
-            String question = dummy_questions.get(i);
-            String questionDetails = "This is a test";
-            Question q = new Question(qTopic, date, question, questionDetails, new Random().nextInt(20));
-            result.add(q);
-
-        }
-        return result;
+        listAdapter.clear();
+        updateQuestions();
     }
 
     private void processIntent() {

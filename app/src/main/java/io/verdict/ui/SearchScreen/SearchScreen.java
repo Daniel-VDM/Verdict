@@ -3,7 +3,6 @@ package io.verdict.ui.SearchScreen;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -18,24 +17,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseError;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.Vector;
 
 import io.verdict.R;
-import io.verdict.backend.Backend;
-import io.verdict.backend.DatabaseListener;
-import io.verdict.backend.SearchListener;
-import io.verdict.backend.SearchQuarry;
-import io.verdict.ui.DetailScreen.DetailScreen;
 import io.verdict.ui.Forum.ForumDataGenerator;
 import io.verdict.ui.Forum.TopicsActivity;
 import io.verdict.ui.SearchResults.SearchResults;
@@ -45,32 +31,15 @@ public class SearchScreen extends AppCompatActivity {
     public static final String SEARCH_TEXT_LEGALFIELD = "io.verdict.searchscreen.legalfield";
     public static final String SEARCH_TEXT_LOCATION = "io.verdict.searchscreen.location";
     public static final String SEARCH_TEXT_LAWYER = "io.verdict.searchscreen.lawyer";
-    private static final String TAG = "SearchScreen";
-    public static String[] LEGAL_FIELDS = {
-            "Admiralty",
-            "Bankruptcy",
-            "Business",
-            "Civil Rights",
-            "Criminal",
-            "Entertainment",
-            "Environmental",
-            "Family",
-            "Health",
-            "Immigration",
-            "Intellectual Property",
-            "International",
-            "Labor",
-            "Military",
-            "Personal Injury",
-            "Real Estate",
-            "Tax"
-    };
-    private final Backend backend = new Backend();
+    public static String[] LEGAL_FIELDS;
+
+    // TODO: Verify inputs and catch network errors...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
+        LEGAL_FIELDS = this.getResources().getStringArray(R.array.law_topics);
 
         setupTabs();
         setupLegalFieldSpinner();
@@ -154,77 +123,6 @@ public class SearchScreen extends AppCompatActivity {
         intent.putExtra(SEARCH_TEXT_LAWYER, lawyer);
 
         startActivity(intent);
-    }
-
-    // All initial data collection needs to be handled asynchronously
-    // Yelp tends to give more results with an empty search phrase.
-    private void searchLawyerExample() {
-        final String lawField = "Criminal";
-        final SearchQuarry searchQuarry = new SearchQuarry("Berkeley",
-                lawField, "", new SearchListener() {
-            @Override
-            public void onFinish(JSONArray jsonArray) {
-                try {
-                    JSONObject lawyer = jsonArray.getJSONObject(new Random().nextInt(jsonArray.length()));
-                    Intent detailScreen = new Intent(SearchScreen.this, DetailScreen.class);
-                    detailScreen.putExtra("data", lawyer.toString());
-                    detailScreen.putExtra("lawField", lawField);
-                    startActivity(detailScreen);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                Log.e(TAG, message);
-            }
-        });
-
-        // Needs thread to not block quarries.
-        // In practice, ALL UI updates NEED to be called in UI thread, use 'runOnUiThread' function.
-        new Thread() {
-            @Override
-            public void run() {
-                backend.searchLawyers(SearchScreen.this, searchQuarry);
-            }
-        }.start();
-
-
-    }
-
-    private void databaseExample() {
-        final Vector<Object> exampleData = new Vector<>();  // Use vector b/c it's thread safe.
-
-        final DatabaseListener listener = new DatabaseListener() {
-            @Override
-            public void onStart(String key) {
-                Log.d(TAG, "Quarry DB for " + key);
-            }
-
-            @Override
-            public void onSuccess(String key, String string) {
-                this.attributes.put(key, string);  // Listener can store internal state.
-                exampleData.add(string);
-                if (exampleData.size() >= 2) {
-                    Log.e(TAG, exampleData.toString());
-                    Log.e(TAG, this.attributes.toString());
-                }
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-                Log.e(TAG, databaseError.getMessage());
-            }
-        };
-
-        backend.databaseGet("test_string_0", listener);
-        backend.databaseGet("test_string_1", listener);
-        backend.databasePut("test_val", "foo-bar-baz");
-        backend.databaseGet("test_val", listener);
-
-        // Log msgs will appear in logcat & debug console
-        Log.e(TAG, "This will execute before DB is returned");
     }
 
     private class HintAdapter extends ArrayAdapter<String> {
