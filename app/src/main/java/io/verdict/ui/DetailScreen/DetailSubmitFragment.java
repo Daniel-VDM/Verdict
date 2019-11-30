@@ -93,8 +93,8 @@ public class DetailSubmitFragment extends Fragment {
                     saveReview(review);
                     ratingBar.setRating(0F);
                     reviewText.getText().clear();
-                    currPriceRating = 1;
-                    priceRatingBar.setOnSeekBarChangeListener(priceDefaultListener);
+                    priceRatingBar.setProgress(1);
+                    priceRatingBar.refreshDrawableState();
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                 }
@@ -156,7 +156,7 @@ public class DetailSubmitFragment extends Fragment {
                     }
                     backend.databasePut(key, dbContents.toString());
                     backend.databasePut("META_REVIEW_INDEX", reviewIndex.toString());
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     Log.e(TAG, e.toString());
                 }
             }

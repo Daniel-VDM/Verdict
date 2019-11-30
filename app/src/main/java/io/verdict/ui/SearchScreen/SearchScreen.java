@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,10 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 import io.verdict.R;
@@ -34,18 +36,16 @@ import io.verdict.backend.DatabaseListener;
 import io.verdict.backend.SearchListener;
 import io.verdict.backend.SearchQuarry;
 import io.verdict.ui.DetailScreen.DetailScreen;
+import io.verdict.ui.Forum.ForumDataGenerator;
 import io.verdict.ui.Forum.TopicsActivity;
 import io.verdict.ui.SearchResults.SearchResults;
 
 public class SearchScreen extends AppCompatActivity {
 
-    private static final String TAG = "SearchScreen";
-    private final Backend backend = new Backend();
-
     public static final String SEARCH_TEXT_LEGALFIELD = "io.verdict.searchscreen.legalfield";
     public static final String SEARCH_TEXT_LOCATION = "io.verdict.searchscreen.location";
     public static final String SEARCH_TEXT_LAWYER = "io.verdict.searchscreen.lawyer";
-
+    private static final String TAG = "SearchScreen";
     public static String[] LEGAL_FIELDS = {
             "Admiralty",
             "Bankruptcy",
@@ -65,6 +65,7 @@ public class SearchScreen extends AppCompatActivity {
             "Real Estate",
             "Tax"
     };
+    private final Backend backend = new Backend();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,23 @@ public class SearchScreen extends AppCompatActivity {
         setupTabs();
         setupLegalFieldSpinner();
 
+        // Tee for forum data generation
+        ForumDataGenerator forumDataGenerator = new ForumDataGenerator(this);
+        if (getResources().getBoolean(R.bool.debug_forum_data)) {
+            Toast toast = Toast.makeText(this,
+                    "GENERATING DEBUG FORUM DATA",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 0, 10);
+            toast.show();
+            forumDataGenerator.generateDebugData();
+        } else if (getResources().getBoolean(R.bool.force_generate_forum)) {
+            Toast toast = Toast.makeText(this,
+                    "GENERATING DEMO FORUM DATA",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 0, 10);
+            toast.show();
+            forumDataGenerator.generateDemoData();
+        }
     }
 
     private void setupTabs() {
@@ -96,17 +114,6 @@ public class SearchScreen extends AppCompatActivity {
         });
     }
 
-    private class HintAdapter extends ArrayAdapter<String> {
-        public HintAdapter(Context theContext, int theLayoutResId, List<String> objects) {
-            super(theContext, theLayoutResId, objects);
-        }
-        @Override
-        public int getCount() {
-            int count = super.getCount();
-            return count > 0 ? count - 1 : count;
-        }
-    }
-
     private void setupLegalFieldSpinner() {
         Spinner legalFieldSpinner = findViewById(R.id.search_by_legal);
         ArrayList<String> legalFieldsList = new ArrayList<>();
@@ -125,6 +132,7 @@ public class SearchScreen extends AppCompatActivity {
                 }
                 ((TextView) parent.getChildAt(0)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
@@ -144,7 +152,7 @@ public class SearchScreen extends AppCompatActivity {
         EditText searchByLawyerText = findViewById(R.id.search_by_lawyer);
         String lawyer = searchByLawyerText.getText().toString();
         intent.putExtra(SEARCH_TEXT_LAWYER, lawyer);
-        
+
         startActivity(intent);
     }
 
@@ -217,5 +225,17 @@ public class SearchScreen extends AppCompatActivity {
 
         // Log msgs will appear in logcat & debug console
         Log.e(TAG, "This will execute before DB is returned");
+    }
+
+    private class HintAdapter extends ArrayAdapter<String> {
+        public HintAdapter(Context theContext, int theLayoutResId, List<String> objects) {
+            super(theContext, theLayoutResId, objects);
+        }
+
+        @Override
+        public int getCount() {
+            int count = super.getCount();
+            return count > 0 ? count - 1 : count;
+        }
     }
 }

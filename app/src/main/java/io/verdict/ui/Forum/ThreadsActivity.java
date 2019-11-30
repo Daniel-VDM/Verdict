@@ -177,10 +177,9 @@ public class ThreadsActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             String qTopic = lawField;
             String date = "01-11-" + String.format("%02d", new Random().nextInt(31));
-            String qAuthor = "Anonymous";
             String question = dummy_questions.get(i);
             String questionDetails = "This is a test";
-            Question q = new Question(qTopic, date, qAuthor, question, questionDetails, new Random().nextInt(20));
+            Question q = new Question(qTopic, date, question, questionDetails, new Random().nextInt(20));
             result.add(q);
 
         }

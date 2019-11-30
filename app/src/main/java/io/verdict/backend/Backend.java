@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ import io.verdict.R;
 public class Backend {
 
     // Don't steal my key pls and thx.
+    public static final String DB_FORUM_KEY = "META_FORUM";
     static final String yelpApiKey = "PuaW8VIj-ysAuJ3aTlw5JWPI_kMN31KwguyzEHOWjtW_Ck" +
             "Ohco62syp05jmQQp0R1xHFJYc2QRGcj5RI46iqVR35YmeWEjxtFxhBhsEzAWOGpHBuLRshgHTFqgHWXXYx";
     private static final String TAG = "Backend";
@@ -276,7 +278,7 @@ public class Backend {
                 public void onSuccess(final String key, String string) {
                     try {
                         if (string == null ||
-                                context.getResources().getBoolean(R.bool.force_generate) ||
+                                context.getResources().getBoolean(R.bool.force_generate_search) ||
                                 !(new JSONObject(string).has("PEER_REVIEWS"))) {
                             fetchNewYelpReview(lawyer, id, dbGetIsDone,
                                     iFinal, searchQuarry, key, requestQueue);
@@ -369,9 +371,26 @@ public class Backend {
         return dbReviewIndex;
     }
 
-    // TODO create API for forums requests
+    public void initForumData(JSONObject jsonObject) throws JSONException {
+        Map<String, Map<String, String>> topicsMap = new HashMap<>();
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Map<String, String> questionsMap = new HashMap<>();
+            JSONObject topicQuestions = jsonObject.getJSONObject(key);
+            Iterator<String> questionKeys = topicQuestions.keys();
+            while (questionKeys.hasNext()) {
+                String questionKey = questionKeys.next();
+                questionsMap.put(questionKey, topicQuestions.getString(questionKey));
+            }
+            topicsMap.put(key, questionsMap);
+        }
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY);
+        dbRef.setValue(topicsMap);
+        Log.e(TAG, "Initialized forum data");
+    }
 
-    // TODO create API for review + forum update
+    // TODO create API for forums requests
 
     // TODO toast messages if there was an error in the backend.
 }

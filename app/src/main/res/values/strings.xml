@@ -24,7 +24,9 @@
     <string name="details_leave_review_submit">Submit</string>
     <string name="details_leave_review_prompt">Write a comment here!</string>
     <string name="background_for_card">background for card</string>
-    <bool name="force_generate">false</bool>
+    <bool name="force_generate_search">false</bool>
+    <bool name="force_generate_forum">false</bool>
+    <bool name="debug_forum_data">true</bool>
     # This is dangerous, DO NOT ENABLE for consecutive execution.
     <string-array name="law_topics">
         <item>Admiralty (Maritime)</item>

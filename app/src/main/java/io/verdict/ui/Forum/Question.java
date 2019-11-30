@@ -10,33 +10,31 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @SuppressLint("SimpleDateFormat")
 public class Question {
 
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
 
-    // Store the topic this question is under
     private String qTopic;
-    // Store the date posted
     private String date;
-    // Store the number of thumbs up on the question
     private int qRating;
-    // Store the question
     private String question;
     private String questionDetails;
-    // Store all answers under this question
     private ArrayList<Answer> answers;
+    private UUID uuid;
 
 
     // Constructor that is used to create an instance of the Question object
-    public Question(String qTopic, String date, String qAuthor, String question, String questionDetails, int qRating) {
+    public Question(String qTopic, String date, String question, String questionDetails, int qRating) {
         this.qTopic = qTopic;
         this.date = date;
         this.question = question;
         this.questionDetails = questionDetails;
         this.answers = Answer.createDummyAnswers(6);
         this.qRating = qRating;
+        this.uuid = UUID.randomUUID();
     }
 
     public Question(JSONObject jsonObject) throws JSONException {
@@ -50,6 +48,7 @@ public class Question {
             this.answers.add(new Answer((JSONObject) jsonAnswers.get(i)));
         }
         this.qRating = jsonObject.getInt("qRating");
+        this.uuid = UUID.fromString(jsonObject.getString("uuid"));
     }
 
     public String getqTopic() {
@@ -99,6 +98,7 @@ public class Question {
         jsonObject.put("question", this.question);
         jsonObject.put("questionDetails", this.questionDetails);
         jsonObject.put("qRating", this.qRating);
+        jsonObject.put("uuid", this.uuid.toString());
 
         JSONArray jsonArray = new JSONArray();
         for (Answer answer : answers) {
@@ -126,5 +126,9 @@ public class Question {
 
     public void setQuestionDetails(String questionDetails) {
         this.questionDetails = questionDetails;
+    }
+
+    public String getUUID() {
+        return uuid.toString();
     }
 }
