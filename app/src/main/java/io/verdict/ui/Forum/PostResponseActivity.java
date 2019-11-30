@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class PostResponseActivity extends AppCompatActivity {
     private TextView question_date;
     private TextView question_field;
     private TextView question_detail;
+    private EditText responseText;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -64,6 +66,7 @@ public class PostResponseActivity extends AppCompatActivity {
         question_date = findViewById(R.id.response_singe_thread_posted);
         question_field = findViewById(R.id.response_single_thread_lawfield);
         question_detail = findViewById(R.id.response_post_responses_detail);
+        responseText = findViewById(R.id.postResponse_descriptionContent);
 
         processIntent();
 
@@ -81,12 +84,21 @@ public class PostResponseActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(view.getContext(),
-                        "Your answer has been submitted!",
-                        Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, 10);
-                toast.show();
-                onBackPressed();
+                String response = responseText.getText().toString();
+                if (response.length() < 1) {
+                    Toast toast = Toast.makeText(view.getContext(),
+                            "You need to have a non-empty response!",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 10);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(view.getContext(),
+                            "Your answer has been submitted!",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 10);
+                    toast.show();
+                    onBackPressed();
+                }
             }
         });
     }
