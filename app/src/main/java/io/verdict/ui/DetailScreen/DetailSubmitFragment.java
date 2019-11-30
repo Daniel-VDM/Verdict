@@ -93,6 +93,7 @@ public class DetailSubmitFragment extends Fragment {
                     saveReview(review);
                     ratingBar.setRating(0F);
                     reviewText.getText().clear();
+                    currPriceRating = 1;
                     priceRatingBar.setOnSeekBarChangeListener(priceDefaultListener);
                 } catch (JSONException e) {
                     Log.e(TAG, Objects.requireNonNull(e.getMessage()));
