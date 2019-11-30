@@ -3,11 +3,13 @@ package io.verdict.ui.Forum;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,16 +23,17 @@ import io.verdict.ui.SearchScreen.SearchScreen;
 public class SingleThreadActivity extends AppCompatActivity {
     private ListView answersList;
     private Question question;
-    private SingleThreadAnswersAdapter tempAnswersAdapter;
+    private SingleThreadAnswersAdapter answerAdapter;
     private TextView question_name;
     private TextView question_likes;
+    private boolean clickedLiked;
     private TextView question_date;
     private TextView question_field;
     private TextView question_detail;
+    private TextView noQuestions;
     private Button submitResponse;
     private String lawField;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +60,18 @@ public class SingleThreadActivity extends AppCompatActivity {
         answersList = findViewById(R.id.thread_answer_list);
         question_name = findViewById(R.id.question_name);
         question_likes = findViewById(R.id.singe_thread_likes);
+        clickedLiked = false;
         question_date = findViewById(R.id.singe_thread_posted);
         question_field = findViewById(R.id.single_thread_lawfield);
         question_detail = findViewById(R.id.post_responses_detail);
         submitResponse = findViewById(R.id.single_thread_submit_button);
+        noQuestions = findViewById(R.id.post_no_answer_text);
         processIntent();
+        setupScreen();
+    }
 
+    @SuppressLint("SetTextI18n")
+    private void setupScreen() {
         question_name.setText(question.getquestion());
         question_likes.setText("Like (+" + question.getqRating() + ")");
         question_date.setText(question.getdate());
@@ -74,10 +83,33 @@ public class SingleThreadActivity extends AppCompatActivity {
             question_detail.setHeight(0);
         }
 
-        tempAnswersAdapter = new SingleThreadAnswersAdapter(this, question.getanswers());
-        answersList.setAdapter(tempAnswersAdapter);
+        answerAdapter = new SingleThreadAnswersAdapter(this, question.getanswers(), question);
+        answersList.setAdapter(answerAdapter);
         answersList.setFocusable(false);
         answersList.setClickable(false);
+
+        question_likes.setClickable(true);
+        question_likes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!clickedLiked) {  // Naive check, just for demo purposes.
+                    clickedLiked = true;
+                    question.setqRating(question.getqRating() + 1);
+                    question_likes.setText("Like (+" + question.getqRating() + ")");
+                    Toast toast = Toast.makeText(view.getContext(),
+                            "You liked this question!",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 10);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(view.getContext(),
+                            "You have already liked this question",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 10);
+                    toast.show();
+                }
+            }
+        });
 
         submitResponse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,13 +120,25 @@ public class SingleThreadActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if (!answerAdapter.isEmpty()) {
+            noQuestions.setAlpha(0.0f);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO: load fresh question from the backend.
+        setupScreen();
     }
 
     private void processIntent() {
+        Intent intent = getIntent();
+        lawField = intent.getStringExtra("LAW_FIELD");
+        JSONObject jsonQuestion = null;
         try {
-            Intent intent = getIntent();
-            lawField = intent.getStringExtra("LAW_FIELD");
-            JSONObject jsonQuestion = new JSONObject(intent.getStringExtra("QUESTION"));
+            jsonQuestion = new JSONObject(intent.getStringExtra("QUESTION"));
             question = new Question(jsonQuestion);
         } catch (JSONException e) {
             e.printStackTrace();

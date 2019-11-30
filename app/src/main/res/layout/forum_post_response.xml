@@ -17,8 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="Like (+25)"
-            android:textColor="@color/colorAccent"
+            android:text="25 Likes"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/line_break2"
             app:layout_constraintTop_toBottomOf="@+id/line_break2" />

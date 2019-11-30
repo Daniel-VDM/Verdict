@@ -98,6 +98,17 @@
         app:layout_constraintTop_toBottomOf="@+id/question_name"
         app:srcCompat="@drawable/rectangle" />
 
+    <TextView
+        android:id="@+id/post_no_answer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="There are no answers for this question :("
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/thread_answer_list"
+        app:layout_constraintStart_toStartOf="@+id/thread_answer_list"
+        app:layout_constraintTop_toTopOf="@+id/thread_answer_list" />
+
     <ListView
         android:id="@+id/thread_answer_list"
         android:layout_width="0dp"

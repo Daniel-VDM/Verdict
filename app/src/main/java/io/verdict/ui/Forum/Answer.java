@@ -7,26 +7,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Answer {
-    // Store the question this answer is under
     private String aQuestion;
-    // Store the date answer is posted
     private String aDate;
-    // Store the name of person who wrote answer (could be anonymous)
     private String aAuthor;
-
     private String aAuthorId;
-    // Store the number of thumbs up on the answer
     private int aRating;
-    // Store the answer
     private String answer_text;
     private String userType;
+    private Boolean isAnonymous;
 
-    // TODO: answer needs an annoyn filed...
-
-    // Constructor that is used to create an instance of the Answer object
-    public Answer(String aQuestion, String aDate, String aAuthor, String answer_text, String userType) {
+    public Answer(String aQuestion, String aDate, String aAuthor, String answer_text, String userType, boolean isAnonymous) {
         this.aQuestion = aQuestion;
         this.aDate = aDate;
         this.aAuthor = aAuthor;
@@ -34,6 +27,7 @@ public class Answer {
         this.answer_text = answer_text;
         this.aRating = 0;
         this.userType = userType;
+        this.isAnonymous = isAnonymous;
     }
 
     public Answer(JSONObject jsonObject) throws JSONException {
@@ -44,6 +38,7 @@ public class Answer {
         this.answer_text = jsonObject.getString("answer_text");
         this.aRating = jsonObject.getInt("aRating");
         this.userType = jsonObject.getString("userType");
+        this.isAnonymous = jsonObject.getBoolean("isAnonymous");
     }
 
     public static ArrayList<Answer> createDummyAnswers(int size) {
@@ -59,9 +54,9 @@ public class Answer {
         for (int i = 0; i < size; i++) {
             String aQuestion = "Should I take my case to court?";
             String aDate = "01-11-19";
-            String aAuthor = "Anonymous";
+            String aAuthor = "TEST_ACC";
             String answer_text = dummy_answers.get(i);
-            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text, "user");
+            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text, "user", new Random().nextBoolean());
             result.add(a);
 
         }
@@ -108,6 +103,10 @@ public class Answer {
         this.answer_text = answer_text;
     }
 
+    public boolean isAnonymous() {
+        return isAnonymous;
+    }
+
     public JSONObject jsonSerialize() throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("aQuestion", this.aQuestion);
@@ -117,6 +116,7 @@ public class Answer {
         jsonObject.put("answer_text", this.answer_text);
         jsonObject.put("aRating", this.aRating);
         jsonObject.put("userType", this.userType);
+        jsonObject.put("isAnonymous", this.isAnonymous);
         return jsonObject;
     }
 
@@ -131,4 +131,7 @@ public class Answer {
         }
     }
 
+    public String getUserType() {
+        return userType;
+    }
 }

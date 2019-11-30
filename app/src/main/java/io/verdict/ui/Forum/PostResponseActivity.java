@@ -68,7 +68,7 @@ public class PostResponseActivity extends AppCompatActivity {
         processIntent();
 
         question_q.setText(question.getquestion());
-        question_likes.setText("Like (+" + question.getqRating() + ")");
+        question_likes.setText(question.getqRating() + " likes");
         question_date.setText(question.getdate());
         question_field.setText(lawField);
         final String qDetails = question.getQuestionDetails();

@@ -2,13 +2,14 @@ package io.verdict.ui.Forum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,8 +66,13 @@ public class PostThreadActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast toast = Toast.makeText(view.getContext(),
+                        "Your question has been submitted!",
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 0, 10);
+                toast.show();
+                onBackPressed();
                 // TODO: connect this to the backend and hit the back button
-                //       maybe even do a reload
             }
         });
     }

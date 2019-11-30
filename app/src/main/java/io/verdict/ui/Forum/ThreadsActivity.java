@@ -63,7 +63,7 @@ public class ThreadsActivity extends AppCompatActivity {
 
         processIntent();
 
-        ((TextView)findViewById(R.id.forum_section_header)).setText(lawField);
+        ((TextView) findViewById(R.id.forum_section_header)).setText(lawField);
         submitThread = findViewById(R.id.forum_section_writeNew);
         search = findViewById(R.id.threads_filter_content);
         highestRatingFilter = findViewById(R.id.highest_rating);
@@ -77,13 +77,15 @@ public class ThreadsActivity extends AppCompatActivity {
                 .createFromResource(this, R.array.law_topics, android.R.layout.simple_spinner_item);
         threads_topics_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        questions =  createDummyQuestions(6);
+        setupAdapter();
+        setupListeners();
+    }
 
+    private void setupAdapter() {
+        questions = createDummyQuestions(6);  // TODO: load fresh question from the backend.
         threadsList = findViewById(R.id.list_of_threads);
         listAdapter = new ThreadListAdapter(this, questions);
         threadsList.setAdapter(listAdapter);
-
-        setupListeners();
     }
 
     private void setupListeners() {
@@ -101,7 +103,7 @@ public class ThreadsActivity extends AppCompatActivity {
                 isSortByRating = true;
                 isSortByDate = false;
                 listAdapter.sortByRating();
-                if(listAdapter.isCurrentEmpty()){
+                if (listAdapter.isCurrentEmpty()) {
                     noAnswersText.setAlpha(1.0f);
                 }
             }
@@ -113,7 +115,7 @@ public class ThreadsActivity extends AppCompatActivity {
                 isSortByRating = false;
                 isSortByDate = true;
                 listAdapter.sortByDate();
-                if(listAdapter.isCurrentEmpty()){
+                if (listAdapter.isCurrentEmpty()) {
                     noAnswersText.setAlpha(1.0f);
                 }
             }
@@ -128,12 +130,12 @@ public class ThreadsActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 noAnswersText.setAlpha(0.0f);
                 listAdapter.filter(s);
-                if (isSortByDate){
+                if (isSortByDate) {
                     listAdapter.sortByDate();
-                } else if (isSortByRating){
+                } else if (isSortByRating) {
                     listAdapter.sortByRating();
                 }
-                if(listAdapter.isCurrentEmpty()){
+                if (listAdapter.isCurrentEmpty()) {
                     noAnswersText.setAlpha(1.0f);
                 }
                 return true;
@@ -149,9 +151,16 @@ public class ThreadsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if(listAdapter.isCurrentEmpty()){
+        if (listAdapter.isCurrentEmpty()) {
             noAnswersText.setAlpha(1.0f);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupAdapter();
+        setupListeners();
     }
 
     // TODO hook this up to the backend and use loading spinner between fetch...
@@ -178,7 +187,7 @@ public class ThreadsActivity extends AppCompatActivity {
         return result;
     }
 
-    private void processIntent(){
+    private void processIntent() {
         Intent intent = getIntent();
         lawField = intent.getStringExtra("LAW_FIELD");
     }
