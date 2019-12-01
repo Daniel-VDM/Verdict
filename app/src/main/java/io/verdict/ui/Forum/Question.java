@@ -27,12 +27,13 @@ public class Question {
 
 
     // Constructor that is used to create an instance of the Question object
-    public Question(String qTopic, String date, String question, String questionDetails, int qRating) {
+    public Question(String qTopic, String date, String question, String questionDetails,
+                    int qRating, ArrayList<Answer> answers) {
         this.qTopic = qTopic;
         this.date = date;
         this.question = question;
         this.questionDetails = questionDetails;
-        this.answers = Answer.createDummyAnswers(6);
+        this.answers = answers;
         this.qRating = qRating;
         this.uuid = UUID.randomUUID();
     }

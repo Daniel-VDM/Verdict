@@ -129,7 +129,7 @@ public class SingleThreadActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: load fresh question from the backend.
+        // TODO: load fresh question from the backend (We have UUID so user it!!!)
         setupScreen();
     }
 

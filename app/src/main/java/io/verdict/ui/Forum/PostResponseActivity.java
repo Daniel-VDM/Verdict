@@ -97,6 +97,7 @@ public class PostResponseActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 10);
                     toast.show();
+                    // TODO: connect this to the backend and update db
                     onBackPressed();
                 }
             }
