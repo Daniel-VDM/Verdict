@@ -77,7 +77,7 @@
     <Button
         android:id="@+id/single_thread_submit_button"
         android:layout_width="170dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/my_button_bg"
         android:text="@string/submit_answer"
@@ -113,18 +113,19 @@
         android:id="@+id/thread_answer_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
+        android:overScrollMode="never"
         android:foregroundGravity="center"
         android:gravity="center"
         android:listSelector="@android:color/transparent"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_responses_detail"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/divider">
 
     </ListView>
 
@@ -175,5 +176,25 @@
         app:layout_constraintEnd_toEndOf="@+id/question_name"
         app:layout_constraintStart_toStartOf="@+id/question_name"
         app:layout_constraintTop_toBottomOf="@+id/single_thread_lawfield" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_responses_detail" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/single_thread_submit_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

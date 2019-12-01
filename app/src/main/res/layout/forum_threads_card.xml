@@ -35,7 +35,7 @@
             android:id="@+id/thread_question"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
@@ -46,15 +46,15 @@
             android:visibility="visible"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toStartOf="@+id/thread_date"
-            card_view:layout_constraintStart_toEndOf="@+id/thread_rating"
+            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/thread_date"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="11-11-11"
+            android:text="99-99-99"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"

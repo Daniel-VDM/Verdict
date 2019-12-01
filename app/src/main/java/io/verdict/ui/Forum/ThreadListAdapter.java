@@ -4,28 +4,32 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import io.verdict.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.DataFormatException;
 
 public class ThreadListAdapter extends ArrayAdapter<Question>{
     private Context ttContext;
     private List<Question> originalThreadsList;
-    private List<Question> threadsList;
+    private List<Question> currThreadsList;
 
     public ThreadListAdapter(Context context, ArrayList<Question> list) {
         super(context, 0 , list);
         ttContext = context;
-        threadsList = list;
+        currThreadsList = list;
         originalThreadsList = new ArrayList<>(list);
     }
 
@@ -35,7 +39,7 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
         if(listItem == null)
             listItem = LayoutInflater.from(ttContext).inflate(R.layout.forum_threads_card,parent,false);
 
-        Question currentThread = threadsList.get(position);
+        Question currentThread = currThreadsList.get(position);
 
         TextView tq = listItem.findViewById(R.id.thread_question);
         tq.setText(String.valueOf(currentThread.getquestion()));
@@ -50,7 +54,7 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
     }
 
     public boolean isCurrentEmpty(){
-        return threadsList.size() == 0;
+        return currThreadsList.size() == 0;
     }
 
     private boolean match(String[] input, String reference){
@@ -87,7 +91,7 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
     }
 
     void sortByDate(){
-        Collections.sort(threadsList, new Comparator<Question>() {
+        Collections.sort(currThreadsList, new Comparator<Question>() {
             @Override
             public int compare(Question question, Question t1) {
                 try {
@@ -103,7 +107,7 @@ public class ThreadListAdapter extends ArrayAdapter<Question>{
     }
 
     void sortByRating(){
-        Collections.sort(threadsList, new Comparator<Question>() {
+        Collections.sort(currThreadsList, new Comparator<Question>() {
             @Override
             public int compare(Question question, Question t1) {
                 if (question.getqRating() == t1.getqRating()){

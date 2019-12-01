@@ -407,15 +407,18 @@ public class ForumDataGenerator {
                 String ansText = ans[1];
                 String type = rand.nextBoolean() ? "user" : "lawyer";
                 String name;
+                boolean annon;
                 if (type.equals("user")) {
                     int k = rand.nextInt(users.length() - 1);
                     name = Backend.getNameFromKey(users.getString(k));
+                    annon = true;
                 } else {
                     int k = rand.nextInt(lawyers.length() - 1);
                     name = Backend.getNameFromKey(lawyers.getString(k));
+                    annon = rand.nextBoolean();
                 }
                 answerList.add(new Answer(question, date, name, ansText, type,
-                        ansRating, rand.nextBoolean()));
+                        ansRating, annon));
             }
             result.add(new Question(lawFiled, date, question, details, rating, answerList));
         }
