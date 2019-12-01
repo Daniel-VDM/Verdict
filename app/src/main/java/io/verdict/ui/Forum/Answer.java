@@ -19,13 +19,13 @@ public class Answer {
     private String userType;
     private Boolean isAnonymous;
 
-    public Answer(String aQuestion, String aDate, String aAuthor, String answer_text, String userType, boolean isAnonymous) {
+    public Answer(String aQuestion, String aDate, String aAuthor, String answer_text, String userType, int aRating, boolean isAnonymous) {
         this.aQuestion = aQuestion;
         this.aDate = aDate;
         this.aAuthor = aAuthor;
         this.aAuthorId = "";
         this.answer_text = answer_text;
-        this.aRating = 0;
+        this.aRating = aRating;
         this.userType = userType;
         this.isAnonymous = isAnonymous;
     }
@@ -56,7 +56,8 @@ public class Answer {
             String aDate = "01-11-19";
             String aAuthor = "TEST_ACC";
             String answer_text = dummy_answers.get(i);
-            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text, "user", new Random().nextBoolean());
+            Answer a = new Answer(aQuestion, aDate, aAuthor, answer_text, "user",
+                    new Random().nextInt(99), new Random().nextBoolean());
             result.add(a);
 
         }

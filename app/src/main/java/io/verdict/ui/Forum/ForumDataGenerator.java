@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -265,7 +266,7 @@ public class ForumDataGenerator {
                     "20-09-19"
             }
     };
-    private static final String [][][] REAL_ESTATE_ANSWERS = {
+    private static final String[][][] REAL_ESTATE_ANSWERS = {
             {
                     {"91", "Don't tell them a peep about the money. You have no duty to tell previous owners what you found in their old place."},
                     {"55", "Was he trying to hide it from family members? Who else was told about it? It's too bad he was deployed but he had a reasonable chance to do this, and not to wait until 6 months after the sale closes."},
@@ -385,9 +386,40 @@ public class ForumDataGenerator {
         return result;
     }
 
-    private ArrayList<Question> createCustomData(String[][] Questions, String[][][] Answers){
+    private ArrayList<Question> createCustomData(String[][] questions, String[][][] answers,
+                                                 String lawFiled)
+            throws JSONException {
         ArrayList<Question> result = new ArrayList<>();
-        return null;
+        Random rand = new Random();
+        JSONObject index = backend.getDbUserIndex();
+        JSONArray users = index.getJSONArray("USERS");
+        JSONArray lawyers = index.getJSONArray("LAWYERS");
+        for (int i = 0; i < questions.length; i++) {
+            String[] qArr = questions[i];
+            String[][] aArr = answers[i];
+            int rating = Integer.parseInt(qArr[0]);
+            String question = qArr[1];
+            String details = qArr[2];
+            String date = qArr[3];
+            ArrayList<Answer> answerList = new ArrayList<>();
+            for (String[] ans : aArr) {
+                int ansRating = Integer.parseInt(ans[0]);
+                String ansText = ans[1];
+                String type = rand.nextBoolean() ? "user" : "lawyer";
+                String name;
+                if (type.equals("user")) {
+                    int k = rand.nextInt(users.length() - 1);
+                    name = Backend.getNameFromKey(users.getString(k));
+                } else {
+                    int k = rand.nextInt(lawyers.length() - 1);
+                    name = Backend.getNameFromKey(lawyers.getString(k));
+                }
+                answerList.add(new Answer(question, date, name, ansText, type,
+                        ansRating, rand.nextBoolean()));
+            }
+            result.add(new Question(lawFiled, date, question, details, rating, answerList));
+        }
+        return result;
     }
 
     public void generateDebugData() {
@@ -415,9 +447,9 @@ public class ForumDataGenerator {
                 JSONObject questions = new JSONObject();
                 ArrayList<Question> list;
                 if (s.equals("Personal Injury")) {
-                    list = createCustomData(PERSONAL_INJURY_QUESTIONS, PERSONAL_INJURY_ANSWERS);
+                    list = createCustomData(PERSONAL_INJURY_QUESTIONS, PERSONAL_INJURY_ANSWERS, s);
                 } else if (s.equals("Real Estate")) {
-                    list = createCustomData(REAL_ESTATE_QUESTIONS, REAL_ESTATE_ANSWERS);
+                    list = createCustomData(REAL_ESTATE_QUESTIONS, REAL_ESTATE_ANSWERS, s);
                 } else {
                     list = createDebugQuestions(s);
                 }

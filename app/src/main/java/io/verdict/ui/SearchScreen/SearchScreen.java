@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.verdict.R;
-import io.verdict.ui.Forum.ForumDataGenerator;
+import io.verdict.backend.Backend;
 import io.verdict.ui.Forum.TopicsActivity;
 import io.verdict.ui.SearchResults.SearchResults;
 
@@ -41,26 +39,10 @@ public class SearchScreen extends AppCompatActivity {
         setContentView(R.layout.search_screen);
         LEGAL_FIELDS = this.getResources().getStringArray(R.array.law_topics);
 
+        new Backend();  // Init some static vars from db.
         setupTabs();
         setupLegalFieldSpinner();
 
-        // Tee for forum data generation
-        ForumDataGenerator forumDataGenerator = new ForumDataGenerator(this);
-        if (getResources().getBoolean(R.bool.debug_forum_data)) {
-            Toast toast = Toast.makeText(this,
-                    "GENERATING DEBUG FORUM DATA",
-                    Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.TOP, 0, 10);
-            toast.show();
-            forumDataGenerator.generateDebugData();
-        } else if (getResources().getBoolean(R.bool.force_generate_forum)) {
-            Toast toast = Toast.makeText(this,
-                    "GENERATING DEMO FORUM DATA",
-                    Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.TOP, 0, 10);
-            toast.show();
-            forumDataGenerator.generateDemoData();
-        }
     }
 
     private void setupTabs() {
