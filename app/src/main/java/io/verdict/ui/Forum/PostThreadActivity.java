@@ -2,6 +2,7 @@ package io.verdict.ui.Forum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,17 +16,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import io.verdict.R;
+import io.verdict.backend.Backend;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class PostThreadActivity extends AppCompatActivity {
 
+    private static final String TAG = "PostThreadActivity";
 
     Spinner selectCategory;
     EditText threadTitle;
     EditText threadDescription;
     Button submitButton;
+    Backend backend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class PostThreadActivity extends AppCompatActivity {
         threadTitle = findViewById(R.id.postThread_titleContent);
         threadDescription = findViewById(R.id.postThread_descriptionContent);
         submitButton = findViewById(R.id.postThread_submitButton);
+        backend = new Backend();
 
         final ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.law_topics)));
         arrayList.add(0, "Select Legal Field");
@@ -74,13 +80,17 @@ public class PostThreadActivity extends AppCompatActivity {
                     toast.show();
                 } else {
                     String detail = threadDescription.getText().toString();
+                    Date date = new Date();
+                    Question newQuestion = new Question(selectCategory.getSelectedItem().toString(),
+                            Question.dateFormat.format(date), title, detail,
+                            0, new ArrayList<Answer>());
+                    backend.putForumQuestion(newQuestion);
                     Toast toast = Toast.makeText(view.getContext(),
                             "Your question has been submitted!",
                             Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 10);
                     toast.show();
                     onBackPressed();
-                    // TODO: connect this to the backend and hit the back button
                 }
             }
         });

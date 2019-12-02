@@ -17,9 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 import io.verdict.R;
+import io.verdict.backend.Backend;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class PostResponseActivity extends AppCompatActivity {
@@ -34,6 +38,7 @@ public class PostResponseActivity extends AppCompatActivity {
     private TextView question_field;
     private TextView question_detail;
     private EditText responseText;
+    private Backend backend;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -67,6 +72,7 @@ public class PostResponseActivity extends AppCompatActivity {
         question_field = findViewById(R.id.response_single_thread_lawfield);
         question_detail = findViewById(R.id.response_post_responses_detail);
         responseText = findViewById(R.id.postResponse_descriptionContent);
+        backend = new Backend();
 
         processIntent();
 
@@ -92,12 +98,18 @@ public class PostResponseActivity extends AppCompatActivity {
                     toast.setGravity(Gravity.TOP, 0, 10);
                     toast.show();
                 } else {
+                    ArrayList<Answer> ansList = question.getanswers();
+                    Date date = new Date();
+                    boolean isAnon = isAnonymous.isChecked();
+                    ansList.add(new Answer(question.getquestion(), Question.dateFormat.format(date),
+                            "TEST_ACCOUNT", response,
+                            !isAnon ? "lawyer" : "user", 0, isAnon));
+                    backend.putForumQuestion(question);
                     Toast toast = Toast.makeText(view.getContext(),
                             "Your answer has been submitted!",
                             Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 10);
                     toast.show();
-                    // TODO: connect this to the backend and update db
                     onBackPressed();
                 }
             }

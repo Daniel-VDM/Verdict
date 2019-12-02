@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class SearchQuarry {
-    static final long nextPageWait = 3000;
+    static final long NEXT_PAGE_WAIT = 3000;
 
     private String location;
     private String lawField;

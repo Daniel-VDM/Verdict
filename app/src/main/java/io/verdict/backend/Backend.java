@@ -30,8 +30,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.verdict.R;
+import io.verdict.ui.Forum.Question;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "ConstantConditions"})
 public class Backend {
 
     // Don't steal my key pls and thx.
@@ -128,23 +129,7 @@ public class Backend {
     }
 
     /**
-     * Simple method to pull the review data from firebase.
-     * <p>
-     * The format is:
-     * {
-     * "PEER_REVIEWS": {
-     * "<REVIEWER_KEY>" : [<REVIEW1>,<REVIEW2>, ...],
-     * .
-     * .
-     * .
-     * },
-     * "USER_REVIEWS":  {
-     * "<REVIEWER_KEY>" : [<REVIEW1>,<REVIEW2>, ...],
-     * .
-     * .
-     * .
-     * }
-     * }
+     * Simple method to pull the review data from the firebase.
      */
     public void pullReviewIndex() {
         databaseGet("META_REVIEW_INDEX", new DatabaseListener() {
@@ -397,8 +382,8 @@ public class Backend {
      * @param databaseListener The return listener.
      */
     public void getForumQuestions(final String legalField, final DatabaseListener databaseListener) {
-        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY).child(legalField);
         databaseListener.onStart(legalField);
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY).child(legalField);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -416,6 +401,43 @@ public class Backend {
                 databaseListener.onFailed(databaseError);
             }
         });
+    }
+
+    /**
+     * Get a single forum question given its UUID and respective legal field.
+     * Note that it returns a null string to the listener if it does not exist.
+     *
+     * @param legalField       The legal field of the desired question.
+     * @param UUID             The UUID of the desired question
+     * @param databaseListener The listener for the return.
+     */
+    public void getForumQuestion(final String legalField, final String UUID,
+                                 final DatabaseListener databaseListener) {
+        databaseListener.onStart(legalField + "." + UUID);
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY).child(legalField).child(UUID);
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String serializedQuestion = dataSnapshot.getValue(String.class);
+                databaseListener.onSuccess(legalField + "." + UUID, serializedQuestion);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                databaseListener.onFailed(databaseError);
+            }
+        });
+    }
+
+    /**
+     * Puts the question into the appropriate legal field in the Firebase.
+     *
+     * @param question the Question object to be put
+     */
+    public void putForumQuestion(final Question question) {
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY)
+                .child(question.getqTopic()).child(question.getUUID());
+        dbRef.setValue(question.toString());
     }
 
     public JSONObject getDbUserIndex() {
