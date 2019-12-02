@@ -284,4 +284,8 @@ public class DetailScreen extends AppCompatActivity {
     public Backend getBackend() {
         return backend;
     }
+
+    public String getLawField() {
+        return lawField;
+    }
 }

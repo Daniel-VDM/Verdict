@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,10 +13,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,8 +33,6 @@ public class SearchScreen extends AppCompatActivity {
     public static final String SEARCH_TEXT_LOCATION = "io.verdict.searchscreen.location";
     public static final String SEARCH_TEXT_LAWYER = "io.verdict.searchscreen.lawyer";
     public static String[] LEGAL_FIELDS;
-
-    // TODO: Verify inputs and catch network errors...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,15 @@ public class SearchScreen extends AppCompatActivity {
         EditText searchByLawyerText = findViewById(R.id.search_by_lawyer);
         String lawyer = searchByLawyerText.getText().toString();
         intent.putExtra(SEARCH_TEXT_LAWYER, lawyer);
+
+        if (!Arrays.asList(LEGAL_FIELDS).contains(legalField) || location.equals("")) {
+            Toast toast = Toast.makeText(this,
+                    "Missing Legal field or location!",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 0, 10);
+            toast.show();
+            return;
+        }
 
         startActivity(intent);
     }

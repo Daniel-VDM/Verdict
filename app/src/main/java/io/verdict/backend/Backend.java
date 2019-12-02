@@ -3,6 +3,8 @@ package io.verdict.backend;
 import android.content.Context;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -322,7 +324,14 @@ public class Backend {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Volley already dumps an error message to the log
+                if (error.networkResponse.statusCode == 500) {
+                    Toast toast = Toast.makeText(context,
+                            "Error with server, trying again...",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 10);
+                    toast.show();
+                    searchLawyers(context, searchQuarry);
+                }
             }
         };
         String yelpSearchUrl = "https://api.yelp.com/v3/businesses/search?" +
@@ -447,6 +456,4 @@ public class Backend {
     public JSONObject getDbReviewIndex() {
         return dbReviewIndex;
     }
-
-    // TODO toast messages if there was an error in the backend.
 }

@@ -35,6 +35,7 @@ public class ThreadsActivity extends AppCompatActivity {
 
     private ListView threadsList;
     private String lawField;
+    private String initFilterString;
     private ThreadListAdapter listAdapter;
     private FloatingActionButton submitThread;
     private SearchView search;
@@ -146,6 +147,13 @@ public class ThreadsActivity extends AppCompatActivity {
         } else {
             noAnswersText.setAlpha(0.0f);
         }
+        if (initFilterString != null) {
+            search.setQuery(initFilterString, false);
+            listAdapter.filter(initFilterString);
+            if (listAdapter.isCurrentEmpty()) {
+                noAnswersText.setAlpha(1.0f);
+            }
+        }
     }
 
     private void setupListeners() {
@@ -188,6 +196,7 @@ public class ThreadsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                initFilterString = null;
                 noAnswersText.setAlpha(0.0f);
                 listAdapter.filter(s);
                 if (isSortByDate) {
@@ -223,5 +232,8 @@ public class ThreadsActivity extends AppCompatActivity {
     private void processIntent() {
         Intent intent = getIntent();
         lawField = intent.getStringExtra("LAW_FIELD");
+        if (intent.hasExtra("FILTER_KEY")) {
+            initFilterString = intent.getStringExtra("FILTER_KEY");
+        }
     }
 }

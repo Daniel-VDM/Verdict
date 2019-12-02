@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import io.verdict.R;
+import io.verdict.backend.ForumDataGenerator;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class TopicsActivity extends AppCompatActivity {
@@ -89,7 +90,7 @@ public class TopicsActivity extends AppCompatActivity {
         topics_list_content.add(new Topic(R.drawable.ic_home, law_topics[15])); //real estate
         topics_list_content.add(new Topic(R.drawable.ic_tax, law_topics[16])); //tax
 
-        tAdapter = new TopicsAdapter(this,topics_list_content);
+        tAdapter = new TopicsAdapter(this, topics_list_content);
         topicsList.setAdapter(tAdapter);
         topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

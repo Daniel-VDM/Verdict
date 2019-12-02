@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.verdict.R;
+import io.verdict.ui.Forum.ThreadsActivity;
 
 @SuppressWarnings("ConstantConditions")
 public class DetailAboutFragment extends Fragment {
@@ -90,7 +91,18 @@ public class DetailAboutFragment extends Fragment {
         detailForumActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Connect this to the forums section
+                try {
+                    Intent intent = new Intent(getActivity(), ThreadsActivity.class);
+                    String lawField = ((DetailScreen) getActivity())
+                            .getLawField().replace(" Law", "");
+                    intent.putExtra("LAW_FIELD", lawField);
+                    String name =  lawyer.getString("name");
+                    intent.putExtra("FILTER_KEY", lawyer.getString("name"));
+                    startActivity(intent);
+                } catch (JSONException e){
+                    Log.e(TAG, e.toString());
+                }
+
             }
         });
         detailWebsiteButton.setOnClickListener(new View.OnClickListener() {

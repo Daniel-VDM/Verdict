@@ -1,4 +1,4 @@
-package io.verdict.ui.Forum;
+package io.verdict.backend;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Random;
 
 import io.verdict.R;
-import io.verdict.backend.Backend;
+import io.verdict.ui.Forum.Answer;
+import io.verdict.ui.Forum.Question;
 
 @SuppressWarnings("ConstantConditions")
 public class ForumDataGenerator {
@@ -415,7 +416,7 @@ public class ForumDataGenerator {
                 } else {
                     int k = rand.nextInt(lawyers.length() - 1);
                     name = Backend.getNameFromKey(lawyers.getString(k));
-                    annon = rand.nextBoolean();
+                    annon = false;
                 }
                 answerList.add(new Answer(question, date, name, ansText, type,
                         ansRating, annon));

@@ -15,18 +15,21 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.verdict.R;
+import io.verdict.backend.Backend;
 
 public class SingleThreadAnswersAdapter extends ArrayAdapter<Answer> {
 
     private Context aContext;
     private Question question;
     private List<Answer> answersList;
+    private Backend backend;
 
     public SingleThreadAnswersAdapter(Context context, ArrayList<Answer> list, Question question) {
         super(context, 0, list);
         this.aContext = context;
         this.answersList = list;
         this.question = question;
+        this.backend = new Backend();
         sortAnswers();
     }
 
@@ -85,7 +88,7 @@ public class SingleThreadAnswersAdapter extends ArrayAdapter<Answer> {
                 likeButton.setAlpha(0.0f);
                 currentAnswer.setaRating(currentAnswer.getaRating() + 1);
                 notifyDataSetChanged();
-                Question toChange = question; // TODO: hook this up to the backend and save the question
+                backend.putForumQuestion(question);
             }
         });
         return listItem;

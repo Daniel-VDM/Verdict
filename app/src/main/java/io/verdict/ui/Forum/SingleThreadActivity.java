@@ -104,6 +104,7 @@ public class SingleThreadActivity extends AppCompatActivity {
                 if (!clickedLiked) {  // Naive check, just for demo purposes.
                     clickedLiked = true;
                     question.setqRating(question.getqRating() + 1);
+                    backend.putForumQuestion(question);
                     question_likes.setText("Like (+" + question.getqRating() + ")");
                     Toast toast = Toast.makeText(view.getContext(),
                             "You liked this question!",
@@ -138,7 +139,7 @@ public class SingleThreadActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 try {

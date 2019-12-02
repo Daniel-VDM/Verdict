@@ -130,12 +130,13 @@
 
     <Button
         android:id="@+id/single_thread_submit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
         android:backgroundTint="@color/colorAccent"
         android:onClick="searchForResults"
         android:text="@string/search_button"
         android:textColor="@color/colorTabTextSelected"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
