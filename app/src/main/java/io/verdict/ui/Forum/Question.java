@@ -1,43 +1,46 @@
 package io.verdict.ui.Forum;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.UUID;
 
+@SuppressLint("SimpleDateFormat")
 public class Question {
-    // Store the topic this question is under
+
+    static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+
     private String qTopic;
-    // Store the date posted
     private String date;
-    // Store the name of person who asked the question (could be anonymous)
-    private String qAuthor;
-    // Store the number of thumbs up on the question
     private int qRating;
-    // Store the question
     private String question;
     private String questionDetails;
-    // Store all answers under this question
     private ArrayList<Answer> answers;
+    private UUID uuid;
+
 
     // Constructor that is used to create an instance of the Question object
-    public Question(String qTopic, String date, String qAuthor, String question, String questionDetails) {
+    public Question(String qTopic, String date, String question, String questionDetails,
+                    int qRating, ArrayList<Answer> answers) {
         this.qTopic = qTopic;
         this.date = date;
-        this.qAuthor = qAuthor;
         this.question = question;
         this.questionDetails = questionDetails;
-        this.answers = Answer.createDummyAnswers(6);
-        this.qRating = 3;
+        this.answers = answers;
+        this.qRating = qRating;
+        this.uuid = UUID.randomUUID();
     }
 
     public Question(JSONObject jsonObject) throws JSONException {
         this.qTopic = jsonObject.getString("qTopic");
         this.date = jsonObject.getString("date");
-        this.qAuthor = jsonObject.getString("qAuthor");
         this.question = jsonObject.getString("question");
         this.questionDetails = jsonObject.getString("questionDetails");
         this.answers = new ArrayList<>();
@@ -46,6 +49,7 @@ public class Question {
             this.answers.add(new Answer((JSONObject) jsonAnswers.get(i)));
         }
         this.qRating = jsonObject.getInt("qRating");
+        this.uuid = UUID.fromString(jsonObject.getString("uuid"));
     }
 
     public String getqTopic() {
@@ -62,14 +66,6 @@ public class Question {
 
     public void setdate(String date) {
         this.date = date;
-    }
-
-    public String getqAuthor() {
-        return qAuthor;
-    }
-
-    public void setqAuthor(String qAuthor) {
-        this.qAuthor = qAuthor;
     }
 
     public int getqRating() {
@@ -100,10 +96,10 @@ public class Question {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("qTopic", this.qTopic);
         jsonObject.put("date", this.date);
-        jsonObject.put("qAuthor", this.qAuthor);
         jsonObject.put("question", this.question);
         jsonObject.put("questionDetails", this.questionDetails);
         jsonObject.put("qRating", this.qRating);
+        jsonObject.put("uuid", this.uuid.toString());
 
         JSONArray jsonArray = new JSONArray();
         for (Answer answer : answers) {
@@ -131,5 +127,9 @@ public class Question {
 
     public void setQuestionDetails(String questionDetails) {
         this.questionDetails = questionDetails;
+    }
+
+    public String getUUID() {
+        return uuid.toString();
     }
 }

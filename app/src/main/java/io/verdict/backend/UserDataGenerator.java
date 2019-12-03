@@ -247,7 +247,7 @@ class UserDataGenerator {
             allLawyers.add(storedLawyers.getString(i));
         }
         Collections.shuffle(allLawyers);
-        int numReviews = RNG.nextInt((int)(Math.min(Math.round(allLawyers.size()), 80) * 0.15));
+        int numReviews = RNG.nextInt((int) (Math.min(Math.round(allLawyers.size()), 80) * 0.15));
         JSONArray lawyerReviews = new JSONArray();
         JSONObject reviewIndex = backend.getDbReviewIndex();
         JSONObject peerReviews = reviewIndex.getJSONObject("PEER_REVIEWS");
@@ -274,6 +274,4 @@ class UserDataGenerator {
         data.put("PEER_REVIEWS", lawyerReviews);
         return data;
     }
-
-    // TODO: handle generation of forums reviews, probably do this based on index
 }

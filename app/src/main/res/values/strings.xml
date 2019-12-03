@@ -24,26 +24,24 @@
     <string name="details_leave_review_submit">Submit</string>
     <string name="details_leave_review_prompt">Write a comment here!</string>
     <string name="background_for_card">background for card</string>
-    <bool name="force_generate">false</bool>
-    # This is dangerous, DO NOT ENABLE for consecutive execution.
     <string-array name="law_topics">
-        <item>Admiralty (Maritime)</item>
-        <item>Bankruptcy</item>
-        <item>Business (Corporate)</item>
-        <item>Civil Rights</item>
-        <item>Criminal</item>
-        <item>Entertainment</item>
-        <item>Environmental</item>
-        <item>Family</item>
-        <item>Health</item>
-        <item>Immigration</item>
-        <item>Intellectual Property</item>
-        <item>International</item>
-        <item>Labor (Employment)</item>
-        <item>Military</item>
-        <item>Personal Injury</item>
-        <item>Real Estate</item>
-        <item>Tax</item>
+        <item>"Admiralty"</item>
+        <item>"Bankruptcy"</item>
+        <item>"Business"</item>
+        <item>"Civil Rights"</item>
+        <item>"Criminal"</item>
+        <item>"Entertainment"</item>
+        <item>"Environmental"</item>
+        <item>"Family"</item>
+        <item>"Health"</item>
+        <item>"Immigration"</item>
+        <item>"Intellectual Property"</item>
+        <item>"International"</item>
+        <item>"Labor"</item>
+        <item>"Military"</item>
+        <item>"Personal Injury"</item>
+        <item>"Real Estate"</item>
+        <item>"Tax"</item>
     </string-array>
     <string name="sort_by">Sort By:</string>
     <string name="rating_sort">Most Recent</string>
@@ -54,4 +52,7 @@
     <string name="description">Description</string>
     <string name="description_hint">Type your problem</string>
     <string name="response">Response</string>
+    <bool name="force_generate_search">false</bool> # This is dangerous, DO NOT ENABLE for consecutive execution.
+    <bool name="force_generate_forum">false</bool> # This will erase all forum data
+    <bool name="debug_forum_data">false</bool>
 </resources>

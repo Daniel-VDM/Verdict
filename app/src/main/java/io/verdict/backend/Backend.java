@@ -3,6 +3,8 @@ package io.verdict.backend;
 import android.content.Context;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -25,14 +27,18 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
 import io.verdict.R;
+import io.verdict.ui.Forum.Question;
 
+@SuppressWarnings({"unchecked", "ConstantConditions"})
 public class Backend {
 
     // Don't steal my key pls and thx.
+    public static final String DB_FORUM_KEY = "META_FORUM";
     static final String yelpApiKey = "PuaW8VIj-ysAuJ3aTlw5JWPI_kMN31KwguyzEHOWjtW_Ck" +
             "Ohco62syp05jmQQp0R1xHFJYc2QRGcj5RI46iqVR35YmeWEjxtFxhBhsEzAWOGpHBuLRshgHTFqgHWXXYx";
     private static final String TAG = "Backend";
@@ -125,23 +131,7 @@ public class Backend {
     }
 
     /**
-     * Simple method to pull the review data from firebase.
-     * <p>
-     * The format is:
-     * {
-     * "PEER_REVIEWS": {
-     * "<REVIEWER_KEY>" : [<REVIEW1>,<REVIEW2>, ...],
-     * .
-     * .
-     * .
-     * },
-     * "USER_REVIEWS":  {
-     * "<REVIEWER_KEY>" : [<REVIEW1>,<REVIEW2>, ...],
-     * .
-     * .
-     * .
-     * }
-     * }
+     * Simple method to pull the review data from the firebase.
      */
     public void pullReviewIndex() {
         databaseGet("META_REVIEW_INDEX", new DatabaseListener() {
@@ -276,7 +266,7 @@ public class Backend {
                 public void onSuccess(final String key, String string) {
                     try {
                         if (string == null ||
-                                context.getResources().getBoolean(R.bool.force_generate) ||
+                                context.getResources().getBoolean(R.bool.force_generate_search) ||
                                 !(new JSONObject(string).has("PEER_REVIEWS"))) {
                             fetchNewYelpReview(lawyer, id, dbGetIsDone,
                                     iFinal, searchQuarry, key, requestQueue);
@@ -334,7 +324,14 @@ public class Backend {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Volley already dumps an error message to the log
+                if (error.networkResponse.statusCode == 500) {
+                    Toast toast = Toast.makeText(context,
+                            "Error with server, trying again...",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 10);
+                    toast.show();
+                    searchLawyers(context, searchQuarry);
+                }
             }
         };
         String yelpSearchUrl = "https://api.yelp.com/v3/businesses/search?" +
@@ -361,6 +358,97 @@ public class Backend {
         requestQueue.add(request);
     }
 
+    /**
+     * Simple method to initialize the database's forum data, overriding the
+     * existing forum data.
+     *
+     * @param jsonObject The json object for the forum data.
+     */
+    public void initForumData(JSONObject jsonObject) throws JSONException {
+        Map<String, Map<String, String>> topicsMap = new HashMap<>();
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Map<String, String> questionsMap = new HashMap<>();
+            JSONObject topicQuestions = jsonObject.getJSONObject(key);
+            Iterator<String> questionKeys = topicQuestions.keys();
+            while (questionKeys.hasNext()) {
+                String questionKey = questionKeys.next();
+                questionsMap.put(questionKey, topicQuestions.getString(questionKey));
+            }
+            topicsMap.put(key, questionsMap);
+        }
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY);
+        dbRef.setValue(topicsMap);
+        Log.e(TAG, "Initialized forum data");
+    }
+
+    /**
+     * Fetches a serialized JSONArray of serialized questions.
+     * Here, serialized is just a string representation of JSON objects.
+     *
+     * @param legalField       The legal field for the desired questions.
+     * @param databaseListener The return listener.
+     */
+    public void getForumQuestions(final String legalField, final DatabaseListener databaseListener) {
+        databaseListener.onStart(legalField);
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY).child(legalField);
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                JSONArray jsonArray = new JSONArray();
+                HashMap<String, String> questionMap = (HashMap<String, String>) dataSnapshot.getValue();
+                assert questionMap != null;
+                for (String s : questionMap.values()) {
+                    jsonArray.put(s);
+                }
+                databaseListener.onSuccess(legalField, jsonArray.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                databaseListener.onFailed(databaseError);
+            }
+        });
+    }
+
+    /**
+     * Get a single forum question given its UUID and respective legal field.
+     * Note that it returns a null string to the listener if it does not exist.
+     *
+     * @param legalField       The legal field of the desired question.
+     * @param UUID             The UUID of the desired question
+     * @param databaseListener The listener for the return.
+     */
+    public void getForumQuestion(final String legalField, final String UUID,
+                                 final DatabaseListener databaseListener) {
+        databaseListener.onStart(legalField + "." + UUID);
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY).child(legalField).child(UUID);
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String serializedQuestion = dataSnapshot.getValue(String.class);
+                databaseListener.onSuccess(legalField + "." + UUID, serializedQuestion);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                databaseListener.onFailed(databaseError);
+            }
+        });
+    }
+
+    /**
+     * Puts the question into the appropriate legal field in the Firebase.
+     *
+     * @param question the Question object to be put
+     */
+    public void putForumQuestion(final Question question) {
+        DatabaseReference dbRef = database.getReference(Backend.DB_FORUM_KEY)
+                .child(question.getqTopic()).child(question.getUUID());
+        dbRef.setValue(question.toString());
+    }
+
     public JSONObject getDbUserIndex() {
         return dbUserIndex;
     }
@@ -368,10 +456,4 @@ public class Backend {
     public JSONObject getDbReviewIndex() {
         return dbReviewIndex;
     }
-
-    // TODO create API for forums requests
-
-    // TODO create API for review + forum update
-
-    // TODO toast messages if there was an error in the backend.
 }

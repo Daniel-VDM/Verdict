@@ -77,11 +77,22 @@
         android:id="@+id/most_recent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="Most Recent ▼"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/forum_section_header"
-        app:layout_constraintTop_toBottomOf="@+id/forum_section_header" />
+        app:layout_constraintTop_toBottomOf="@+id/threads_filter_content_holder" />
+
+    <TextView
+        android:id="@+id/threads_no_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="No questions have been asked :("
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="@+id/list_of_threads"
+        app:layout_constraintStart_toStartOf="@+id/list_of_threads"
+        app:layout_constraintTop_toTopOf="@+id/list_of_threads" />
 
     <ListView
         android:id="@+id/list_of_threads"
@@ -90,14 +101,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:gravity="center"
+        android:overScrollMode="never"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/most_recent">
+        app:layout_constraintTop_toBottomOf="@+id/divider3">
 
     </ListView>
 
@@ -127,6 +140,36 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/forum_section_header"
         app:layout_constraintTop_toTopOf="@+id/most_recent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/threads_filter_content_holder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/forum_section_header"
+        app:layout_constraintStart_toStartOf="@+id/forum_section_header"
+        app:layout_constraintTop_toBottomOf="@+id/forum_section_header">
+
+        <SearchView
+            android:id="@+id/threads_filter_content"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:queryBackground="@android:color/transparent"
+            android:gravity="right"
+            android:iconifiedByDefault="false" />
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/most_recent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

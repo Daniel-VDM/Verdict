@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_alignParentTop="true"
     android:background="@color/colorBackground"
     tools:context=".ui.Forum.TopicsActivity">
@@ -36,20 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/forum_topics_writeNew"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:scaleX="1.1"
-        android:scaleY="1.1"
-        app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_edit_ico" />
-
     <ImageView
         android:id="@+id/topics_tab_search_highlight_search"
         android:layout_width="@dimen/half_screen_width"
@@ -75,11 +61,26 @@
         app:layout_constraintStart_toStartOf="@+id/topics_tab_forum_search"
         app:srcCompat="@drawable/tab_button_highlight" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/forum_topics_writeNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:scaleX="1.1"
+        android:scaleY="1.1"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_edit_ico" />
+
     <ListView
         android:id="@+id/topics_list"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/topics_tab_forum_highlight_search" />

@@ -2,11 +2,13 @@ package io.verdict.ui.Forum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import io.verdict.R;
+import io.verdict.backend.ForumDataGenerator;
 import io.verdict.ui.SearchScreen.SearchScreen;
 
 public class TopicsActivity extends AppCompatActivity {
@@ -24,6 +27,25 @@ public class TopicsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Tee for forum data generation
+        ForumDataGenerator forumDataGenerator = new ForumDataGenerator(this);
+        if (getResources().getBoolean(R.bool.debug_forum_data)) {
+            Toast toast = Toast.makeText(this,
+                    "GENERATING DEBUG FORUM DATA",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 0, 10);
+            toast.show();
+            forumDataGenerator.generateDebugData();
+        } else if (getResources().getBoolean(R.bool.force_generate_forum)) {
+            Toast toast = Toast.makeText(this,
+                    "GENERATING DEMO FORUM DATA",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 0, 10);
+            toast.show();
+            forumDataGenerator.generateDemoData();
+        }
+
         setContentView(R.layout.forum_topics);
         final Button topicsTabSearchButton = findViewById(R.id.topics_tab_search_search);
         final Button topicsTabForumButton = findViewById(R.id.topics_tab_forum_search);
@@ -68,7 +90,7 @@ public class TopicsActivity extends AppCompatActivity {
         topics_list_content.add(new Topic(R.drawable.ic_home, law_topics[15])); //real estate
         topics_list_content.add(new Topic(R.drawable.ic_tax, law_topics[16])); //tax
 
-        tAdapter = new TopicsAdapter(this,topics_list_content);
+        tAdapter = new TopicsAdapter(this, topics_list_content);
         topicsList.setAdapter(tAdapter);
         topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
